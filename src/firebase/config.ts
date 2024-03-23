@@ -13,5 +13,4 @@ const firebaseConfig = {
 const firebaseApp =
   getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
-// TODO: setup auth with Google
 export default firebaseApp;

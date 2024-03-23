@@ -2,6 +2,10 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 
+import Layout from "@/components/Layout";
+import { AuthContextProvider } from "@/context/AuthContext";
+import { UIContextProvider } from "@/context/UIContext";
+
 export const metadata: Metadata = {
   title: "Budget Planner",
   // TODO: update description + add favicon
@@ -15,7 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <UIContextProvider>
+          <AuthContextProvider>
+            <Layout>{children}</Layout>
+          </AuthContextProvider>
+        </UIContextProvider>
+      </body>
     </html>
   );
 }
