@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import useAuth from "@/hooks/useAuth";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import useAuth from '@/hooks/useAuth';
+import { cn } from '@/lib/utils';
 
 const NavBar: FC = () => {
   const { user, signIn, logOut, isLoading } = useAuth();
@@ -19,8 +19,8 @@ const NavBar: FC = () => {
   return (
     <nav
       className={cn(
-        "w-full min-h-[72px] px-10 py-4 border-b border-gray-300",
-        "flex items-center justify-center"
+        'w-full min-h-[72px] px-10 py-4 border-b border-gray-300',
+        'flex items-center justify-center',
       )}
     >
       <div className="flex-1 max-w-[1080px] flex items-center justify-between">
@@ -37,10 +37,10 @@ const NavBar: FC = () => {
               <DropdownMenuTrigger asChild>
                 <Avatar className="border-2 border-black hover:opacity-80 cursor-pointer">
                   <AvatarImage
-                    src={user.photoUrl ?? ""}
-                    alt={user.name ?? ""}
+                    src={user.photoUrl ?? ''}
+                    alt={user.name ?? ''}
                   />
-                  <AvatarFallback>{user.name ?? ""}</AvatarFallback>
+                  <AvatarFallback>{user.name ?? ''}</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useContext } from "react";
+import { useContext } from 'react';
 
-import { UIContext } from "@/context/UIContext";
+import { UIContext } from '@/context/UIContext';
 
 const useNotification = () => {
   return useContext(UIContext);

@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import {
   createContext,
   useCallback,
   useState,
   useEffect,
   ReactNode,
-} from "react";
+} from 'react';
 
 import {
   signInWithPopup,
   signOut,
   onAuthStateChanged,
   GoogleAuthProvider,
-} from "firebase/auth";
-import firebaseAuth from "@/firebase/auth";
-import useNotification from "@/hooks/useNotification";
+} from 'firebase/auth';
+import firebaseAuth from '@/firebase/auth';
+import useNotification from '@/hooks/useNotification';
 
 type User = {
   name: string | null;
@@ -51,13 +51,13 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       const user = await signInWithPopup(firebaseAuth, provider);
       if (user.user) {
         showNotification({
-          title: "Sign In Successful",
+          title: 'Sign In Successful',
         });
       }
-      router.push("/dashboard");
+      router.push('/dashboard');
     } catch (error) {
       showNotification({
-        title: "Sign In Failed",
+        title: 'Sign In Failed',
       });
     }
   }, [showNotification, router]);
@@ -66,11 +66,11 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     try {
       await signOut(firebaseAuth);
       showNotification({
-        title: "Log Out Successful",
+        title: 'Log Out Successful',
       });
     } catch (error) {
       showNotification({
-        title: "Log Out Failed",
+        title: 'Log Out Failed',
       });
     }
   }, [showNotification]);
@@ -79,7 +79,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
       if (!currentUser) {
         setUser(null);
-        router.push("/");
+        router.push('/');
       } else {
         setUser({
           name: currentUser.displayName,
