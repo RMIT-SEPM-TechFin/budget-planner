@@ -1,20 +1,20 @@
 'use client';
 
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import {
   createContext,
-  useCallback,
-  useState,
-  useEffect,
   ReactNode,
+  useCallback,
+  useEffect,
+  useState,
 } from 'react';
 
-import {
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-  GoogleAuthProvider,
-} from 'firebase/auth';
 import firebaseAuth from '@/firebase/auth';
 import useNotification from '@/hooks/useNotification';
 
