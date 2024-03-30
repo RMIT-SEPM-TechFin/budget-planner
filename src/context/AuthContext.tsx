@@ -51,13 +51,15 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       const user = await signInWithPopup(firebaseAuth, provider);
       if (user.user) {
         showNotification({
-          title: 'Sign In Successful',
+          title: 'Sign In Successfully',
+          variant: 'success',
         });
       }
       router.push('/dashboard');
     } catch (error) {
       showNotification({
         title: 'Sign In Failed',
+        variant: 'failure',
       });
     }
   }, [showNotification, router]);
@@ -66,11 +68,13 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     try {
       await signOut(firebaseAuth);
       showNotification({
-        title: 'Log Out Successful',
+        title: 'Log Out Successfully',
+        variant: 'success',
       });
     } catch (error) {
       showNotification({
         title: 'Log Out Failed',
+        variant: 'failure',
       });
     }
   }, [showNotification]);
