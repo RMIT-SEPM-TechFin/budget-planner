@@ -10,6 +10,7 @@ type Notification = ToastProps & {
   title?: ReactNode;
   description?: ReactNode;
   action?: ToastActionElement;
+  variant: 'success' | 'failure';
 };
 
 type UIContextType = {
