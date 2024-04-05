@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import useAuth from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
+
 import Logo from './ui/logo';
 
 const NavBar: FC = () => {
@@ -26,7 +27,7 @@ const NavBar: FC = () => {
     >
       <div className="flex-1  flex items-center justify-between">
         {/* TODO: Add Logo */}
-        <Logo/>
+        <Logo />
 
         <div>
           {/* User hasn't signed in, show Sign In button */}

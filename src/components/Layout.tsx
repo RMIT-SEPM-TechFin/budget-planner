@@ -2,8 +2,9 @@ import { FC, ReactNode } from 'react';
 
 import NavBar from '@/components/NavBar';
 import { Toaster } from '@/components/ui/toaster';
-import MainLayout from './ui/mainLayout';
+
 import Footer from './Footer';
+import MainLayout from './ui/mainLayout';
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
@@ -11,8 +12,8 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
       <div>
         <NavBar />
         {children}
-        <MainLayout/>
-        <Footer/>
+        <MainLayout />
+        <Footer />
       </div>
       <Toaster />
     </>
