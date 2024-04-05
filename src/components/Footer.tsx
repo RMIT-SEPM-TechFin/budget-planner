@@ -3,7 +3,7 @@ const Footer = () => {
   return (
     <footer
       className={cn(
-        'w-full min-h-[72px] px-10 pt-10 pb-5',
+        'w-full min-h-[72px] md:px-10 pt-10 pb-5 absolute bottom-0',
         'flex items-center justify-center',
       )}
     >

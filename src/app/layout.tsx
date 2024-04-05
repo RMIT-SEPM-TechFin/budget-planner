@@ -27,10 +27,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="box-border">
       <body
         className={cn(
-          'min-h-screen dark font-sans antialiased ',
+          'min-h-screen dark font-sans antialiased border-x-inherit relative pb-24',
           fontSans.variable,
         )}
       >
