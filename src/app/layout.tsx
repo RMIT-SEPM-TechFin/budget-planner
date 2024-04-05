@@ -1,4 +1,12 @@
+import { Inter as FontSans } from "next/font/google"
+import { cn } from "@/lib/utils"
 import './globals.css';
+
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
+
 
 import type { Metadata } from 'next';
 
@@ -19,7 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="bg-zinc-950 text-primary-foreground">
+      <body    className={cn(
+          "min-h-screen dark font-sans antialiased ",
+          fontSans.variable
+        )}
+      >
         <UIContextProvider>
           <AuthContextProvider>
             <Layout>{children}</Layout>
