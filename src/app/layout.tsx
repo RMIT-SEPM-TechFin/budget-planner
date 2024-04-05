@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="bg-zinc-950 text-primary-foreground">
         <UIContextProvider>
           <AuthContextProvider>
             <Layout>{children}</Layout>
