@@ -1,7 +1,4 @@
 /** @type {import('next').NextConfig} */
 
-const nextConfig = {
-  // TODO: figure ways to handle preview link
-  // output: 'export',
-};
+const nextConfig = {};
 export default nextConfig;
