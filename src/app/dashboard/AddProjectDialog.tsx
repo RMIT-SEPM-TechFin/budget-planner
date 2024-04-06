@@ -1,7 +1,7 @@
 'use client';
 
 import { Check, X } from 'lucide-react';
-import { FC, useState, useTransition } from 'react';
+import { FC, useCallback, useState, useTransition } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -32,21 +32,24 @@ const AddProjectDialog: FC = () => {
   const [memberEmailValue, setMemberEmailValue] = useState('');
   const [_, startTransition] = useTransition();
 
-  const setInitialState = () => {
+  const setInitialState = useCallback(() => {
     setMembers([]);
     setMemberEmailValue('');
-  };
+  }, []);
 
-  const onAddMember = () => {
+  const onAddMember = useCallback(() => {
     setMembers([...members, memberEmailValue]);
     setMemberEmailValue('');
-  };
+  }, [members, memberEmailValue]);
 
-  const onRemoveMember = (email: string) => {
-    setMembers(members.filter((member) => member !== email));
-  };
+  const onRemoveMember = useCallback(
+    (email: string) => {
+      setMembers(members.filter((member) => member !== email));
+    },
+    [members],
+  );
 
-  const handleSaveNewProject = () => {
+  const handleSaveNewProject = useCallback(() => {
     if (!user) return;
     startTransition(() => {
       try {
@@ -63,7 +66,7 @@ const AddProjectDialog: FC = () => {
           variant: 'success',
         });
         setInitialState();
-        // TODO: navigate to the new project
+        // TODO: navigate to the new project page
       } catch {
         showNotification({
           title: 'Failed to create new project',
@@ -71,7 +74,7 @@ const AddProjectDialog: FC = () => {
         });
       }
     });
-  };
+  }, [members, name, setInitialState, showNotification, startTransition, user]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -96,6 +99,7 @@ const AddProjectDialog: FC = () => {
             <Label htmlFor="project-name" className="text-right">
               Name
             </Label>
+            {/* TODO: input turns white when selecting existing option */}
             <Input
               id="project-name"
               className="col-span-3"
@@ -111,6 +115,7 @@ const AddProjectDialog: FC = () => {
               Member Email
             </Label>
             <div className="relative col-span-3">
+              {/* TODO: input turns white when selecting existing option */}
               <Input
                 id="project-member"
                 placeholder="john123@gmail.com"

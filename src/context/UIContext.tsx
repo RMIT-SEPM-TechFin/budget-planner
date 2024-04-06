@@ -22,7 +22,7 @@ export const UIContext = createContext<UIContextType>({
 });
 
 export const UIContextProvider = ({ children }: { children: ReactNode }) => {
-  // TODO: update toast styling for success and error
+  // TODO: seems like notification not automatically close after some time
   const { toast } = useToast();
 
   const showNotification = (notificationDetails: Notification) => {
