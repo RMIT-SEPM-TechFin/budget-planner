@@ -1,5 +1,14 @@
 import './globals.css';
 
+import { Inter as FontSans } from 'next/font/google';
+
+import { cn } from '@/lib/utils';
+
+const fontSans = FontSans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
+
 import type { Metadata } from 'next';
 
 import Layout from '@/components/Layout';
@@ -18,8 +27,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
+    <html lang="en" suppressHydrationWarning className="box-border">
+      <body
+        className={cn(
+          'min-h-screen dark font-sans antialiased border-x-inherit relative pb-24',
+          fontSans.variable,
+        )}
+      >
         <UIContextProvider>
           <AuthContextProvider>
             <Layout>{children}</Layout>

@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { USER_EMAIL } from '@/constants';
+import { cn } from '@/lib/utils';
 
 import fetchProjectData from './fetch';
 
@@ -17,8 +18,6 @@ export default async function Dashboard() {
   console.log('projects :', projects);
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-    </div>
+    <div className={cn('w-full container md:px-10 pt-10 pb-5')}>Dashboard</div>
   );
 }

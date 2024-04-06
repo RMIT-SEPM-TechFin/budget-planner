@@ -13,6 +13,8 @@ import {
 import useAuth from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 
+import Logo from './ui/logo';
+
 const NavBar: FC = () => {
   const { user, signIn, logOut, isLoading } = useAuth();
 
@@ -23,9 +25,9 @@ const NavBar: FC = () => {
         'flex items-center justify-center',
       )}
     >
-      <div className="flex-1 max-w-[1080px] flex items-center justify-between">
+      <div className="flex-1 max-w-[1400px] flex items-center justify-between">
         {/* TODO: Add Logo */}
-        <div>Logo</div>
+        <Logo />
 
         <div>
           {/* User hasn't signed in, show Sign In button */}
