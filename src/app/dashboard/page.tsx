@@ -3,10 +3,11 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { USER_EMAIL } from '@/constants';
-import { cn } from '@/lib/utils';
 
 import fetchProjectData from './fetch';
+import ProjectTable from './ProjectTable';
 
+// Force dynamic to be able to use cookies
 export const dynamic = 'force-dynamic';
 
 export default async function Dashboard() {
@@ -15,9 +16,11 @@ export default async function Dashboard() {
   if (!userEmail) redirect('/');
 
   const projects = await fetchProjectData(userEmail);
-  console.log('projects :', projects);
 
   return (
-    <div className={cn('w-full container md:px-10 pt-10 pb-5')}>Dashboard</div>
+    <div className="space-y-6">
+      <h1>All Projects</h1>
+      <ProjectTable projects={projects} />
+    </div>
   );
 }

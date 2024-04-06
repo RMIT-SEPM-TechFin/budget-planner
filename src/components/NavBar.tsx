@@ -25,7 +25,7 @@ const NavBar: FC = () => {
         'flex items-center justify-center',
       )}
     >
-      <div className="flex-1 max-w-[1400px] flex items-center justify-between">
+      <div className="flex-1 max-w-[1200px] flex items-center justify-between">
         {/* TODO: Add Logo */}
         <Logo />
 

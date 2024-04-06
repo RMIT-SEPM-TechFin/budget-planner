@@ -5,7 +5,6 @@
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error",
     "import/no-unresolved": 2,
-    "import/named": 2,
     "import/default": 2,
     "import/namespace": 2
   }

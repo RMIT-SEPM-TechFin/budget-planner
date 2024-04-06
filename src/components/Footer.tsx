@@ -7,7 +7,7 @@ const Footer = () => {
         'flex items-center justify-center',
       )}
     >
-      <div className="flex-1 max-w-[1400px] flex items-center justify-between">
+      <div className="flex-1 max-w-[1200px] flex items-center justify-between">
         <aside className="flex  items-center space-x-2">
           <svg
             width="36"

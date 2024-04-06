@@ -7,8 +7,7 @@ import {
 } from 'firebase/firestore';
 
 import db from '@/firebase/db';
-
-import { ProjectDocument } from './types';
+import type { Project } from '@/types';
 
 export default async function fetchProjectData(userEmail: string) {
   const q = query(
@@ -22,9 +21,10 @@ export default async function fetchProjectData(userEmail: string) {
       const data = doc.data();
       return {
         ...data,
+        id: doc.id,
         // replace Firestore Timestamp with Date
         createdAt: (data.createdAt as Timestamp).toDate(),
-      } as unknown as ProjectDocument;
+      } as Project;
     });
   });
 

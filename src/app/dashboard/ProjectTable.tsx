@@ -1,105 +1,60 @@
 'use client';
 
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
+import { ColumnDef } from '@tanstack/react-table';
 import { FC } from 'react';
 
 import {
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+  TableActionCell,
+  TableSortableHeader,
+} from '@/components/table';
 import type { Project } from '@/types';
 
 interface ProjectTableProps {
   projects: Project[];
 }
 
-const columnHelper = createColumnHelper<Project>();
-
-const columns = [
-  columnHelper.accessor('name', {
-    header: 'Name',
+const columns: ColumnDef<Project>[] = [
+  {
+    accessorKey: 'name',
+    header: (props) => <TableSortableHeader title="Name" props={props} />,
     cell: (props) => props.getValue(),
-  }),
-  columnHelper.accessor('ownerName', {
-    header: 'Owner',
+  },
+  {
+    accessorKey: 'ownerName',
+    header: (props) => <TableSortableHeader title="Owner" props={props} />,
     cell: (props) => props.getValue(),
-  }),
-  columnHelper.accessor('createdAt', {
-    header: 'Date Created',
+  },
+  {
+    accessorKey: 'createdAt',
+    header: (props) => <TableSortableHeader title="Created At" props={props} />,
     cell: (props) =>
-      props
-        .getValue()
-        // format date as "Month Day, Year"
-        .toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        }),
-  }),
+      (props.getValue() as Date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+  },
+  {
+    accessorKey: 'id',
+    header: () => null,
+    cell: () => (
+      <TableActionCell
+        actionItems={[
+          {
+            label: 'Delete',
+            onClick: () => {
+              // handle delete
+            },
+          },
+        ]}
+      />
+    ),
+  },
 ];
 
 const ProjectTable: FC<ProjectTableProps> = ({ projects }) => {
-  const table = useReactTable({
-    data: projects,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
-  return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
-  );
+  return <Table columns={columns} data={projects} searchableColumnKey="name" />;
 };
 
 export default ProjectTable;
