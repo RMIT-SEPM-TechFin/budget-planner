@@ -1,6 +1,7 @@
 import {
   collection,
   getDocs,
+  orderBy,
   query,
   Timestamp,
   where,
@@ -13,6 +14,7 @@ export default async function fetchProjectData(userEmail: string) {
   const q = query(
     collection(db, 'projects'),
     where('members', 'array-contains', userEmail),
+    orderBy('createdAt', 'desc'),
   );
 
   const projects = await getDocs(q).then((snapshot) => {

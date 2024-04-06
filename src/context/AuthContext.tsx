@@ -21,9 +21,9 @@ import firebaseAuth from '@/firebase/auth';
 import useNotification from '@/hooks/useNotification';
 
 type User = {
-  name: string | null;
-  email: string | null;
-  photoUrl: string | null;
+  name: string;
+  email: string;
+  photoUrl: string;
 };
 
 type AuthContextType = {
@@ -89,9 +89,9 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         router.push('/');
       } else {
         setUser({
-          name: currentUser.displayName,
-          email: currentUser.email,
-          photoUrl: currentUser.photoURL,
+          name: currentUser.displayName ?? '',
+          email: currentUser.email ?? '',
+          photoUrl: currentUser.photoURL ?? '',
         });
         setCookie(USER_EMAIL, currentUser.email);
       }

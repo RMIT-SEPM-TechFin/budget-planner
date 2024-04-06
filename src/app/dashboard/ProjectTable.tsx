@@ -1,28 +1,31 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { FC } from 'react';
+import { FC, useTransition } from 'react';
 
 import {
   Table,
   TableActionCell,
   TableSortableHeader,
 } from '@/components/table';
+import useNotification from '@/hooks/useNotification';
 import type { Project } from '@/types';
+
+import { deleteProject } from './actions';
 
 interface ProjectTableProps {
   projects: Project[];
 }
 
-const columns: ColumnDef<Project>[] = [
+const staticColumns: ColumnDef<Project>[] = [
   {
     accessorKey: 'name',
-    header: (props) => <TableSortableHeader title="Name" props={props} />,
+    header: 'Name',
     cell: (props) => props.getValue(),
   },
   {
     accessorKey: 'ownerName',
-    header: (props) => <TableSortableHeader title="Owner" props={props} />,
+    header: 'Owner',
     cell: (props) => props.getValue(),
   },
   {
@@ -35,25 +38,49 @@ const columns: ColumnDef<Project>[] = [
         day: 'numeric',
       }),
   },
-  {
-    accessorKey: 'id',
-    header: () => null,
-    cell: () => (
-      <TableActionCell
-        actionItems={[
-          {
-            label: 'Delete',
-            onClick: () => {
-              // handle delete
-            },
-          },
-        ]}
-      />
-    ),
-  },
 ];
 
 const ProjectTable: FC<ProjectTableProps> = ({ projects }) => {
+  const { showNotification } = useNotification();
+
+  const [_, startTransition] = useTransition();
+
+  const handleDelete = (id: string) => {
+    startTransition(() => {
+      try {
+        deleteProject(id);
+        showNotification({
+          title: 'Project deleted',
+          variant: 'success',
+        });
+      } catch {
+        showNotification({
+          title: 'Failed to delete project',
+          variant: 'failure',
+        });
+      }
+    });
+  };
+
+  const columns: ColumnDef<Project>[] = [
+    ...staticColumns,
+    {
+      accessorKey: 'id',
+      header: () => null,
+      cell: (props) => (
+        <TableActionCell
+          actionItems={[
+            {
+              label: 'Delete',
+              // NOTES: members and owners can all delete the project
+              onClick: () => handleDelete(props.getValue() as string),
+            },
+          ]}
+        />
+      ),
+    },
+  ];
+
   return <Table columns={columns} data={projects} searchableColumnKey="name" />;
 };
 

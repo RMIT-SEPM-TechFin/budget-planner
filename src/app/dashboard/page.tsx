@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 
 import { USER_EMAIL } from '@/constants';
 
+import AddProjectDialog from './AddProjectDialog';
 import fetchProjectData from './fetch';
 import ProjectTable from './ProjectTable';
 
@@ -20,7 +21,10 @@ export default async function Dashboard() {
   return (
     <div className="space-y-6">
       <h1>All Projects</h1>
-      <ProjectTable projects={projects} />
+      <div className="relative">
+        <ProjectTable projects={projects} />
+        <AddProjectDialog />
+      </div>
     </div>
   );
 }
