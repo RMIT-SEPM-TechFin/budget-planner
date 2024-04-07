@@ -19,13 +19,13 @@ export default function Home() {
           }} />
       </div>
 
-      <div className="flex md:flex-row flex-col justify-between items-center">
+      <div className="flex md:flex-row flex-col justify-between items-center gap-16">
       <div className="relative md:w-1/2 w-full aspect-square">
         <Image src={"/banner.jpg"} alt="Banner" fill style={{
             objectFit: 'cover',
           }} />
       </div>
-        <div className="md:w-1/2 w-full">
+        <div className="md:w-1/2 w-full text-left">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsa exercitationem ab odit accusamus libero esse perferendis velit facilis sint? Fugiat commodi eius temporibus enim itaque vel maxime doloribus, deserunt reprehenderit!
         </div>
 
