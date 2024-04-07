@@ -58,10 +58,22 @@
   }
 }
 
-h1 {
-  @apply text-4xl font-black;
-}
-
 small {
   @apply text-gray-500;
+}
+
+.h1 {
+  @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
+}
+
+.h2 {
+  @apply scroll-m-20 text-3xl font-semibold tracking-tight;
+}
+
+.h3 {
+  @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+}
+
+.p {
+  @apply scroll-m-20 text-base font-normal;
 }

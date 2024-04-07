@@ -30,7 +30,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className="box-border">
       <body
         className={cn(
-          'min-h-screen dark font-sans antialiased border-x-inherit relative pb-24',
+          'min-h-screen dark font-sans antialiased border-x-inherit relative',
           fontSans.variable,
         )}
       >

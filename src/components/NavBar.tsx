@@ -21,7 +21,7 @@ const NavBar: FC = () => {
   return (
     <nav
       className={cn(
-        'w-full min-h-[72px] px-10 py-4 border-b border-gray-300',
+        'w-full min-h-[72px] px-10 py-4 border-b border-gray-500 shadow',
         'flex items-center justify-center',
       )}
     >
