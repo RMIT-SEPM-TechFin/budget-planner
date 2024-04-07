@@ -1,35 +1,34 @@
+import Image from "next/image";
+
 export default function Home() {
   return (
-    <div className="min-h-[90px] mx-auto">
-      <div className="flex flex-col items-center ">
-        <p className="bg-gray-300 px-10 py-1.5  mb-4 text-center  mt-10">
-          This is a sentenceThis is a sentenceThis is a sentenceThis is a
-          sentenceThis is a sentence
-        </p>
-        <p className="bg-gray-300 px-10 py-1.5  mb-4 text-center">
-          This is a sentenceThis is a sentenceThis is a sentenceThis is a
-          sentenceThis is a sentenceThis is a sentenceThis is a sentence
-        </p>
-        <p className="bg-gray-300 px-10 py-1.5  mb-14 text-center">
-          This is a sentenceThis is a sentenceThis is a sentenceThis is a
-          sentenceThis is a sentence
+    <div className="text-center space-y-10">
+      <div className="flex flex-col items-center justify-center gap-5">
+        <div className="space-y-2 w-[60%] text-center">
+          <h1 className="h1 text-transparent bg-clip-text bg-gradient-to-b from-primary to-foreground">Budget Planner</h1>
+          <h3 className="h3 text-muted-foreground">Transform the way you plan your budget, one scenario at a time</h3>
+        </div>
+        <p className="p text-muted-foreground">
+          Welcome to the Budget Planner app! This app is designed to help you
+          manage your finances by keeping track of your income and expenses.
         </p>
       </div>
-      <div className="bg-gray-400 h-64 mb-32 pt-5"></div>
-      <div className="flex flex-row gap-12">
-        <div className="bg-gray-500 h-80 w-3/6"></div>
-        <div className="flex flex-col justify-center  ">
-          <p className="bg-gray-300 px-2 py-1 mb-4 w-1/2">
-            This is a sentenceThis is a sentenceThis{' '}
-          </p>
-          <p className="bg-gray-300 px-2 py-1 mb-4">
-            This is a sentenceThis is a sentenceThis is a sentenceThis is a
-            sentenceThis is a sentence
-          </p>
-          <p className="bg-gray-300 px-2 py-1 mb-4 w-1/2">
-            This is a sentenceThis is a sentenceThis
-          </p>
+      <div className="relative w-full aspect-[14/9]">
+        <Image src={"/banner.jpg"} alt="Banner" fill style={{
+            objectFit: 'cover',
+          }} />
+      </div>
+
+      <div className="flex md:flex-row flex-col justify-between items-center">
+      <div className="relative md:w-1/2 w-full aspect-square">
+        <Image src={"/banner.jpg"} alt="Banner" fill style={{
+            objectFit: 'cover',
+          }} />
+      </div>
+        <div className="md:w-1/2 w-full">
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsa exercitationem ab odit accusamus libero esse perferendis velit facilis sint? Fugiat commodi eius temporibus enim itaque vel maxime doloribus, deserunt reprehenderit!
         </div>
+
       </div>
     </div>
   );
