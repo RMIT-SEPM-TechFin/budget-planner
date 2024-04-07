@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 
 import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 
-import AddProjectDialog from './AddProjectButton';
+import AddProjectButton from './AddProjectButton';
 import fetchProjectData from './fetch';
 import ProjectTable from './ProjectTable';
 
@@ -28,7 +28,7 @@ export default async function Dashboard() {
       <h1>All Projects</h1>
       <div className="relative">
         <ProjectTable projects={projects} />
-        <AddProjectDialog className="absolute right-0 top-0" />
+        <AddProjectButton className="absolute right-0 top-0" />
       </div>
     </div>
   );
