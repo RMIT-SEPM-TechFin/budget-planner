@@ -1,1 +1,1 @@
-export const USER_EMAIL = 'auth';
+export const USER_EMAIL_COOKIE_NAME = 'auth';

@@ -22,7 +22,7 @@ import { cn } from '@/lib/utils';
 
 import { saveNewProject } from './actions';
 
-const AddProjectDialog: FC = () => {
+const AddProjectButton: FC<{ className?: string }> = ({ className }) => {
   const { user } = useAuth();
   const { showNotification } = useNotification();
 
@@ -30,6 +30,7 @@ const AddProjectDialog: FC = () => {
   const [name, setName] = useState('');
   const [members, setMembers] = useState<string[]>([]);
   const [memberEmailValue, setMemberEmailValue] = useState('');
+
   const [_, startTransition] = useTransition();
 
   const setInitialState = useCallback(() => {
@@ -79,10 +80,7 @@ const AddProjectDialog: FC = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          className="absolute right-0 top-0"
-          onClick={() => setOpen(true)}
-        >
+        <Button className={className} onClick={() => setOpen(true)}>
           New Project
         </Button>
       </DialogTrigger>
@@ -111,13 +109,13 @@ const AddProjectDialog: FC = () => {
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-x-4">
-            <Label htmlFor="project-member" className="text-right">
+            <Label htmlFor="project-member-email" className="text-right">
               Member Email
             </Label>
             <div className="relative col-span-3">
               {/* TODO: input turns white when selecting existing option */}
               <Input
-                id="project-member"
+                id="project-member-email"
                 placeholder="john123@gmail.com"
                 value={memberEmailValue}
                 onChange={(e) => {
@@ -168,4 +166,4 @@ const AddProjectDialog: FC = () => {
   );
 };
 
-export default AddProjectDialog;
+export default AddProjectButton;

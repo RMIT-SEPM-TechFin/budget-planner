@@ -6,3 +6,9 @@ export interface Project {
   members: string[];
   createdAt: Date;
 }
+
+export interface User {
+  name: string;
+  email: string;
+  photoUrl: string;
+}

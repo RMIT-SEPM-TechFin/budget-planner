@@ -2,9 +2,9 @@ import { getCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import { USER_EMAIL } from '@/constants';
+import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 
-import AddProjectDialog from './AddProjectDialog';
+import AddProjectDialog from './AddProjectButton';
 import fetchProjectData from './fetch';
 import ProjectTable from './ProjectTable';
 
@@ -17,7 +17,7 @@ export const revalidate = 0;
 
 // BUG: When users log out, then log in with a different account, the previous account's projects are still shown
 export default async function Dashboard() {
-  const userEmail = getCookie(USER_EMAIL, { cookies });
+  const userEmail = getCookie(USER_EMAIL_COOKIE_NAME, { cookies });
 
   if (!userEmail) redirect('/');
 
@@ -28,7 +28,7 @@ export default async function Dashboard() {
       <h1>All Projects</h1>
       <div className="relative">
         <ProjectTable projects={projects} />
-        <AddProjectDialog />
+        <AddProjectDialog className="absolute right-0 top-0" />
       </div>
     </div>
   );
