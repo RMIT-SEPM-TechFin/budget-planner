@@ -5,6 +5,22 @@ export interface Project {
   ownerEmail: string;
   members: string[];
   createdAt: Date;
+  items: Item[];
+  cateogries: Category[];
+}
+
+export interface Item {
+  id: string;
+  category: string;
+  name: string;
+  description?: string;
+  price: number;
+  quantity: number;
+}
+
+export interface Category {
+  id: string;
+  name: string;
 }
 
 export interface User {
