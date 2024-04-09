@@ -1,3 +1,6 @@
+import { MoreVertical, Plus } from 'lucide-react';
+import React, { FC, ReactNode } from 'react';
+
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -16,8 +19,6 @@ import {
   SelectLabel,
   SelectTrigger,
 } from '@/components/ui/select';
-import { MoreVertical, Plus } from 'lucide-react';
-import React, { FC, ReactNode } from 'react';
 
 const SelectItemEdit: FC<{ value: string; children: ReactNode }> = ({
   value,

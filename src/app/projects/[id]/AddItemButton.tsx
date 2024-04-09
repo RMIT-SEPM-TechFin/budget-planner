@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import useNotification from '@/hooks/useNotification';
 import {
   Select,
   SelectContent,
@@ -24,6 +23,8 @@ import {
   SelectTrigger,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import useNotification from '@/hooks/useNotification';
+
 import SelectCategory from './SelectCategory';
 
 const AddItemButton: FC<{ className?: string }> = ({ className }) => {

@@ -1,11 +1,13 @@
-import { Item } from '@/types';
+import { getCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
-import ItemTable from './ItemTable';
+import { redirect } from 'next/navigation';
+
+import { USER_EMAIL_COOKIE_NAME } from '@/constants';
+import { Item } from '@/types';
+
 import AddItemButton from './AddItemButton';
 import fetchItemData from './fetch';
-import { getCookie } from 'cookies-next';
-import { USER_EMAIL_COOKIE_NAME } from '@/constants';
-import { redirect } from 'next/navigation';
+import ItemTable from './ItemTable';
 
 // Force dynamic to be able to use cookies
 export const dynamic = 'force-dynamic';
