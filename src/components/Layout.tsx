@@ -10,7 +10,9 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
     <>
       <div>
         <NavBar />
-        {children}
+        <div className="p-10 flex items-center justify-center">
+          <div className="flex-1 max-w-[1200px]">{children}</div>
+        </div>
 
         <Footer />
       </div>

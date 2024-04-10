@@ -57,3 +57,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+h1 {
+  @apply text-4xl font-black;
+}
+
+small {
+  @apply text-gray-500;
+}

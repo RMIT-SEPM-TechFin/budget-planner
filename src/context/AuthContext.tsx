@@ -1,5 +1,6 @@
 'use client';
 
+import { deleteCookie, setCookie } from 'cookies-next';
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -15,14 +16,10 @@ import {
   useState,
 } from 'react';
 
+import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 import firebaseAuth from '@/firebase/auth';
 import useNotification from '@/hooks/useNotification';
-
-type User = {
-  name: string | null;
-  email: string | null;
-  photoUrl: string | null;
-};
+import type { User } from '@/types';
 
 type AuthContextType = {
   user: User | null;
@@ -83,13 +80,15 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
       if (!currentUser) {
         setUser(null);
+        deleteCookie(USER_EMAIL_COOKIE_NAME);
         router.push('/');
       } else {
         setUser({
-          name: currentUser.displayName,
-          email: currentUser.email,
-          photoUrl: currentUser.photoURL,
+          name: currentUser.displayName ?? '',
+          email: currentUser.email ?? '',
+          photoUrl: currentUser.photoURL ?? '',
         });
+        setCookie(USER_EMAIL_COOKIE_NAME, currentUser.email);
       }
       setIsLoading(false);
     });
