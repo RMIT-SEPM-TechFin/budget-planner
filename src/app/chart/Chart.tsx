@@ -93,15 +93,15 @@ const Chart = () =>{
   );
 
   return (
-    <PieChart width={400} height={400}>
+    <PieChart width={1000} height={600}>
       <Pie
         activeIndex={activeIndex}
         activeShape={renderActiveShape}
         data={data}
-        cx={200}
-        cy={200}
-        innerRadius={60}
-        outerRadius={80}
+        cx={400}
+        cy={300}
+        innerRadius={100}
+        outerRadius={160}
         fill="#8884d8"
         dataKey="value"
         onMouseEnter={onPieEnter}
