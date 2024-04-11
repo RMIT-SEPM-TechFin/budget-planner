@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 
 import Chart from './Chart';
+import ViewCharButton from './ViewChartButton';
 
 // Force dynamic to be able to use cookies
 export const dynamic = 'force-dynamic';
@@ -22,7 +23,7 @@ export default async function CostBreakdown() {
   return (
     <div className="space-y-6">
       <h1>All Projects</h1>
-      <Chart />
+        <ViewCharButton />
     </div>
   );
 }
