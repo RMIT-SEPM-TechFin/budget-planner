@@ -5,13 +5,11 @@ export interface Project {
   ownerEmail: string;
   members: string[];
   createdAt: Date;
-  items: Item[];
-  cateogries: Category[];
 }
 
 export interface Item {
   id: string;
-  category: string;
+  categoryId: string;
   name: string;
   description?: string;
   price: number;
