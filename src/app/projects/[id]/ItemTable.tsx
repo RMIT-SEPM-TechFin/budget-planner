@@ -14,6 +14,7 @@ import { Item, Project } from '@/types';
 import { deleteItem } from './actions';
 
 interface ItemTableProps {
+  projectId :Project['id'];
   items: Item[];
 }
 
@@ -49,7 +50,7 @@ const staticColumns = [
   }),
 ] as ColumnDef<Item>[];
 
-const ItemTable: FC<ItemTableProps> = ({ items }) => {
+const ItemTable: FC<ItemTableProps> = ({ projectId,items }) => {
   const { showNotification } = useNotification();
 
   const [_, startTransition] = useTransition();
@@ -58,7 +59,7 @@ const ItemTable: FC<ItemTableProps> = ({ items }) => {
     (id: string) => {
       startTransition(() => {
         try {
-          deleteItem(id);
+          deleteItem(projectId,id);
           showNotification({
             title: 'Item deleted',
             variant: 'success',

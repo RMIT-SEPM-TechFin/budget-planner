@@ -32,7 +32,7 @@ export default async function Project({ params }: { params: { id: string } }) {
     <div className="space-y-6">
       <h1>{projectName}</h1>
       <div className="relative">
-        <ItemTable items={items} />
+        <ItemTable projectId={id} items={items} />
         <AddItemButton projectId={id} className="absolute right-0 top-0" />
       </div>
     </div>

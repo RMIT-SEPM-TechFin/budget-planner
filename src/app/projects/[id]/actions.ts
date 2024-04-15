@@ -31,8 +31,8 @@ export async function saveNewItem(
   revalidatePath('/projects');
 }
 
-export async function deleteItem(itemId: string) {
-  // replace i0YRXACIJ2OQpiaPtyrt to projectId
-  await deleteDoc(doc(db, 'projects', 'i0YRXACIJ2OQpiaPtyrt', 'items', itemId));
+export async function deleteItem(projectId:string,itemId: string) {
+  // replace i0YRXACIJ2OQpiaPtyrt to projectId 
+  await deleteDoc(doc(db, 'projects', projectId, 'items', itemId));
   revalidatePath('/projects');
 }
