@@ -1,5 +1,5 @@
 'use client';
-import { FC, useState, useTransition } from 'react';
+import { FC, useCallback, useState, useTransition } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -25,13 +25,56 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import useNotification from '@/hooks/useNotification';
 
+import { saveNewItem } from './actions';
 import SelectCategory from './SelectCategory';
 
-const AddItemButton: FC<{ className?: string }> = ({ className }) => {
+const AddItemButton: FC<{ className?: string; projectId: string }> = ({
+  className,
+  projectId,
+}) => {
   const { showNotification } = useNotification();
   const [_, startTransition] = useTransition();
 
   const [open, setOpen] = useState(false);
+
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(0);
+  const [category, setCategory] = useState('');
+
+  const handleSaveNewItem = useCallback(() => {
+    startTransition(() => {
+      try {
+        saveNewItem(projectId, {
+          category: category,
+          description: description,
+          name: name,
+          price: price,
+          quantity: quantity,
+        });
+        setOpen(false);
+        showNotification({
+          title: 'New Item Created',
+          variant: 'success',
+        });
+      } catch {
+        showNotification({
+          title: 'Failed to create new Item',
+          variant: 'failure',
+        });
+      }
+    });
+  }, [
+    projectId,
+    category,
+    name,
+    description,
+    price,
+    quantity,
+    showNotification,
+    startTransition,
+  ]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -49,6 +92,7 @@ const AddItemButton: FC<{ className?: string }> = ({ className }) => {
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="category">Select</Label>
+
             {/* TODO: input turns white when selecting existing option */}
 
             <SelectCategory name="category" className="col-span-3" />
@@ -61,6 +105,11 @@ const AddItemButton: FC<{ className?: string }> = ({ className }) => {
               id="item-name"
               className="col-span-3"
               placeholder="New Item"
+              name="name"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
             />
           </div>
 
@@ -71,8 +120,12 @@ const AddItemButton: FC<{ className?: string }> = ({ className }) => {
 
             <Textarea
               id="item-description"
-              name="item-description"
+              name="description"
               placeholder="Type the item description"
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
             />
           </div>
 
@@ -83,6 +136,11 @@ const AddItemButton: FC<{ className?: string }> = ({ className }) => {
               className="col-span-3"
               placeholder="Price"
               type="number"
+              name="price"
+              value={price}
+              onChange={(e) => {
+                setPrice(Number(e.target.value));
+              }}
             />
           </div>
 
@@ -93,12 +151,19 @@ const AddItemButton: FC<{ className?: string }> = ({ className }) => {
               className="col-span-3"
               placeholder="Quantity"
               type="number"
+              name="quantity"
+              value={quantity}
+              onChange={(e) => {
+                setQuantity(Number(e.target.value));
+              }}
             />
           </div>
         </div>
 
         <DialogFooter>
-          <Button type="submit">Add</Button>
+          <Button type="submit" onClick={handleSaveNewItem}>
+            Add
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

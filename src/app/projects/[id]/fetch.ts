@@ -1,5 +1,6 @@
 import {
   collection,
+  doc,
   documentId,
   FieldValue,
   getDocs,
@@ -9,23 +10,22 @@ import {
 } from 'firebase/firestore';
 
 import db from '@/firebase/db';
-import { Category } from '@/types';
+import { Item } from '@/types';
 
-export default async function fetchItemData(
-  projectId: string,
-  userEmail: string,
-) {
-  const q = query(
-    collection(db, 'projects'),
-    where(documentId(), '==', projectId),
-    where('members', 'array-contains', userEmail),
-  );
+export default async function fetchItemData(projectId: string) {
+  // Reference to the project document
+  const projectRef = doc(db, 'projects', projectId);
+  //   // Reference to the items subcollection within the project document
+  const itemsRef = collection(projectRef, 'items');
 
-  const categories = await getDocs(q).then((snapshot) => {
-    const data = snapshot.docs.map((doc) => doc.data());
-    const categories = data.map((item) => item.categories)[0];
-    return categories;
+  const items = await getDocs(itemsRef).then((snapshot) => {
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        ...data,
+        id: doc.id,
+      } as Item;
+    });
   });
-
-  console.log(categories);
+  return items;
 }

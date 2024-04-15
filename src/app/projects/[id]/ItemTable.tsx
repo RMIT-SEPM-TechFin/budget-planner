@@ -9,7 +9,9 @@ import {
   TableSortableHeader,
 } from '@/components/table';
 import useNotification from '@/hooks/useNotification';
-import { Item } from '@/types';
+import { Item, Project } from '@/types';
+
+import { deleteItem } from './actions';
 
 interface ItemTableProps {
   items: Item[];
@@ -19,7 +21,7 @@ interface ItemTableProps {
 // https://github.com/TanStack/table/issues/4302#issuecomment-1531196901
 const columnHelper = createColumnHelper<Item>();
 const staticColumns = [
-  columnHelper.accessor('category', {
+  columnHelper.accessor('categoryId', {
     header: (props) => <TableSortableHeader title="Category" props={props} />,
     cell: (props) => props.getValue(),
   }),
@@ -56,7 +58,7 @@ const ItemTable: FC<ItemTableProps> = ({ items }) => {
     (id: string) => {
       startTransition(() => {
         try {
-          // deleteProject(id);
+          deleteItem(id);
           showNotification({
             title: 'Item deleted',
             variant: 'success',
