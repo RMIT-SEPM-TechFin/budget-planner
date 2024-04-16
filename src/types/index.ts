@@ -9,7 +9,7 @@ export interface Project {
 
 export interface Item {
   id: string;
-  categoryId: string;
+  category: string;
   name: string;
   description?: string;
   price: number;
