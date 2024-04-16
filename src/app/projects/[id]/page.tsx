@@ -1,11 +1,9 @@
 import { getCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { stringify } from 'querystring';
 
-import fetchProjectData from '@/app/dashboard/fetch';
 import { USER_EMAIL_COOKIE_NAME } from '@/constants';
-import { Item } from '@/types';
+import { ProjectContextProvider } from '@/context/ProjectContext';
 
 import AddItemButton from './AddItemButton';
 import fetchItemData from './fetch';
@@ -20,20 +18,19 @@ export default async function Project({ params }: { params: { id: string } }) {
   const userEmail = getCookie(USER_EMAIL_COOKIE_NAME, { cookies });
   if (!userEmail) redirect('/');
 
-  const items = await fetchItemData(id);
-
-  const projects = await fetchProjectData(userEmail);
-
-  // named project by projectId
-  const project = projects.find((project) => project.id === id);
-  const projectName = project ? project.name : 'No Projects Found';
+  const { name, items, categories } = await fetchItemData(id);
 
   return (
     <div className="space-y-6">
-      <h1>{projectName}</h1>
+      <h1>{name}</h1>
       <div className="relative">
-        <ItemTable projectId={id} items={items} />
-        <AddItemButton projectId={id} className="absolute right-0 top-0" />
+        <ProjectContextProvider projectId={id}>
+          <ItemTable items={items} categories={categories} />
+          <AddItemButton
+            categories={categories}
+            className="absolute right-0 top-0"
+          />
+        </ProjectContextProvider>
       </div>
     </div>
   );
