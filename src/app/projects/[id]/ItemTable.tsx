@@ -8,47 +8,63 @@ import {
   TableActionCell,
   TableSortableHeader,
 } from '@/components/table';
+import {
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import useNotification from '@/hooks/useNotification';
-import { Item } from '@/types';
+import useProject from '@/hooks/useProject';
+import { Category, Item } from '@/types';
+
+import { deleteItem } from './actions';
+import ItemForm from './ItemForm';
 
 interface ItemTableProps {
   items: Item[];
+  categories: Category[];
 }
 
 // create columns based on this guide instead of shadcn for better type handling
 // https://github.com/TanStack/table/issues/4302#issuecomment-1531196901
 const columnHelper = createColumnHelper<Item>();
-const staticColumns = [
-  columnHelper.accessor('category', {
-    header: (props) => <TableSortableHeader title="Category" props={props} />,
-    cell: (props) => props.getValue(),
-  }),
-  columnHelper.accessor('name', {
-    header: 'Name',
-    cell: (props) => props.getValue(),
-  }),
-  columnHelper.accessor('description', {
-    header: 'Description',
-    cell: (props) => props.getValue(),
-  }),
-  columnHelper.accessor('price', {
-    header: (props) => <TableSortableHeader title="Price" props={props} />,
-    cell: (props) => '$' + props.getValue(),
-  }),
-  columnHelper.accessor('quantity', {
-    header: (props) => <TableSortableHeader title="Quantity" props={props} />,
-    cell: (props) => props.getValue(),
-  }),
-  columnHelper.accessor((row) => '$' + row.price * row.quantity, {
-    id: 'total-price',
-    header: (props) => (
-      <TableSortableHeader title="Total Price" props={props} />
-    ),
-  }),
-] as ColumnDef<Item>[];
 
-const ItemTable: FC<ItemTableProps> = ({ items }) => {
+const ItemTable: FC<ItemTableProps> = ({ items, categories }) => {
+  const staticColumns = [
+    columnHelper.accessor('category', {
+      header: (props) => <TableSortableHeader title="Category" props={props} />,
+      cell: (props) =>
+        categories.find((category) => category.id === props.getValue())?.name,
+    }),
+    columnHelper.accessor('name', {
+      header: 'Name',
+      cell: (props) => props.getValue(),
+    }),
+    columnHelper.accessor('description', {
+      header: 'Description',
+      cell: (props) => props.getValue(),
+    }),
+    columnHelper.accessor('price', {
+      header: (props) => <TableSortableHeader title="Price" props={props} />,
+      cell: (props) => '$' + props.getValue(),
+    }),
+    columnHelper.accessor('quantity', {
+      header: (props) => <TableSortableHeader title="Quantity" props={props} />,
+      cell: (props) => props.getValue(),
+    }),
+    columnHelper.accessor((row) => '$' + row.price * row.quantity, {
+      id: 'total-price',
+      header: (props) => (
+        <TableSortableHeader title="Total Price" props={props} />
+      ),
+    }),
+  ] as ColumnDef<Item>[];
+
   const { showNotification } = useNotification();
+
+  const { projectId } = useProject();
 
   const [_, startTransition] = useTransition();
 
@@ -56,7 +72,7 @@ const ItemTable: FC<ItemTableProps> = ({ items }) => {
     (id: string) => {
       startTransition(() => {
         try {
-          // deleteProject(id);
+          deleteItem(projectId, id);
           showNotification({
             title: 'Item deleted',
             variant: 'success',
@@ -69,27 +85,7 @@ const ItemTable: FC<ItemTableProps> = ({ items }) => {
         }
       });
     },
-    [showNotification],
-  );
-
-  const handleEdit = useCallback(
-    (id: string) => {
-      startTransition(() => {
-        try {
-          // editProject(id);
-          showNotification({
-            title: 'Item edited',
-            variant: 'success',
-          });
-        } catch {
-          showNotification({
-            title: 'Failed to edit item',
-            variant: 'failure',
-          });
-        }
-      });
-    },
-    [showNotification],
+    [projectId, showNotification],
   );
 
   const columns = [
@@ -98,11 +94,24 @@ const ItemTable: FC<ItemTableProps> = ({ items }) => {
       header: () => null,
       cell: (props) => (
         <TableActionCell
+          editAction={
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit Item</DialogTitle>
+                <DialogDescription> the item details below</DialogDescription>
+                <DialogClose />
+              </DialogHeader>
+              <ItemForm
+                categories={categories}
+                editItemData={
+                  items.find(
+                    (item) => item.id === (props.getValue() as string),
+                  ) || undefined
+                }
+              />
+            </DialogContent>
+          }
           actionItems={[
-            {
-              label: 'Edit',
-              onClick: () => handleEdit(props.getValue() as string),
-            },
             {
               label: 'Delete',
               onClick: () => handleDelete(props.getValue() as string),

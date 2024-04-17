@@ -5,8 +5,6 @@ export interface Project {
   ownerEmail: string;
   members: string[];
   createdAt: Date;
-  items: Item[];
-  cateogries: Category[];
 }
 
 export interface Item {

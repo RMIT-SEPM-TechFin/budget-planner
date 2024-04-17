@@ -1,5 +1,5 @@
 import { MoreVertical, Plus } from 'lucide-react';
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode, useCallback, useState, useTransition } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -18,18 +18,67 @@ import {
   SelectItem,
   SelectLabel,
   SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
+import useNotification from '@/hooks/useNotification';
+import useProject from '@/hooks/useProject';
+import { Category } from '@/types';
 
-const SelectItemEdit: FC<{ value: string; children: ReactNode }> = ({
-  value,
-  children,
-}) => {
+import { addCategory, deleteCategory, editCategory } from './actions';
+
+const SelectItemEdit: FC<{
+  value: string;
+  children: ReactNode;
+  name: string;
+}> = ({ value, children, name }) => {
+  const { projectId } = useProject();
+  const { showNotification } = useNotification();
+  const [_, startTransition] = useTransition();
+  const [newName, setNewName] = useState(value);
+  const [open, setOpen] = useState(false);
+
+  const handleDelete = useCallback(() => {
+    startTransition(() => {
+      try {
+        deleteCategory(projectId, value);
+        showNotification({
+          title: 'Category Deleted',
+          variant: 'success',
+        });
+      } catch {
+        showNotification({
+          title: 'Failed to delete Category',
+          variant: 'failure',
+        });
+      }
+    });
+  }, [projectId, value, showNotification, startTransition]);
+
+  const handleEdit = useCallback(() => {
+    startTransition(() => {
+      try {
+        console.log(newName);
+        editCategory(projectId, value, newName);
+        setOpen(false);
+        showNotification({
+          title: 'Edit Category Successfully',
+          variant: 'success',
+        });
+      } catch {
+        showNotification({
+          title: 'Failed to edit Category',
+          variant: 'failure',
+        });
+      }
+    });
+  }, [projectId, value, newName, showNotification, startTransition]);
+
   return (
     <div className="relative">
       <SelectItem className="relative z-0" value={value}>
         {children}
       </SelectItem>
-      <DropdownMenu>
+      <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
@@ -41,9 +90,21 @@ const SelectItemEdit: FC<{ value: string; children: ReactNode }> = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="center" side="right">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <Input placeholder="Rename" value={value} defaultValue={value} />
+          <div className="flex gap-2">
+            <Input
+              placeholder="Rename"
+              defaultValue={name}
+              onChange={(e) => setNewName(e.target.value)}
+            />
+            <Button
+              onClick={handleEdit}
+              disabled={!newName || newName == value}
+            >
+              Edit
+            </Button>
+          </div>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Delete</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
@@ -54,10 +115,39 @@ const CategoryLabelAdd: FC<{ className?: string; children: ReactNode }> = ({
   className,
   children,
 }) => {
+  const { showNotification } = useNotification();
+  const { projectId } = useProject();
+  const [_, startTransition] = useTransition();
+  const [category, setCategory] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const setInitialState = () => {
+    setCategory('');
+    setOpen(false);
+  };
+
+  const handleAddCategory = useCallback(() => {
+    startTransition(() => {
+      try {
+        addCategory(projectId, category);
+        setInitialState();
+        showNotification({
+          title: 'New Category Created',
+          variant: 'success',
+        });
+      } catch {
+        showNotification({
+          title: 'Failed to create new Category',
+          variant: 'failure',
+        });
+      }
+    });
+  }, [projectId, category, showNotification, startTransition]);
+
   return (
     <div className="relative">
       <SelectLabel className={className}>{children}</SelectLabel>
-      <DropdownMenu>
+      <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
@@ -68,32 +158,52 @@ const CategoryLabelAdd: FC<{ className?: string; children: ReactNode }> = ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="center" side="right">
-          <Input placeholder="New Category" />
+          <div className="flex gap-2">
+            <Input
+              placeholder="New Category"
+              onChange={(e) => {
+                setCategory(e.target.value);
+              }}
+            />
+            <Button
+              type="submit"
+              onClick={handleAddCategory}
+              disabled={!category}
+            >
+              Add
+            </Button>
+          </div>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
   );
 };
 
-const SelectCategory: FC<{ className?: string; name?: string }> = ({
-  className,
-  name,
-}) => {
-  const category: string[] = ['apple', 'banana', 'cherry'];
+const SelectCategory: FC<{
+  className?: string;
+  categories: Category[];
+  fieldOnChange: (value: string) => void;
+  defaultValue?: string;
+}> = ({ className, categories, fieldOnChange, defaultValue }) => {
   return (
-    <Select name={name}>
-      <SelectTrigger className={className}>Select Category</SelectTrigger>
+    <Select
+      onValueChange={fieldOnChange}
+      defaultValue={defaultValue && defaultValue}
+    >
+      <SelectTrigger className={className}>
+        <SelectValue placeholder="Select Category" />
+      </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <CategoryLabelAdd>Category</CategoryLabelAdd>
-          {category.length == 0 ? (
-            <SelectItem value=" " disabled>
+          {categories.length == 0 ? (
+            <SelectItem value="" disabled>
               No category
             </SelectItem>
           ) : (
-            category.map((item) => (
-              <SelectItemEdit key={item} value={item}>
-                {item}
+            categories.map((item) => (
+              <SelectItemEdit key={item.id} value={item.id} name={item.name}>
+                {item.name}
               </SelectItemEdit>
             ))
           )}

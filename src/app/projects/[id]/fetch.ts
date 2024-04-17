@@ -1,31 +1,44 @@
-import {
-  collection,
-  documentId,
-  FieldValue,
-  getDocs,
-  orderBy,
-  query,
-  where,
-} from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
 import db from '@/firebase/db';
-import { Category } from '@/types';
+import { Category, Item } from '@/types';
 
-export default async function fetchItemData(
-  projectId: string,
-  userEmail: string,
-) {
-  const q = query(
-    collection(db, 'projects'),
-    where(documentId(), '==', projectId),
-    where('members', 'array-contains', userEmail),
-  );
+export default async function fetchItemData(projectId: string) {
+  // Reference to the project document
+  const projectRef = doc(db, 'projects', projectId);
 
-  const categories = await getDocs(q).then((snapshot) => {
-    const data = snapshot.docs.map((doc) => doc.data());
-    const categories = data.map((item) => item.categories)[0];
-    return categories;
+  const project = (await getDoc(projectRef)).data();
+  if (!project) {
+    throw new Error('Project not found');
+  }
+  const name = project.name;
+
+  // Reference to the items subcollection within the project document
+  const itemsRef = collection(projectRef, 'items');
+
+  const categoryRef = collection(projectRef, 'categories');
+
+  const categories = await getDocs(categoryRef).then((snapshot) => {
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        ...data,
+        id: doc.id,
+      } as Category;
+    });
   });
 
-  console.log(categories);
+  const items = await getDocs(itemsRef).then((snapshot) => {
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        ...data,
+        id: doc.id,
+        category:
+          categories.find((category) => category.id === data.category)?.id ||
+          'Unknown',
+      } as Item;
+    });
+  });
+  return { name, items, categories };
 }

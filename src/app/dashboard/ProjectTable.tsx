@@ -1,6 +1,7 @@
 'use client';
 
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import Link from 'next/link';
 import { FC, useCallback, useMemo, useTransition } from 'react';
 
 import {
@@ -24,7 +25,17 @@ const columnHelper = createColumnHelper<Project>();
 const staticColumns = [
   columnHelper.accessor('name', {
     header: 'Name',
-    cell: (props) => props.getValue(),
+    cell: (props) => {
+      const name = props.getValue();
+      return (
+        <Link
+          className="hover:underline"
+          href={`/projects/${props.row.original.id}`}
+        >
+          {name}
+        </Link>
+      );
+    },
   }),
   columnHelper.accessor('ownerName', {
     header: 'Owner',
