@@ -91,7 +91,7 @@ const Chart: FC<{ className?: string, data: any }> = ({ className, data}) => {
   const [COLORS, setCOLORS] = useState<string[]>([]);
   
   useEffect(() => {
-    setCOLORS(randomColor({hue: 'red', count: modifiedData.length}));
+    setCOLORS(randomColor({luminosity: 'dark', count: modifiedData.length}));
   }, [modifiedData.length, randomColor]);
 
   const [activeIndex, setActiveIndex] = useState(0);
