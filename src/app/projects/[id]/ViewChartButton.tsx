@@ -20,10 +20,10 @@ import useAuth from '@/hooks/useAuth';
 import useNotification from '@/hooks/useNotification';
 import { cn } from '@/lib/utils';
 
-import Chart, {data} from './Chart';
+import Chart from '../../../components/Chart/PieChart';
 
 
-const ViewChartButton: FC<{ className?: string }> = ({ className}) => {
+const ViewChartButton: FC<{ className?: string, data: any }> = ({ className, data}) => {
 
   const [open, setOpen] = useState(false);
 
@@ -39,13 +39,14 @@ const ViewChartButton: FC<{ className?: string }> = ({ className}) => {
           <DialogTitle>Plan 1 Cost Breakdown</DialogTitle>
           <DialogClose />
         </DialogHeader>
-            <Chart />
+            <Chart data={data} />
         <DialogFooter className='flex !justify-center'>
             <div className='font-bold'>
                 Total: 
             </div>
             <div>
-                {data.reduce((acc, curr) => acc + curr.value, 0)}
+                {data.reduce((acc: any, curr: any) => acc + (curr.price * curr.quantity), 0)}
+                $
             </div>
         </DialogFooter>
       </DialogContent>

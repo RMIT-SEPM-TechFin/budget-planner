@@ -8,6 +8,7 @@ import { Item } from '@/types';
 import AddItemButton from './AddItemButton';
 import fetchItemData from './fetch';
 import ItemTable from './ItemTable';
+import ViewChartButton from './ViewChartButton';
 
 // Force dynamic to be able to use cookies
 export const dynamic = 'force-dynamic';
@@ -54,6 +55,7 @@ export default async function Project({ params }: { params: { id: string } }) {
       <div className="relative">
         <ItemTable items={data} />
         <AddItemButton className="absolute right-0 top-0" />
+        <ViewChartButton className="absolute right-[7rem] top-0" data={data}/>
       </div>
     </div>
   );
