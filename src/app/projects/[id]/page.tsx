@@ -21,17 +21,12 @@ export default async function Project({ params }: { params: { id: string } }) {
   const { name, items, categories } = await fetchItemData(id);
 
   return (
-    <div className="space-y-6">
-      <h1>{name}</h1>
-      <div className="relative">
-        <ProjectContextProvider projectId={id}>
-          <ItemTable items={items} categories={categories} />
-          <AddItemButton
-            categories={categories}
-            className="absolute right-0 top-0"
-          />
-        </ProjectContextProvider>
-      </div>
-    </div>
+    <ProjectContextProvider projectId={id}>
+      <ItemTable items={items} categories={categories} />
+      <AddItemButton
+        categories={categories}
+        className="absolute right-0 top-0"
+      />
+    </ProjectContextProvider>
   );
 }
