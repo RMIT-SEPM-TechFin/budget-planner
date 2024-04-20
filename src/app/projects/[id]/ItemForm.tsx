@@ -14,10 +14,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import useNotification from '@/hooks/useNotification';
-import useProject from '@/hooks/useProject';
 import type { Item } from '@/types';
 
 import { addItem, saveItem } from './actions';
+import { useProject } from './context';
 import SelectCategory from './SelectCategory';
 
 const schema = z.object({

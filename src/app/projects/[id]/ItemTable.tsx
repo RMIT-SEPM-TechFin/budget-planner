@@ -16,15 +16,12 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import useNotification from '@/hooks/useNotification';
-import useProject from '@/hooks/useProject';
 import type { Item } from '@/types';
 
 import { deleteItem } from './actions';
+import { useProject } from './context';
+import { usePlanIdQueryParam } from './hooks';
 import ItemForm from './ItemForm';
-
-interface ItemTableProps {
-  items: Item[];
-}
 
 const columnHelper = createColumnHelper<Item>();
 
@@ -54,10 +51,22 @@ const staticColumns = [
   }),
 ] as ColumnDef<Item>[];
 
-const ItemTable: FC<ItemTableProps> = ({ items }) => {
-  const { showNotification } = useNotification();
-  const { projectId, categories } = useProject();
+const ItemTable: FC = () => {
   const [_, startTransition] = useTransition();
+  const { showNotification } = useNotification();
+  const { projectId, categories, items, plans } = useProject();
+  const { planId } = usePlanIdQueryParam();
+
+  const filteredItems = useMemo(() => {
+    const filteredItemIds =
+      typeof planId === 'string'
+        ? plans.find((plan) => plan.id === planId)?.items
+        : undefined;
+
+    if (filteredItemIds === undefined) return items;
+
+    return items.filter((item) => filteredItemIds.includes(item.id));
+  }, [planId, plans, items]);
 
   const handleDelete = useCallback(
     (id: string) => {
@@ -128,7 +137,9 @@ const ItemTable: FC<ItemTableProps> = ({ items }) => {
     [categories, handleDelete, items],
   );
 
-  return <Table columns={columns} data={items} searchableColumnKey="name" />;
+  return (
+    <Table columns={columns} data={filteredItems} searchableColumnKey="name" />
+  );
 };
 
 export default ItemTable;

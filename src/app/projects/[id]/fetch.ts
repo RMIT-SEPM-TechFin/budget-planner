@@ -1,10 +1,9 @@
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
 import db from '@/firebase/db';
-import { Category, Item } from '@/types';
+import type { Category, Item, Plan } from '@/types';
 
 export async function fetchProjectName(projectId: string) {
-  // Reference to the project document
   const projectRef = doc(db, 'projects', projectId);
 
   const project = (await getDoc(projectRef)).data();
@@ -13,6 +12,24 @@ export async function fetchProjectName(projectId: string) {
   }
 
   return project.name satisfies string;
+}
+
+export async function fetchProjectPlans(projectId: string) {
+  const projectRef = doc(db, 'projects', projectId);
+
+  const plansRef = collection(projectRef, 'plans');
+
+  const plans = await getDocs(plansRef).then((snapshot) => {
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        ...data,
+        id: doc.id,
+      } as Plan;
+    });
+  });
+
+  return plans;
 }
 
 export async function fetchProjectItemsAndCategories(projectId: string) {

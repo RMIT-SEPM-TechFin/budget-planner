@@ -21,9 +21,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import useNotification from '@/hooks/useNotification';
-import useProject from '@/hooks/useProject';
 
 import { addCategory, deleteCategory, editCategory } from './actions';
+import { useProject } from './context';
 
 const SelectCategory: FC<{
   className?: string;
