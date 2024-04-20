@@ -6,6 +6,7 @@ import type { Category } from '@/types';
 
 export const ProjectContext = createContext<ProjectContextType>({
   projectId: '',
+  categories: [],
 } as ProjectContextType);
 
 interface ProjectContextType {

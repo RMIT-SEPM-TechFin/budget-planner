@@ -33,32 +33,23 @@ const SelectCategory: FC<{
   const { projectId, categories } = useProject();
 
   return (
-    <Select
-      onValueChange={fieldOnChange}
-      defaultValue={defaultValue && defaultValue}
-    >
+    <Select onValueChange={fieldOnChange} defaultValue={defaultValue}>
       <SelectTrigger className={className}>
         <SelectValue placeholder="Select Category" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <CategoryLabelAdd projectId={projectId}>Category</CategoryLabelAdd>
-          {categories.length == 0 ? (
-            <SelectItem value="" disabled>
-              No category
-            </SelectItem>
-          ) : (
-            categories.map((item) => (
-              <SelectItemEdit
-                key={item.id}
-                projectId={projectId}
-                value={item.id}
-                name={item.name}
-              >
-                {item.name}
-              </SelectItemEdit>
-            ))
-          )}
+          {categories.map((item) => (
+            <SelectItemEdit
+              key={item.id}
+              projectId={projectId}
+              value={item.id}
+              name={item.name}
+            >
+              {item.name}
+            </SelectItemEdit>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>

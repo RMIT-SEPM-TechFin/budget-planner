@@ -36,11 +36,11 @@ const ItemForm = ({ editItemData }: { editItemData?: Item }) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      category: editItemData?.category || '',
-      name: editItemData?.name || '',
-      description: editItemData?.description || '',
-      price: editItemData?.price || 0,
-      quantity: editItemData?.quantity || 0,
+      category: editItemData?.category,
+      name: editItemData?.name,
+      description: editItemData?.description,
+      price: editItemData?.price,
+      quantity: editItemData?.quantity,
     },
   });
 
