@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import useNotification from '@/hooks/useNotification';
 import useProject from '@/hooks/useProject';
-import { Category, Item } from '@/types';
+import type { Item } from '@/types';
 
 import { addItem, saveItem } from './actions';
 import SelectCategory from './SelectCategory';
@@ -31,13 +31,8 @@ const schema = z.object({
   price: z.coerce.number().positive('Price must be a positive number'),
   quantity: z.coerce.number().positive('Quantity must be a positive number'),
 });
-const ItemForm = ({
-  categories,
-  editItemData,
-}: {
-  categories: Category[];
-  editItemData?: Item;
-}) => {
+
+const ItemForm = ({ editItemData }: { editItemData?: Item }) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -89,6 +84,7 @@ const ItemForm = ({
       }
     });
   };
+
   return (
     <Form {...form}>
       <form
@@ -103,7 +99,6 @@ const ItemForm = ({
               <div className="grid grid-cols-4 items-center gap-4">
                 <FormLabel htmlFor="category">Category</FormLabel>
                 <SelectCategory
-                  categories={categories}
                   fieldOnChange={field.onChange}
                   defaultValue={editItemData?.category}
                   className="col-span-3"

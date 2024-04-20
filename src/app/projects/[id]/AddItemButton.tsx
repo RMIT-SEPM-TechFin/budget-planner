@@ -1,4 +1,5 @@
 'use client';
+
 import { FC, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -11,14 +12,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Category } from '@/types';
 
 import ItemForm from './ItemForm';
 
-const AddItemButton: FC<{ className?: string; categories: Category[] }> = ({
-  className,
-  categories,
-}) => {
+const AddItemButton: FC<{ className?: string }> = ({ className }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -34,7 +31,7 @@ const AddItemButton: FC<{ className?: string; categories: Category[] }> = ({
           <DialogDescription>Add the item details below</DialogDescription>
           <DialogClose />
         </DialogHeader>
-        <ItemForm categories={categories} />
+        <ItemForm />
       </DialogContent>
     </Dialog>
   );

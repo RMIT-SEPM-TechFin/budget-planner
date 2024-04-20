@@ -12,9 +12,9 @@ import { revalidatePath } from 'next/cache';
 import db from '@/firebase/db';
 import { Item } from '@/types';
 
-export async function addCategory(projectId: string, category: string) {
+export async function addCategory(projectId: string, name: string) {
   await addDoc(collection(db, 'projects', projectId, 'categories'), {
-    name: category,
+    name,
   });
   revalidatePath('/projects');
 }

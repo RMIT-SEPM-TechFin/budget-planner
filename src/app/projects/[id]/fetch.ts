@@ -3,7 +3,7 @@ import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import db from '@/firebase/db';
 import { Category, Item } from '@/types';
 
-export default async function fetchItemData(projectId: string) {
+export async function fetchProjectName(projectId: string) {
   // Reference to the project document
   const projectRef = doc(db, 'projects', projectId);
 
@@ -11,7 +11,13 @@ export default async function fetchItemData(projectId: string) {
   if (!project) {
     throw new Error('Project not found');
   }
-  const name = project.name;
+
+  return project.name satisfies string;
+}
+
+export async function fetchProjectItemsAndCategories(projectId: string) {
+  // Reference to the project document
+  const projectRef = doc(db, 'projects', projectId);
 
   // Reference to the items subcollection within the project document
   const itemsRef = collection(projectRef, 'items');
@@ -35,10 +41,10 @@ export default async function fetchItemData(projectId: string) {
         ...data,
         id: doc.id,
         category:
-          categories.find((category) => category.id === data.category)?.id ||
+          categories.find((category) => category.id === data.category)?.id ??
           'Unknown',
       } as Item;
     });
   });
-  return { name, items, categories };
+  return { items, categories };
 }
