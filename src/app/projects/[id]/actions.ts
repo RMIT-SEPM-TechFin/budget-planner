@@ -91,8 +91,19 @@ export async function saveItem(
   revalidatePath('/projects');
 }
 
-// TODO: need to create Cloud Function to the item in all plans
-export async function deleteItem(projectId: string, itemId: string) {
-  await deleteDoc(doc(db, 'projects', projectId, 'items', itemId));
+export async function deleteItem(
+  projectId: string,
+  itemId: string,
+  planIdsContainItem: string[],
+) {
+  await Promise.all([
+    deleteDoc(doc(db, 'projects', projectId, 'items', itemId)),
+    ...planIdsContainItem.map((id) =>
+      updateDoc(doc(db, 'projects', projectId, 'plans', id), {
+        items: arrayRemove(itemId),
+      }),
+    ),
+  ]);
+
   revalidatePath('/projects');
 }

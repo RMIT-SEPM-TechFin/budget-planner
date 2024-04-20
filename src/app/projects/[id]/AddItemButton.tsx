@@ -16,12 +16,12 @@ import {
 import ItemForm from './ItemForm';
 
 const AddItemButton: FC<{ className?: string }> = ({ className }) => {
-  const [open, setOpen] = useState(false);
+  const [openForm, setOpenForm] = useState(false);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={openForm} onOpenChange={setOpenForm}>
       <DialogTrigger asChild>
-        <Button className={className} onClick={() => setOpen(true)}>
+        <Button className={className} onClick={() => setOpenForm(true)}>
           New Item
         </Button>
       </DialogTrigger>
@@ -31,7 +31,7 @@ const AddItemButton: FC<{ className?: string }> = ({ className }) => {
           <DialogDescription>Add the item details below</DialogDescription>
           <DialogClose />
         </DialogHeader>
-        <ItemForm />
+        <ItemForm onCloseForm={() => setOpenForm(false)} />
       </DialogContent>
     </Dialog>
   );

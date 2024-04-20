@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCallback, useMemo, useState, useTransition } from 'react';
+import { FC, useCallback, useMemo, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -21,6 +21,11 @@ import { useProject } from './context';
 import SelectCategory from './SelectCategory';
 import SelectPlansForItem from './SelectPlansForItem';
 
+interface ItemFormProps {
+  editItemData?: Item;
+  onCloseForm?: () => void;
+}
+
 const schema = z.object({
   category: z.string().min(1, {
     message: 'Category is required',
@@ -33,7 +38,7 @@ const schema = z.object({
   quantity: z.coerce.number().positive('Quantity must be a positive number'),
 });
 
-const ItemForm = ({ editItemData }: { editItemData?: Item }) => {
+const ItemForm: FC<ItemFormProps> = ({ editItemData, onCloseForm }) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -62,11 +67,12 @@ const ItemForm = ({ editItemData }: { editItemData?: Item }) => {
     [selectedPlans],
   );
 
-  const onSubmit = useCallback(
+  const onAddNewItem = useCallback(
     (data: z.infer<typeof schema>) => {
       startTransition(() => {
         try {
           addItem(projectId, data as Item, selectedPlansIds);
+          onCloseForm && onCloseForm();
           reset();
           showNotification({
             title: 'New Item Created',
@@ -80,10 +86,10 @@ const ItemForm = ({ editItemData }: { editItemData?: Item }) => {
         }
       });
     },
-    [projectId, selectedPlansIds, reset, showNotification],
+    [projectId, selectedPlansIds, reset, showNotification, onCloseForm],
   );
 
-  const onSave = useCallback(
+  const onUpdateItem = useCallback(
     (data: z.infer<typeof schema>) => {
       startTransition(() => {
         try {
@@ -94,6 +100,8 @@ const ItemForm = ({ editItemData }: { editItemData?: Item }) => {
             initialPlans.map((plan) => plan.id),
             selectedPlansIds,
           );
+          onCloseForm && onCloseForm();
+          reset();
           showNotification({
             title: 'Item updated',
             variant: 'success',
@@ -106,13 +114,23 @@ const ItemForm = ({ editItemData }: { editItemData?: Item }) => {
         }
       });
     },
-    [projectId, editItemData, showNotification, initialPlans, selectedPlansIds],
+    [
+      projectId,
+      editItemData,
+      showNotification,
+      initialPlans,
+      selectedPlansIds,
+      onCloseForm,
+      reset,
+    ],
   );
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(!editItemData ? onSubmit : onSave)}
+        onSubmit={form.handleSubmit(
+          !editItemData ? onAddNewItem : onUpdateItem,
+        )}
         className="grid gap-2 h-max"
       >
         <FormField

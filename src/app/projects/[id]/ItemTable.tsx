@@ -72,7 +72,10 @@ const ItemTable: FC = () => {
     (id: string) => {
       startTransition(() => {
         try {
-          deleteItem(projectId, id);
+          const planIdsContainItem = plans
+            .filter((plan) => plan.items.includes(id))
+            .map((plan) => plan.id);
+          deleteItem(projectId, id, planIdsContainItem);
           showNotification({
             title: 'Item deleted',
             variant: 'success',
@@ -85,7 +88,7 @@ const ItemTable: FC = () => {
         }
       });
     },
-    [projectId, showNotification],
+    [projectId, showNotification, plans],
   );
 
   const columns = useMemo(
