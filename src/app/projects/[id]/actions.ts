@@ -2,6 +2,7 @@
 
 import {
   addDoc,
+  arrayRemove,
   arrayUnion,
   collection,
   deleteDoc,
@@ -56,10 +57,37 @@ export async function addItem(
   revalidatePath('/projects');
 }
 
-export async function saveItem(projectId: string, id: string, item: Item) {
-  await updateDoc(doc(db, 'projects', projectId, 'items', id), {
-    ...item,
-  });
+export async function saveItem(
+  projectId: string,
+  id: string,
+  item: Item,
+  initialPlanIds: string[],
+  updatedPlanIds: string[],
+) {
+  const removeItemPlanIds = initialPlanIds.filter(
+    (id) => !updatedPlanIds.includes(id),
+  );
+
+  const addItemPlanIds = updatedPlanIds.filter(
+    (id) => !initialPlanIds.includes(id),
+  );
+
+  await Promise.all([
+    updateDoc(doc(db, 'projects', projectId, 'items', id), {
+      ...item,
+    }),
+    ...removeItemPlanIds.map((planId) =>
+      updateDoc(doc(db, 'projects', projectId, 'plans', planId), {
+        items: arrayRemove(id),
+      }),
+    ),
+    ...addItemPlanIds.map((planId) =>
+      updateDoc(doc(db, 'projects', projectId, 'plans', planId), {
+        items: arrayUnion(id),
+      }),
+    ),
+  ]);
+
   revalidatePath('/projects');
 }
 

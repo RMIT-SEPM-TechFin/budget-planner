@@ -47,10 +47,15 @@ const ItemForm = ({ editItemData }: { editItemData?: Item }) => {
 
   const { reset } = form;
   const [_, startTransition] = useTransition();
-  const { projectId, plans } = useProject();
   const { showNotification } = useNotification();
+  const { projectId, plans } = useProject();
 
-  const [selectedPlans, setSelectedPlans] = useState<Plan[]>([]);
+  const initialPlans = useMemo(() => {
+    if (!editItemData) return [];
+    return plans.filter((plan) => plan.items.includes(editItemData.id));
+  }, [editItemData, plans]);
+
+  const [selectedPlans, setSelectedPlans] = useState<Plan[]>(initialPlans);
 
   const selectedPlansIds = useMemo(
     () => selectedPlans.map((plan) => plan.id),
@@ -80,10 +85,15 @@ const ItemForm = ({ editItemData }: { editItemData?: Item }) => {
 
   const onSave = useCallback(
     (data: z.infer<typeof schema>) => {
-      console.log(data);
       startTransition(() => {
         try {
-          saveItem(projectId, editItemData?.id ?? '', data as Item);
+          saveItem(
+            projectId,
+            editItemData?.id ?? '',
+            data as Item,
+            initialPlans.map((plan) => plan.id),
+            selectedPlansIds,
+          );
           showNotification({
             title: 'Item updated',
             variant: 'success',
@@ -96,7 +106,7 @@ const ItemForm = ({ editItemData }: { editItemData?: Item }) => {
         }
       });
     },
-    [projectId, editItemData, showNotification],
+    [projectId, editItemData, showNotification, initialPlans, selectedPlansIds],
   );
 
   return (
