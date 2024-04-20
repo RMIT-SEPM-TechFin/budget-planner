@@ -2,6 +2,7 @@
 
 import {
   addDoc,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -10,7 +11,7 @@ import {
 import { revalidatePath } from 'next/cache';
 
 import db from '@/firebase/db';
-import { Item } from '@/types';
+import type { Item } from '@/types';
 
 export async function addCategory(projectId: string, name: string) {
   await addDoc(collection(db, 'projects', projectId, 'categories'), {
@@ -35,20 +36,34 @@ export async function editCategory(
   revalidatePath('/projects');
 }
 
-export async function addItem(projectId: string, item: Item) {
-  await addDoc(collection(db, 'projects', projectId, 'items'), {
+export async function addItem(
+  projectId: string,
+  item: Item,
+  planIds: string[],
+) {
+  const newItem = await addDoc(collection(db, 'projects', projectId, 'items'), {
     ...item,
   });
+
+  await Promise.all(
+    planIds.map((id) =>
+      updateDoc(doc(db, 'projects', projectId, 'plans', id), {
+        items: arrayUnion(newItem.id),
+      }),
+    ),
+  );
+
   revalidatePath('/projects');
 }
 
-export async function saveItem(projectId: string, item: Item, id: string) {
+export async function saveItem(projectId: string, id: string, item: Item) {
   await updateDoc(doc(db, 'projects', projectId, 'items', id), {
     ...item,
   });
   revalidatePath('/projects');
 }
 
+// TODO: need to create Cloud Function to the item in all plans
 export async function deleteItem(projectId: string, itemId: string) {
   await deleteDoc(doc(db, 'projects', projectId, 'items', itemId));
   revalidatePath('/projects');

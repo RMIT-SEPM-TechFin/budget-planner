@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTransition } from 'react';
+import { useCallback, useMemo, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -14,11 +14,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import useNotification from '@/hooks/useNotification';
-import type { Item } from '@/types';
+import type { Item, Plan } from '@/types';
 
 import { addItem, saveItem } from './actions';
 import { useProject } from './context';
 import SelectCategory from './SelectCategory';
+import SelectPlansForItem from './SelectPlansForItem';
 
 const schema = z.object({
   category: z.string().min(1, {
@@ -46,44 +47,57 @@ const ItemForm = ({ editItemData }: { editItemData?: Item }) => {
 
   const { reset } = form;
   const [_, startTransition] = useTransition();
-  const { projectId } = useProject();
+  const { projectId, plans } = useProject();
   const { showNotification } = useNotification();
 
-  function onSubmit(data: z.infer<typeof schema>) {
-    startTransition(() => {
-      try {
-        addItem(projectId, data as Item);
-        reset();
-        showNotification({
-          title: 'New Item Created',
-          variant: 'success',
-        });
-      } catch {
-        showNotification({
-          title: 'Failed to create new Item',
-          variant: 'failure',
-        });
-      }
-    });
-  }
+  const [selectedPlans, setSelectedPlans] = useState<Plan[]>([]);
 
-  const onSave = (data: z.infer<typeof schema>) => {
-    console.log(data);
-    startTransition(() => {
-      try {
-        saveItem(projectId, data as Item, editItemData?.id || '');
-        showNotification({
-          title: 'Item updated',
-          variant: 'success',
-        });
-      } catch {
-        showNotification({
-          title: 'Failed to update item',
-          variant: 'failure',
-        });
-      }
-    });
-  };
+  const selectedPlansIds = useMemo(
+    () => selectedPlans.map((plan) => plan.id),
+    [selectedPlans],
+  );
+
+  const onSubmit = useCallback(
+    (data: z.infer<typeof schema>) => {
+      startTransition(() => {
+        try {
+          addItem(projectId, data as Item, selectedPlansIds);
+          reset();
+          showNotification({
+            title: 'New Item Created',
+            variant: 'success',
+          });
+        } catch {
+          showNotification({
+            title: 'Failed to create new Item',
+            variant: 'failure',
+          });
+        }
+      });
+    },
+    [projectId, selectedPlansIds, reset, showNotification],
+  );
+
+  const onSave = useCallback(
+    (data: z.infer<typeof schema>) => {
+      console.log(data);
+      startTransition(() => {
+        try {
+          saveItem(projectId, editItemData?.id ?? '', data as Item);
+          showNotification({
+            title: 'Item updated',
+            variant: 'success',
+          });
+        } catch {
+          showNotification({
+            title: 'Failed to update item',
+            variant: 'failure',
+          });
+        }
+      });
+    },
+    [projectId, editItemData, showNotification],
+  );
 
   return (
     <Form {...form}>
@@ -91,23 +105,6 @@ const ItemForm = ({ editItemData }: { editItemData?: Item }) => {
         onSubmit={form.handleSubmit(!editItemData ? onSubmit : onSave)}
         className="grid gap-2 h-max"
       >
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <FormLabel htmlFor="category">Category</FormLabel>
-                <SelectCategory
-                  fieldOnChange={field.onChange}
-                  defaultValue={editItemData?.category}
-                  className="col-span-3"
-                />
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="name"
@@ -128,13 +125,33 @@ const ItemForm = ({ editItemData }: { editItemData?: Item }) => {
         />
         <FormField
           control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <FormLabel htmlFor="category">Category</FormLabel>
+                <SelectCategory
+                  fieldOnChange={field.onChange}
+                  defaultValue={editItemData?.category}
+                  className="col-span-3"
+                />
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="description"
           render={({ field }) => (
-            <FormItem className="flex flex-col items-start">
-              <FormLabel htmlFor="description">Description</FormLabel>
+            <FormItem className="grid grid-cols-4 gap-4">
+              <FormLabel htmlFor="description" className="mt-2">
+                Description
+              </FormLabel>
               <Textarea
                 id="description"
                 placeholder="Type the item description"
+                className="col-span-3"
                 {...field}
               />
               <FormMessage />
@@ -180,6 +197,18 @@ const ItemForm = ({ editItemData }: { editItemData?: Item }) => {
             </FormItem>
           )}
         />
+
+        <div className="grid grid-cols-4 gap-4">
+          <FormLabel htmlFor="description" className="mt-2">
+            Plans
+          </FormLabel>
+          <SelectPlansForItem
+            allPlans={plans}
+            selectedPlans={selectedPlans}
+            setSelectedPlans={setSelectedPlans}
+            className="col-span-3"
+          />
+        </div>
 
         <Button type="submit">{editItemData ? 'Save' : 'Add'}</Button>
       </form>

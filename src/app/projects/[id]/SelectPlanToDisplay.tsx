@@ -20,7 +20,7 @@ interface SelectPlanProps {
   plans: Plan[];
 }
 
-const SelectPlan: FC<SelectPlanProps> = ({ plans }) => {
+const SelectPlanToDisplay: FC<SelectPlanProps> = ({ plans }) => {
   const { planId, setPlanId } = usePlanIdQueryParam();
 
   return (
@@ -50,4 +50,4 @@ const SelectPlan: FC<SelectPlanProps> = ({ plans }) => {
   );
 };
 
-export default SelectPlan;
+export default SelectPlanToDisplay;

@@ -8,7 +8,7 @@ import {
   fetchProjectName,
   fetchProjectPlans,
 } from './fetch';
-import SelectPlan from './SelectPlan';
+import SelectPlanToDisplay from './SelectPlanToDisplay';
 
 export default async function Layout({
   params,
@@ -38,7 +38,7 @@ export default async function Layout({
           {/* TODO: add breadcrumb */}
 
           <div className="w-full flex items-center justify-between">
-            <SelectPlan plans={plans} />
+            <SelectPlanToDisplay plans={plans} />
 
             <div className="justify-between items-center flex gap-2">
               <Button variant="secondary">View Chart</Button>
