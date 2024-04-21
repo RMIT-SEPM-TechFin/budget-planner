@@ -1,7 +1,6 @@
 import { getCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { CSVDownload, CSVLink } from 'react-csv';
 
 import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 import { ProjectContextProvider } from '@/context/ProjectContext';
@@ -11,7 +10,7 @@ import ExportData from './ExportData';
 import fetchItemData from './fetch';
 import ItemTable from './ItemTable';
 import ViewChartButton from './ViewChartButton';
-// import ExportData from './ExportData';
+
 
 // Force dynamic to be able to use cookies
 export const dynamic = 'force-dynamic';
