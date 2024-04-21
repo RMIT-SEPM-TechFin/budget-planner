@@ -11,7 +11,6 @@ import fetchItemData from './fetch';
 import ItemTable from './ItemTable';
 import ViewChartButton from './ViewChartButton';
 
-
 // Force dynamic to be able to use cookies
 export const dynamic = 'force-dynamic';
 
