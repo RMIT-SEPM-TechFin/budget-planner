@@ -1,13 +1,17 @@
 import { getCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { CSVDownload, CSVLink } from 'react-csv';
 
 import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 import { ProjectContextProvider } from '@/context/ProjectContext';
 
 import AddItemButton from './AddItemButton';
+import ExportData from './ExportData';
 import fetchItemData from './fetch';
 import ItemTable from './ItemTable';
+import ViewChartButton from './ViewChartButton';
+// import ExportData from './ExportData';
 
 // Force dynamic to be able to use cookies
 export const dynamic = 'force-dynamic';
@@ -29,6 +33,16 @@ export default async function Project({ params }: { params: { id: string } }) {
           <AddItemButton
             categories={categories}
             className="absolute right-0 top-0"
+          />
+          <ViewChartButton
+            className="absolute right-[7rem] top-0"
+            projectName={name}
+            data={items}
+          />
+          <ExportData
+            className="absolute right-[14.7rem] top-0"
+            categories={categories}
+            data={items}
           />
         </ProjectContextProvider>
       </div>
