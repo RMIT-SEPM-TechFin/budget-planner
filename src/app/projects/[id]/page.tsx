@@ -32,16 +32,10 @@ export default async function Project({ params }: { params: { id: string } }) {
             categories={categories}
             className="absolute right-0 top-0"
           />
-          <ViewChartButton
-            className="absolute right-[7rem] top-0"
-            projectName={name}
-            data={items}
-          />
-          <ExportData
-            className="absolute right-[14.7rem] top-0"
-            categories={categories}
-            data={items}
-          />
+          <div className="flex flex-row-reverse gap-5 absolute right-28 top-0">
+            <ViewChartButton projectName={name} data={items} />
+            <ExportData categories={categories} data={items} />
+          </div>
         </ProjectContextProvider>
       </div>
     </div>

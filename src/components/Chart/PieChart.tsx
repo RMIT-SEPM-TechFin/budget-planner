@@ -78,8 +78,8 @@ const renderActiveShape = (props: any) => {
 };
 
 const Chart: FC<{ className?: string; data: any }> = ({ className, data }) => {
-  var randomColor = require('randomcolor');
-  var color = randomColor();
+  const randomColor = require('randomcolor');
+  const color = randomColor();
 
   // Preprocess the data to include the totalValue
   const modifiedData = data.map((entry: any) => ({
