@@ -107,3 +107,25 @@ export async function deleteItem(
 
   revalidatePath('/projects');
 }
+
+// Plan actions
+export async function addPlan(projectId: string, name: string, items: string[]) {
+  await addDoc(collection(db, 'projects', projectId, 'plans'), {
+    name: name,
+    items: items,
+  });
+  revalidatePath('/projects');
+}
+
+export async function deletePlan(projectId: string, planId: string) {
+  await deleteDoc(doc(db, 'projects', projectId, 'plans', planId));
+  revalidatePath('/projects');
+}
+
+export async function savePlan(projectId: string, planId: string, name: string, items: string[]) {
+  await updateDoc(doc(db, 'projects', projectId, 'plans', planId), {
+    name: name,
+    items: items,
+  });
+  revalidatePath('/projects');
+}
