@@ -94,7 +94,6 @@ const ItemTable: FC = () => {
   const columns = useMemo(
     () =>
       [
-        staticColumns[0],
         columnHelper.accessor('category', {
           header: (props) => (
             <TableSortableHeader title="Category" props={props} />
@@ -103,7 +102,7 @@ const ItemTable: FC = () => {
             categories.find((category) => category.id === props.getValue())
               ?.name,
         }),
-        ...staticColumns.slice(1),
+        ...staticColumns,
         columnHelper.accessor('id', {
           header: () => null,
           cell: (props) => (
