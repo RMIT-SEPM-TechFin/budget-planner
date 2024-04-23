@@ -33,7 +33,7 @@ const schema = z.object({
   name: z.string().min(1, {
     message: 'Name is required',
   }),
-  description: z.string(),
+  description: z.string().optional(),
   price: z.coerce.number().positive('Price must be a positive number'),
   quantity: z.coerce.number().positive('Quantity must be a positive number'),
 });
