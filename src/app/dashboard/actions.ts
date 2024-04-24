@@ -22,7 +22,7 @@ export async function saveNewProject({
   ownerEmail: string;
   ownerName: string;
 }) {
-  await addDoc(collection(db, 'projects'), {
+  const newProject = await addDoc(collection(db, 'projects'), {
     name,
     members,
     ownerEmail,
@@ -30,6 +30,7 @@ export async function saveNewProject({
     createdAt: Timestamp.now(),
   });
   revalidatePath('/dashboard');
+  return newProject.id;
 }
 
 export async function deleteProject(projectId: string) {

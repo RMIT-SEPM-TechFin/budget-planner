@@ -1,6 +1,7 @@
 'use client';
 
 import { Check, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { FC, useCallback, useState, useTransition } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -23,6 +24,7 @@ import { cn } from '@/lib/utils';
 import { saveNewProject } from './actions';
 
 const AddProjectButton: FC<{ className?: string }> = ({ className }) => {
+  const router = useRouter();
   const { user } = useAuth();
   const { showNotification } = useNotification();
 
@@ -52,9 +54,9 @@ const AddProjectButton: FC<{ className?: string }> = ({ className }) => {
 
   const handleSaveNewProject = useCallback(() => {
     if (!user) return;
-    startTransition(() => {
+    startTransition(async () => {
       try {
-        saveNewProject({
+        const newProjectId = await saveNewProject({
           name,
           // Remove duplicates + add owner emails into members list
           members: Array.from(new Set([...members, user.email])),
@@ -67,7 +69,7 @@ const AddProjectButton: FC<{ className?: string }> = ({ className }) => {
           variant: 'success',
         });
         setInitialState();
-        // TODO: navigate to the new project page
+        router.push(`/projects/${newProjectId}`);
       } catch {
         showNotification({
           title: 'Failed to create new project',
@@ -75,7 +77,15 @@ const AddProjectButton: FC<{ className?: string }> = ({ className }) => {
         });
       }
     });
-  }, [members, name, setInitialState, showNotification, startTransition, user]);
+  }, [
+    members,
+    name,
+    setInitialState,
+    showNotification,
+    startTransition,
+    user,
+    router,
+  ]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
