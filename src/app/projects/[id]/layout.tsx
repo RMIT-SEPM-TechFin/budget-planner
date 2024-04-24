@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 
 import { ProjectContextProvider } from './context';
+import ExportData from './ExportData';
 import {
   fetchProjectItemsAndCategories,
   fetchProjectName,
@@ -10,7 +11,6 @@ import {
 } from './fetch';
 import SelectPlanToDisplay from './SelectPlanToDisplay';
 import ViewChartButton from './ViewChartButton';
-import ExportData from './ExportData';
 
 export default async function Layout({
   params,
@@ -46,7 +46,6 @@ export default async function Layout({
               <ExportData categories={categories} data={items} />
               <ViewChartButton projectName={name} data={items} />
               <Button variant="secondary">Compare</Button>
-
             </div>
           </div>
         </div>
