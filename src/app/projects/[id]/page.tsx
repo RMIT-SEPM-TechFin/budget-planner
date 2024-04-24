@@ -3,41 +3,22 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { USER_EMAIL_COOKIE_NAME } from '@/constants';
-import { ProjectContextProvider } from '@/context/ProjectContext';
 
 import AddItemButton from './AddItemButton';
-import ExportData from './ExportData';
-import fetchItemData from './fetch';
 import ItemTable from './ItemTable';
-import ViewChartButton from './ViewChartButton';
 
 // Force dynamic to be able to use cookies
 export const dynamic = 'force-dynamic';
 
 export default async function Project({ params }: { params: { id: string } }) {
-  const { id } = params;
-
+  
   const userEmail = getCookie(USER_EMAIL_COOKIE_NAME, { cookies });
   if (!userEmail) redirect('/');
 
-  const { name, items, categories } = await fetchItemData(id);
-
   return (
-    <div className="space-y-6">
-      <h1>{name}</h1>
-      <div className="relative">
-        <ProjectContextProvider projectId={id}>
-          <ItemTable items={items} categories={categories} />
-          <AddItemButton
-            categories={categories}
-            className="absolute right-0 top-0"
-          />
-          <div className="flex flex-row-reverse gap-5 absolute right-28 top-0">
-            <ViewChartButton projectName={name} data={items} />
-            <ExportData categories={categories} data={items} />
-          </div>
-        </ProjectContextProvider>
-      </div>
+    <div className="relative">
+      <ItemTable />
+      <AddItemButton className="absolute right-0 top-0" />
     </div>
   );
 }

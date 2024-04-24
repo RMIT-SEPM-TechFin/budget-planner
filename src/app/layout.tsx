@@ -4,6 +4,8 @@ import { Inter as FontSans } from 'next/font/google';
 
 import { cn } from '@/lib/utils';
 
+import Providers from './providers';
+
 const fontSans = FontSans({
   subsets: ['latin'],
   variable: '--font-sans',
@@ -12,8 +14,6 @@ const fontSans = FontSans({
 import type { Metadata } from 'next';
 
 import Layout from '@/components/Layout';
-import { AuthContextProvider } from '@/context/AuthContext';
-import { UIContextProvider } from '@/context/UIContext';
 
 export const metadata: Metadata = {
   title: 'Budget Planner',
@@ -34,11 +34,9 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <UIContextProvider>
-          <AuthContextProvider>
-            <Layout>{children}</Layout>
-          </AuthContextProvider>
-        </UIContextProvider>
+        <Providers>
+          <Layout>{children}</Layout>
+        </Providers>
       </body>
     </html>
   );

@@ -21,17 +21,49 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import useNotification from '@/hooks/useNotification';
-import useProject from '@/hooks/useProject';
-import { Category } from '@/types';
 
 import { addCategory, deleteCategory, editCategory } from './actions';
+import { useProject } from './context';
+
+const SelectCategory: FC<{
+  className?: string;
+  fieldOnChange: (value: string) => void;
+  defaultValue?: string;
+}> = ({ className, fieldOnChange, defaultValue }) => {
+  const { projectId, categories } = useProject();
+
+  return (
+    <Select onValueChange={fieldOnChange} defaultValue={defaultValue}>
+      <SelectTrigger className={className}>
+        <SelectValue placeholder="Select Category" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <CategoryLabelAdd projectId={projectId}>Category</CategoryLabelAdd>
+          {categories.map((item) => (
+            <SelectItemEdit
+              key={item.id}
+              projectId={projectId}
+              value={item.id}
+              name={item.name}
+            >
+              {item.name}
+            </SelectItemEdit>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+};
+
+export default SelectCategory;
 
 const SelectItemEdit: FC<{
+  projectId: string;
   value: string;
   children: ReactNode;
   name: string;
-}> = ({ value, children, name }) => {
-  const { projectId } = useProject();
+}> = ({ value, children, name, projectId }) => {
   const { showNotification } = useNotification();
   const [_, startTransition] = useTransition();
   const [newName, setNewName] = useState(value);
@@ -111,12 +143,12 @@ const SelectItemEdit: FC<{
   );
 };
 
-const CategoryLabelAdd: FC<{ className?: string; children: ReactNode }> = ({
-  className,
-  children,
-}) => {
+const CategoryLabelAdd: FC<{
+  projectId: string;
+  className?: string;
+  children: ReactNode;
+}> = ({ projectId, className, children }) => {
   const { showNotification } = useNotification();
-  const { projectId } = useProject();
   const [_, startTransition] = useTransition();
   const [category, setCategory] = useState('');
   const [open, setOpen] = useState(false);
@@ -178,39 +210,3 @@ const CategoryLabelAdd: FC<{ className?: string; children: ReactNode }> = ({
     </div>
   );
 };
-
-const SelectCategory: FC<{
-  className?: string;
-  categories: Category[];
-  fieldOnChange: (value: string) => void;
-  defaultValue?: string;
-}> = ({ className, categories, fieldOnChange, defaultValue }) => {
-  return (
-    <Select
-      onValueChange={fieldOnChange}
-      defaultValue={defaultValue && defaultValue}
-    >
-      <SelectTrigger className={className}>
-        <SelectValue placeholder="Select Category" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <CategoryLabelAdd>Category</CategoryLabelAdd>
-          {categories.length == 0 ? (
-            <SelectItem value="" disabled>
-              No category
-            </SelectItem>
-          ) : (
-            categories.map((item) => (
-              <SelectItemEdit key={item.id} value={item.id} name={item.name}>
-                {item.name}
-              </SelectItemEdit>
-            ))
-          )}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  );
-};
-
-export default SelectCategory;

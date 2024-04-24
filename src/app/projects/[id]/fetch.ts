@@ -1,17 +1,40 @@
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
 import db from '@/firebase/db';
-import { Category, Item } from '@/types';
+import type { Category, Item, Plan } from '@/types';
 
-export default async function fetchItemData(projectId: string) {
-  // Reference to the project document
+export async function fetchProjectName(projectId: string) {
   const projectRef = doc(db, 'projects', projectId);
 
   const project = (await getDoc(projectRef)).data();
   if (!project) {
     throw new Error('Project not found');
   }
-  const name = project.name;
+
+  return project.name satisfies string;
+}
+
+export async function fetchProjectPlans(projectId: string) {
+  const projectRef = doc(db, 'projects', projectId);
+
+  const plansRef = collection(projectRef, 'plans');
+
+  const plans = await getDocs(plansRef).then((snapshot) => {
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        ...data,
+        id: doc.id,
+      } as Plan;
+    });
+  });
+
+  return plans;
+}
+
+export async function fetchProjectItemsAndCategories(projectId: string) {
+  // Reference to the project document
+  const projectRef = doc(db, 'projects', projectId);
 
   // Reference to the items subcollection within the project document
   const itemsRef = collection(projectRef, 'items');
@@ -35,10 +58,10 @@ export default async function fetchItemData(projectId: string) {
         ...data,
         id: doc.id,
         category:
-          categories.find((category) => category.id === data.category)?.id ||
+          categories.find((category) => category.id === data.category)?.id ??
           'Unknown',
       } as Item;
     });
   });
-  return { name, items, categories };
+  return { items, categories };
 }
