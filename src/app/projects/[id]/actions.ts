@@ -109,7 +109,11 @@ export async function deleteItem(
 }
 
 // Plan actions
-export async function addPlan(projectId: string, name: string, items: string[]) {
+export async function addPlan(
+  projectId: string,
+  name: string,
+  items: string[],
+) {
   await addDoc(collection(db, 'projects', projectId, 'plans'), {
     name: name,
     items: items,
@@ -122,7 +126,12 @@ export async function deletePlan(projectId: string, planId: string) {
   revalidatePath('/projects');
 }
 
-export async function savePlan(projectId: string, planId: string, name: string, items: string[]) {
+export async function savePlan(
+  projectId: string,
+  planId: string,
+  name: string,
+  items: string[],
+) {
   await updateDoc(doc(db, 'projects', projectId, 'plans', planId), {
     name: name,
     items: items,
