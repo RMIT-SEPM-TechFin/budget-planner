@@ -1,3 +1,4 @@
+import { MessageCircle } from 'lucide-react';
 import { ReactNode } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -10,7 +11,6 @@ import {
   fetchProjectPlans,
 } from './fetch';
 import SelectPlanToDisplay from './SelectPlanToDisplay';
-import { MessageCircle } from 'lucide-react';
 import ViewChartButton from './ViewChartButton';
 
 export default async function Layout({

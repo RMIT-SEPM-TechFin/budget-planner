@@ -1,12 +1,12 @@
 'use client';
 
 import { Dialog, DialogTrigger } from '@radix-ui/react-dialog';
+import { ArrowDownToLine } from 'lucide-react';
 import { FC, useCallback, useState } from 'react';
 import * as XLSX from 'xlsx';
 
 import { Button } from '@/components/ui/button';
 import { Category, Item } from '@/types';
-import { ArrowDownToLine } from 'lucide-react';
 
 const ExportData: FC<{
   className?: string;
@@ -37,16 +37,16 @@ const ExportData: FC<{
     XLSX.writeFile(workbook, 'data.xlsx', { compression: true });
   }, [data, categories]);
   return (
-        <Button
-          variant={'ghost'}
-          className={className}
-          onClick={() => {
-            setOpen(true);
-            handleExport();
-          }}
-        >
-          <ArrowDownToLine />
-        </Button>
+    <Button
+      variant={'ghost'}
+      className={className}
+      onClick={() => {
+        setOpen(true);
+        handleExport();
+      }}
+    >
+      <ArrowDownToLine />
+    </Button>
   );
 };
 
