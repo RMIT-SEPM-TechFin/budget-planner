@@ -2,6 +2,8 @@
 
 import {
   addDoc,
+  arrayRemove,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -10,11 +12,11 @@ import {
 import { revalidatePath } from 'next/cache';
 
 import db from '@/firebase/db';
-import { Item } from '@/types';
+import type { Item } from '@/types';
 
-export async function addCategory(projectId: string, category: string) {
+export async function addCategory(projectId: string, name: string) {
   await addDoc(collection(db, 'projects', projectId, 'categories'), {
-    name: category,
+    name,
   });
   revalidatePath('/projects');
 }
@@ -35,21 +37,73 @@ export async function editCategory(
   revalidatePath('/projects');
 }
 
-export async function addItem(projectId: string, item: Item) {
-  await addDoc(collection(db, 'projects', projectId, 'items'), {
+export async function addItem(
+  projectId: string,
+  item: Item,
+  planIds: string[],
+) {
+  const newItem = await addDoc(collection(db, 'projects', projectId, 'items'), {
     ...item,
   });
+
+  await Promise.all(
+    planIds.map((id) =>
+      updateDoc(doc(db, 'projects', projectId, 'plans', id), {
+        items: arrayUnion(newItem.id),
+      }),
+    ),
+  );
+
   revalidatePath('/projects');
 }
 
-export async function saveItem(projectId: string, item: Item, id: string) {
-  await updateDoc(doc(db, 'projects', projectId, 'items', id), {
-    ...item,
-  });
+export async function saveItem(
+  projectId: string,
+  id: string,
+  item: Item,
+  initialPlanIds: string[],
+  updatedPlanIds: string[],
+) {
+  const removeItemPlanIds = initialPlanIds.filter(
+    (id) => !updatedPlanIds.includes(id),
+  );
+
+  const addItemPlanIds = updatedPlanIds.filter(
+    (id) => !initialPlanIds.includes(id),
+  );
+
+  await Promise.all([
+    updateDoc(doc(db, 'projects', projectId, 'items', id), {
+      ...item,
+    }),
+    ...removeItemPlanIds.map((planId) =>
+      updateDoc(doc(db, 'projects', projectId, 'plans', planId), {
+        items: arrayRemove(id),
+      }),
+    ),
+    ...addItemPlanIds.map((planId) =>
+      updateDoc(doc(db, 'projects', projectId, 'plans', planId), {
+        items: arrayUnion(id),
+      }),
+    ),
+  ]);
+
   revalidatePath('/projects');
 }
 
-export async function deleteItem(projectId: string, itemId: string) {
-  await deleteDoc(doc(db, 'projects', projectId, 'items', itemId));
+export async function deleteItem(
+  projectId: string,
+  itemId: string,
+  planIdsContainItem: string[],
+) {
+  await Promise.all([
+    deleteDoc(doc(db, 'projects', projectId, 'items', itemId)),
+    ...planIdsContainItem.map((id) =>
+      updateDoc(doc(db, 'projects', projectId, 'plans', id), {
+        items: arrayRemove(itemId),
+      }),
+    ),
+  ]);
+
   revalidatePath('/projects');
 }
