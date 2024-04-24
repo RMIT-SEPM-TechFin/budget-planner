@@ -10,6 +10,7 @@ import {
   fetchProjectPlans,
 } from './fetch';
 import SelectPlanToDisplay from './SelectPlanToDisplay';
+import { MessageCircle } from 'lucide-react';
 import ViewChartButton from './ViewChartButton';
 
 export default async function Layout({
@@ -34,8 +35,17 @@ export default async function Layout({
       items={items}
       plans={plans}
     >
-      <div className="space-y-6">
-        <h1>{name}</h1>
+      <div className="space-y-4">
+        <div className="flex justify-between">
+          <h1>{name}</h1>
+          <div className="flex justify-between items-center gap-2">
+            <ExportData categories={categories} data={items} />
+            <Button variant={'ghost'}>
+              <MessageCircle />
+            </Button>
+            <Button>Invite</Button>
+          </div>
+        </div>
         <div className="justify-between items-center flex gap-5">
           {/* TODO: add breadcrumb */}
 
@@ -43,7 +53,6 @@ export default async function Layout({
             <SelectPlanToDisplay plans={plans} />
 
             <div className="justify-between items-center flex gap-2">
-              <ExportData categories={categories} data={items} />
               <ViewChartButton projectName={name} data={items} />
               <Button variant="secondary">Compare</Button>
             </div>
