@@ -5,17 +5,17 @@ import { FC, useCallback, useMemo, useTransition } from 'react';
 import { Control, UseFormSetValue } from 'react-hook-form';
 
 import {
-    Table,
-    TableActionCell,
-    TableSortableHeader,
+  Table,
+  TableActionCell,
+  TableSortableHeader,
 } from '@/components/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
 } from '@/components/ui/dialog';
 import { FormControl, FormField, FormItem } from '@/components/ui/form';
 import useNotification from '@/hooks/useNotification';
@@ -65,12 +65,12 @@ const ItemPlanForm: FC<{
       items: string[];
     },
     any
-  >,
+  >;
   setValue: UseFormSetValue<{
     name: string;
     items: string[];
-}>,
-    defaultValue?: string[],
+  }>;
+  defaultValue?: string[];
 }> = ({ formControl, setValue, defaultValue }) => {
   const [_, startTransition] = useTransition();
   const { showNotification } = useNotification();
@@ -113,38 +113,41 @@ const ItemPlanForm: FC<{
               onCheckedChange={(value) => {
                 table.toggleAllPageRowsSelected(!!value);
                 setValue('items', value ? items.map((item) => item.id) : []);
-            }}
+              }}
               aria-label="Select all"
             />
           ),
           cell: ({ row }) => (
             <FormField
-                name="items"
-                control={formControl}
-                key={row.original.id}
-                render={({field}) => {
-                    return (
-                        <FormItem
-                            key={row.original.id}
-                        >
-                            <FormControl>
-                                <Checkbox
-                                    defaultChecked={defaultValue?.includes(row.original.id) || row.getIsSelected()}
-                                    value={row.original.id}
-                                    onCheckedChange={(checked) => {
-                                        row.toggleSelected(!!checked);
-                                        return checked
-                                        ? field.onChange([...field.value, row.original.id])
-                                        : field.onChange(
-                                            field.value?.filter((value) => value !== row.original.id),
-                                        );
-                                    }}
-                                    aria-label="Select row"
-                                />
-                            </FormControl>
-                        </FormItem>
-                    )
-                }}
+              name="items"
+              control={formControl}
+              key={row.original.id}
+              render={({ field }) => {
+                return (
+                  <FormItem key={row.original.id}>
+                    <FormControl>
+                      <Checkbox
+                        defaultChecked={
+                          defaultValue?.includes(row.original.id) ||
+                          row.getIsSelected()
+                        }
+                        value={row.original.id}
+                        onCheckedChange={(checked) => {
+                          row.toggleSelected(!!checked);
+                          return checked
+                            ? field.onChange([...field.value, row.original.id])
+                            : field.onChange(
+                                field.value?.filter(
+                                  (value) => value !== row.original.id,
+                                ),
+                              );
+                        }}
+                        aria-label="Select row"
+                      />
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
             />
           ),
         }),

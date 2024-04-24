@@ -5,11 +5,11 @@ import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import {
-    Form,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import useNotification from '@/hooks/useNotification';
@@ -36,54 +36,60 @@ const PlanForm: FC<PlanFormProps> = ({ editPlanData, onCloseForm }) => {
     resolver: zodResolver(schema),
     defaultValues: {
       name: editPlanData?.name,
-      items: editPlanData? editPlanData.items : [''],
+      items: editPlanData ? editPlanData.items : [''],
     },
   });
   const { projectId, plans } = useProject();
-    const [_, startTransition] = useTransition();
-    const { showNotification } = useNotification();
+  const [_, startTransition] = useTransition();
+  const { showNotification } = useNotification();
 
   const { reset, setValue } = form;
 
-  const onAddPlan = useCallback((data: z.infer<typeof schema>) => {
-    startTransition(() => {
-      try {
-        addPlan(projectId, data.name, data.items);
-        onCloseForm && onCloseForm();
-        reset();
-        showNotification({
-          title: 'Plan added successfully',
-          variant: 'success',
-        });
-      } catch (error) {
-        console.error(error);
-        showNotification({
-          title: 'Failed to add plan',
+  const onAddPlan = useCallback(
+    (data: z.infer<typeof schema>) => {
+      startTransition(() => {
+        try {
+          addPlan(projectId, data.name, data.items);
+          onCloseForm && onCloseForm();
+          reset();
+          showNotification({
+            title: 'Plan added successfully',
+            variant: 'success',
+          });
+        } catch (error) {
+          console.error(error);
+          showNotification({
+            title: 'Failed to add plan',
             variant: 'failure',
-        });
-      }
-    });
-    }, [projectId, showNotification, reset, onCloseForm]);
+          });
+        }
+      });
+    },
+    [projectId, showNotification, reset, onCloseForm],
+  );
 
-  const onSavePlan = useCallback((data: z.infer<typeof schema>) => {
-    startTransition(() => {
-      try {
-        savePlan(projectId, editPlanData?.id ?? '', data.name, data.items);
-        onCloseForm && onCloseForm();
-        reset();
-        showNotification({
-          title: 'Plan saved successfully',
-          variant: 'success',
-        });
-      } catch (error) {
-        console.error(error);
-        showNotification({
-          title: 'Failed to save plan',
-          variant: 'failure',
-        });
-      }
-    });
-  }, [projectId, showNotification, reset, onCloseForm, editPlanData]);
+  const onSavePlan = useCallback(
+    (data: z.infer<typeof schema>) => {
+      startTransition(() => {
+        try {
+          savePlan(projectId, editPlanData?.id ?? '', data.name, data.items);
+          onCloseForm && onCloseForm();
+          reset();
+          showNotification({
+            title: 'Plan saved successfully',
+            variant: 'success',
+          });
+        } catch (error) {
+          console.error(error);
+          showNotification({
+            title: 'Failed to save plan',
+            variant: 'failure',
+          });
+        }
+      });
+    },
+    [projectId, showNotification, reset, onCloseForm, editPlanData],
+  );
 
   const onDeletPlan = useCallback(() => {
     startTransition(() => {
@@ -145,19 +151,11 @@ const PlanForm: FC<PlanFormProps> = ({ editPlanData, onCloseForm }) => {
         />
         <div className="space-x-2">
           {editPlanData && (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onDeletPlan}
-            >
+            <Button type="button" variant="outline" onClick={onDeletPlan}>
               Delete
             </Button>
           )}
-          <Button
-            type="submit"
-          >
-            {editPlanData ? 'Save' : 'Add'}
-          </Button>
+          <Button type="submit">{editPlanData ? 'Save' : 'Add'}</Button>
         </div>
       </form>
     </Form>

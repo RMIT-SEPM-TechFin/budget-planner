@@ -63,7 +63,7 @@ const SelectPlanToDisplay: FC<SelectPlanProps> = ({ plans }) => {
                   <Plus className="h-4 w-4 absolute" />
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[1000px]">
+              <DialogContent className="sm:max-w-[1000px] overflow-y-scroll max-h-screen">
                 <DialogHeader>
                   <DialogTitle>Create New Plan</DialogTitle>
                   <DialogDescription>
@@ -73,7 +73,7 @@ const SelectPlanToDisplay: FC<SelectPlanProps> = ({ plans }) => {
                 </DialogHeader>
 
                 {/* Plan Form for creating new Plan */}
-                <PlanForm onCloseForm={() => setOpenAdd(false)}/>
+                <PlanForm onCloseForm={() => setOpenAdd(false)} />
               </DialogContent>
             </Dialog>
           </div>
@@ -91,7 +91,7 @@ const SelectPlanToDisplay: FC<SelectPlanProps> = ({ plans }) => {
                       <MoreVertical className="h-4 w-4 absolute" />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[1000px]">
+                  <DialogContent className="sm:max-w-[1000px] overflow-y-scroll max-h-screen">
                     <DialogHeader>
                       <DialogTitle>Edit Plan {plan.name}</DialogTitle>
                       <DialogDescription>
@@ -101,7 +101,10 @@ const SelectPlanToDisplay: FC<SelectPlanProps> = ({ plans }) => {
                     </DialogHeader>
 
                     {/* Plan Form for editting Plan */}
-                    <PlanForm editPlanData={plan} onCloseForm={() => setOpenEdit(false)}/>
+                    <PlanForm
+                      editPlanData={plan}
+                      onCloseForm={() => setOpenEdit(false)}
+                    />
                   </DialogContent>
                 </Dialog>
               </div>
