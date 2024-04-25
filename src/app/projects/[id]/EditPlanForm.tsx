@@ -17,9 +17,9 @@ import { Plan } from '@/types';
 
 import { addPlan, deletePlan, savePlan } from './actions';
 import { useProject } from './context';
-import ItemPlanForm from './ItemPlanForm';
+import SelectItemsForPlan from './SelectItemsForPlan';
 
-interface PlanFormProps {
+interface EditPlanFormProps {
   editPlanData?: Plan;
   onCloseForm?: () => void;
 }
@@ -31,7 +31,7 @@ const schema = z.object({
   }),
 });
 
-const PlanForm: FC<PlanFormProps> = ({ editPlanData, onCloseForm }) => {
+const EditPlanForm: FC<EditPlanFormProps> = ({ editPlanData, onCloseForm }) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -39,7 +39,7 @@ const PlanForm: FC<PlanFormProps> = ({ editPlanData, onCloseForm }) => {
       items: editPlanData ? editPlanData.items : [''],
     },
   });
-  const { projectId, plans } = useProject();
+  const { projectId } = useProject();
   const [_, startTransition] = useTransition();
   const { showNotification } = useNotification();
 
@@ -140,7 +140,7 @@ const PlanForm: FC<PlanFormProps> = ({ editPlanData, onCloseForm }) => {
           name="items"
           render={({ field }) => (
             <FormItem>
-              <ItemPlanForm
+              <SelectItemsForPlan
                 defaultValue={field.value}
                 formControl={form.control}
                 setValue={setValue}
@@ -162,4 +162,4 @@ const PlanForm: FC<PlanFormProps> = ({ editPlanData, onCloseForm }) => {
   );
 };
 
-export default PlanForm;
+export default EditPlanForm;

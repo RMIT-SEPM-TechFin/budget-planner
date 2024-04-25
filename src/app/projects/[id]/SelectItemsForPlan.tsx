@@ -23,8 +23,7 @@ import type { Item } from '@/types';
 
 import { deleteItem } from './actions';
 import { useProject } from './context';
-import { usePlanIdQueryParam } from './hooks';
-import ItemForm from './ItemForm';
+import EditItemForm from './EditItemForm';
 
 const columnHelper = createColumnHelper<Item>();
 
@@ -58,7 +57,7 @@ const staticColumns = [
   }),
 ] as ColumnDef<Item>[];
 
-const ItemPlanForm: FC<{
+const SelectItemsForPlan: FC<{
   formControl: Control<
     {
       name: string;
@@ -176,7 +175,7 @@ const ItemPlanForm: FC<{
                     </DialogDescription>
                     <DialogClose />
                   </DialogHeader>
-                  <ItemForm
+                  <EditItemForm
                     editItemData={
                       items.find(
                         (item) => item.id === (props.getValue() as string),
@@ -208,4 +207,4 @@ const ItemPlanForm: FC<{
   );
 };
 
-export default ItemPlanForm;
+export default SelectItemsForPlan;

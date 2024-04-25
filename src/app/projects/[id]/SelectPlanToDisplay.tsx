@@ -26,7 +26,7 @@ import {
 import type { Plan } from '@/types';
 
 import { usePlanIdQueryParam } from './hooks';
-import PlanForm from './PlanForm';
+import PlanForm from './EditPlanForm';
 
 interface SelectPlanProps {
   plans: Plan[];

@@ -18,10 +18,10 @@ import type { Item, Plan } from '@/types';
 
 import { addItem, saveItem } from './actions';
 import { useProject } from './context';
-import SelectCategory from './SelectCategory';
+import SelectCategoryForItem from './SelectCategoryForItem';
 import SelectPlansForItem from './SelectPlansForItem';
 
-interface ItemFormProps {
+interface EditItemFormProps {
   editItemData?: Item;
   onCloseForm?: () => void;
 }
@@ -38,7 +38,7 @@ const schema = z.object({
   quantity: z.coerce.number().positive('Quantity must be a positive number'),
 });
 
-const ItemForm: FC<ItemFormProps> = ({ editItemData, onCloseForm }) => {
+const EditItemForm: FC<EditItemFormProps> = ({ editItemData, onCloseForm }) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -158,7 +158,7 @@ const ItemForm: FC<ItemFormProps> = ({ editItemData, onCloseForm }) => {
             <FormItem>
               <div className="grid grid-cols-4 items-center gap-4">
                 <FormLabel htmlFor="category">Category</FormLabel>
-                <SelectCategory
+                <SelectCategoryForItem
                   fieldOnChange={field.onChange}
                   defaultValue={editItemData?.category}
                   className="col-span-3"
@@ -244,4 +244,4 @@ const ItemForm: FC<ItemFormProps> = ({ editItemData, onCloseForm }) => {
   );
 };
 
-export default ItemForm;
+export default EditItemForm;
