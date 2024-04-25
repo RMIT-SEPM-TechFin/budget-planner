@@ -39,7 +39,7 @@ export default async function Layout({
         <div className="flex justify-between">
           <h1>{name}</h1>
           <div className="flex justify-between items-center gap-2">
-            <ExportData categories={categories} data={items} />
+            <ExportData categories={categories} data={items} plans={plans} />
             <Button variant={'ghost'}>
               <MessageCircle />
             </Button>
