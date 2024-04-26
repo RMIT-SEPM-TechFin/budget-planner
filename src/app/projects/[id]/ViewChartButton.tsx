@@ -1,34 +1,48 @@
 'use client';
 
-import { Check, X } from 'lucide-react';
-import { FC, useCallback, useState, useTransition } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import useAuth from '@/hooks/useAuth';
-import useNotification from '@/hooks/useNotification';
-import { cn } from '@/lib/utils';
+import { Item, Plan } from '@/types';
 
 import Chart from '../../../components/Chart/PieChart';
+import { usePlanIdQueryParam } from './hooks';
 
 const ViewChartButton: FC<{
   className?: string;
   projectName: string;
   data: any;
-}> = ({ className, projectName, data }) => {
+  plans: Plan[];
+}> = ({ className, projectName, data, plans }) => {
   const [open, setOpen] = useState(false);
 
+  const { planId, setPlanId } = usePlanIdQueryParam();
+  const [planItems, setPlanItems] = useState<Item[]>([]);
+  const selectedPlan = plans.find((plan) => plan.id == planId);
+
+  const planName = selectedPlan ? selectedPlan.name : projectName;
+
+  useEffect(() => {
+    if (selectedPlan) {
+      const selectedPlanItems = data.filter((item: { id: string }) =>
+        selectedPlan.items.includes(item.id),
+      );
+      setPlanItems(selectedPlanItems);
+    }
+  }, [selectedPlan, data]);
+  const displayDataItem = selectedPlan ? planItems : data;
+  const planDataItem = selectedPlan
+    ? planItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
+    : data.reduce((acc: any, curr: any) => acc + curr.price * curr.quantity, 0);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -42,19 +56,13 @@ const ViewChartButton: FC<{
       </DialogTrigger>
       <DialogContent className="!max-w-fit">
         <DialogHeader>
-          <DialogTitle>{projectName} Cost Breakdown</DialogTitle>
+          <DialogTitle>{planName} Cost Breakdown</DialogTitle>
           <DialogClose />
         </DialogHeader>
-        <Chart className="text-2xl" data={data} />
+        <Chart className="text-2xl" data={displayDataItem} />
         <DialogFooter className="flex !justify-center ">
           <div className="text-2xl font-bold">Total:</div>
-          <div className="text-2xl">
-            {data.reduce(
-              (acc: any, curr: any) => acc + curr.price * curr.quantity,
-              0,
-            )}
-            $
-          </div>
+          <div className="text-2xl">{planDataItem}$</div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
