@@ -19,10 +19,11 @@ import EditPlanButton from './EditPlanButton';
 import { usePlanIdQueryParam } from './hooks';
 
 interface SelectPlanProps {
+  classname?: string;
   plans: Plan[];
 }
 
-const SelectPlanToDisplay: FC<SelectPlanProps> = ({ plans }) => {
+const SelectPlanToDisplay: FC<SelectPlanProps> = ({ classname, plans }) => {
   const { planId, setPlanId } = usePlanIdQueryParam();
 
   return (
@@ -32,7 +33,7 @@ const SelectPlanToDisplay: FC<SelectPlanProps> = ({ plans }) => {
       }}
       value={planId ?? 'all'}
     >
-      <SelectTrigger className="w-[280px]">
+      <SelectTrigger className={classname}>
         <SelectValue placeholder="Select a plan" />
       </SelectTrigger>
       <SelectContent>
