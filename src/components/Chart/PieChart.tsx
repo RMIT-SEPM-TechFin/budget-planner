@@ -1,6 +1,5 @@
 'use client';
 
-import { List } from 'postcss/lib/list';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Cell, Legend, Pie, PieChart, Sector } from 'recharts';
 
@@ -79,7 +78,6 @@ const renderActiveShape = (props: any) => {
 
 const Chart: FC<{ className?: string; data: any }> = ({ className, data }) => {
   const randomColor = require('randomcolor');
-  const color = randomColor();
 
   // Preprocess the data to include the totalValue
   const modifiedData = data.map((entry: any) => ({
@@ -90,7 +88,12 @@ const Chart: FC<{ className?: string; data: any }> = ({ className, data }) => {
   const [COLORS, setCOLORS] = useState<string[]>([]);
 
   useEffect(() => {
-    setCOLORS(randomColor({ luminosity: 'dark', count: modifiedData.length }));
+    setCOLORS(
+      randomColor({
+        hue: '#e11d48',
+        count: modifiedData.length,
+      }),
+    );
   }, [modifiedData.length, randomColor]);
 
   const [activeIndex, setActiveIndex] = useState(0);

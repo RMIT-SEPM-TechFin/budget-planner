@@ -1,32 +1,26 @@
 'use client';
 
-import { Check, X } from 'lucide-react';
-import { FC, useCallback, useState, useTransition } from 'react';
+import { FC, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import useAuth from '@/hooks/useAuth';
-import useNotification from '@/hooks/useNotification';
-import { cn } from '@/lib/utils';
 
 import Chart from '../../../components/Chart/PieChart';
 
 const ViewChartButton: FC<{
   className?: string;
   projectName: string;
-  data: any;
-}> = ({ className, projectName, data }) => {
+  // TODO: define type for items
+  items: any;
+}> = ({ className, projectName, items }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -45,11 +39,11 @@ const ViewChartButton: FC<{
           <DialogTitle>{projectName} Cost Breakdown</DialogTitle>
           <DialogClose />
         </DialogHeader>
-        <Chart className="text-2xl" data={data} />
+        <Chart className="text-2xl" data={items} />
         <DialogFooter className="flex !justify-center ">
           <div className="text-2xl font-bold">Total:</div>
           <div className="text-2xl">
-            {data.reduce(
+            {items.reduce(
               (acc: any, curr: any) => acc + curr.price * curr.quantity,
               0,
             )}
