@@ -1,7 +1,13 @@
 'use client';
 
-import { List } from 'postcss/lib/list';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import {
+  FC,
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Cell, Legend, Pie, PieChart, Sector } from 'recharts';
 
 const renderActiveShape = (props: any) => {
@@ -79,27 +85,33 @@ const renderActiveShape = (props: any) => {
 
 const Chart: FC<{ className?: string; data: any }> = ({ className, data }) => {
   const randomColor = require('randomcolor');
-  const color = randomColor();
-
-  // Preprocess the data to include the totalValue
-  const modifiedData = data.map((entry: any) => ({
-    ...entry,
-    totalValue: entry.price * entry.quantity,
-  }));
 
   const [COLORS, setCOLORS] = useState<string[]>([]);
-
-  useEffect(() => {
-    setCOLORS(randomColor({ luminosity: 'dark', count: modifiedData.length }));
-  }, [modifiedData.length, randomColor]);
-
   const [activeIndex, setActiveIndex] = useState(0);
+
+  // Preprocess the data to include the totalValue
+  const modifiedData = useMemo(() => {
+    return data.map((entry: any) => ({
+      ...entry,
+      totalValue: entry.price * entry.quantity,
+    }));
+  }, [data]);
+
   const onPieEnter = useCallback(
-    (_: React.MouseEvent, index: number) => {
+    (_: MouseEvent, index: number) => {
       setActiveIndex(index);
     },
     [setActiveIndex],
   );
+
+  useEffect(() => {
+    setCOLORS(
+      randomColor({
+        hue: '#e11d48',
+        count: modifiedData.length,
+      }),
+    );
+  }, [modifiedData.length, randomColor]);
 
   return (
     <PieChart width={900} height={500}>

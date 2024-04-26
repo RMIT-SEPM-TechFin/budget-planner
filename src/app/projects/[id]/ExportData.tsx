@@ -13,8 +13,6 @@ const ExportData: FC<{
   data: Item[];
   plans: Plan[];
 }> = ({ className, categories, data, plans }) => {
-  const [open, setOpen] = useState(false);
-
   const handleExport = useCallback(() => {
     // handle all items
     const workbook = XLSX.utils.book_new();
@@ -59,10 +57,7 @@ const ExportData: FC<{
     <Button
       variant={'ghost'}
       className={className}
-      onClick={() => {
-        setOpen(true);
-        handleExport();
-      }}
+      onClick={() => handleExport()}
     >
       <ArrowDownToLine />
     </Button>
