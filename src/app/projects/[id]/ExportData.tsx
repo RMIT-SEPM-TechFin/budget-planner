@@ -16,8 +16,20 @@ const ExportData: FC<{
   const [open, setOpen] = useState(false);
 
   const handleExport = useCallback(() => {
+    // handle all items
     const workbook = XLSX.utils.book_new();
-
+    const allItemData = data.map((item)=>{
+      const { category, id, ...rest } = item;
+      const cate = categories.find((cat) => cat.id === item.category);
+      return {
+        CategoryName: cate ? cate.name : 'Unknown',
+        ...rest,
+        Total: item.price * item.quantity,
+      };
+    });
+    const worksheet = XLSX.utils.json_to_sheet(allItemData);
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'All Item');
+    // handle each of items in plans
     plans.forEach((plan) => {
       const planItems = data.filter((item) => plan.items.includes(item.id));
       const planData = planItems.map((item) => {
@@ -40,7 +52,6 @@ const ExportData: FC<{
 
       worksheet['!cols'] = [{ wch: max_width }];
     });
-
     XLSX.writeFile(workbook, 'all_plans_data.xlsx', { compression: true });
   }, [data, categories, plans]);
 
