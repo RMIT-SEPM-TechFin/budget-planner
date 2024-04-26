@@ -57,7 +57,7 @@ export async function addItem(
   revalidatePath('/projects');
 }
 
-export async function saveItem(
+export async function updateItem(
   projectId: string,
   id: string,
   item: Item,
@@ -108,17 +108,17 @@ export async function deleteItem(
   revalidatePath('/projects');
 }
 
-// Plan actions
 export async function addPlan(
   projectId: string,
   name: string,
   items: string[],
 ) {
-  await addDoc(collection(db, 'projects', projectId, 'plans'), {
+  const newPlan = await addDoc(collection(db, 'projects', projectId, 'plans'), {
     name: name,
     items: items,
   });
   revalidatePath('/projects');
+  return newPlan.id;
 }
 
 export async function deletePlan(projectId: string, planId: string) {
@@ -126,7 +126,7 @@ export async function deletePlan(projectId: string, planId: string) {
   revalidatePath('/projects');
 }
 
-export async function savePlan(
+export async function updatePlan(
   projectId: string,
   planId: string,
   name: string,

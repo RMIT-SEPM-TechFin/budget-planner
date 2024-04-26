@@ -15,8 +15,9 @@ import { Input } from '@/components/ui/input';
 import useNotification from '@/hooks/useNotification';
 import { Plan } from '@/types';
 
-import { addPlan, deletePlan, savePlan } from './actions';
+import { addPlan, deletePlan, updatePlan } from './actions';
 import { useProject } from './context';
+import { usePlanIdQueryParam } from './hooks';
 import SelectItemsForPlan from './SelectItemsForPlan';
 
 interface EditPlanFormProps {
@@ -39,23 +40,26 @@ const EditPlanForm: FC<EditPlanFormProps> = ({ editPlanData, onCloseForm }) => {
       items: editPlanData ? editPlanData.items : [''],
     },
   });
-  const { projectId } = useProject();
   const [_, startTransition] = useTransition();
   const { showNotification } = useNotification();
+  const { projectId } = useProject();
+  const { setPlanId } = usePlanIdQueryParam();
 
   const { reset, setValue } = form;
 
   const onAddPlan = useCallback(
     (data: z.infer<typeof schema>) => {
-      startTransition(() => {
+      startTransition(async () => {
         try {
-          addPlan(projectId, data.name, data.items);
+          const newPlanId = await addPlan(projectId, data.name, data.items);
           onCloseForm && onCloseForm();
           reset();
           showNotification({
             title: 'Plan added successfully',
             variant: 'success',
           });
+          // navigate to the new plan
+          setPlanId(newPlanId);
         } catch (error) {
           console.error(error);
           showNotification({
@@ -65,20 +69,27 @@ const EditPlanForm: FC<EditPlanFormProps> = ({ editPlanData, onCloseForm }) => {
         }
       });
     },
-    [projectId, showNotification, reset, onCloseForm],
+    [projectId, showNotification, reset, onCloseForm, setPlanId],
   );
 
-  const onSavePlan = useCallback(
+  const onUpdatePlan = useCallback(
     (data: z.infer<typeof schema>) => {
-      startTransition(() => {
+      startTransition(async () => {
         try {
-          savePlan(projectId, editPlanData?.id ?? '', data.name, data.items);
+          await updatePlan(
+            projectId,
+            editPlanData?.id ?? '',
+            data.name,
+            data.items,
+          );
           onCloseForm && onCloseForm();
           reset();
           showNotification({
             title: 'Plan saved successfully',
             variant: 'success',
           });
+          // navigate to the updated plan
+          setPlanId(editPlanData?.id);
         } catch (error) {
           console.error(error);
           showNotification({
@@ -88,10 +99,10 @@ const EditPlanForm: FC<EditPlanFormProps> = ({ editPlanData, onCloseForm }) => {
         }
       });
     },
-    [projectId, showNotification, reset, onCloseForm, editPlanData],
+    [projectId, showNotification, reset, onCloseForm, editPlanData, setPlanId],
   );
 
-  const onDeletPlan = useCallback(() => {
+  const onDeletePlan = useCallback(() => {
     startTransition(() => {
       try {
         deletePlan(projectId, editPlanData?.id ?? '');
@@ -101,6 +112,8 @@ const EditPlanForm: FC<EditPlanFormProps> = ({ editPlanData, onCloseForm }) => {
           title: 'Plan deleted successfully',
           variant: 'success',
         });
+        // navigate back to all items
+        setPlanId(undefined);
       } catch (error) {
         console.error(error);
         showNotification({
@@ -109,12 +122,19 @@ const EditPlanForm: FC<EditPlanFormProps> = ({ editPlanData, onCloseForm }) => {
         });
       }
     });
-  }, [projectId, showNotification, reset, onCloseForm, editPlanData]);
+  }, [
+    projectId,
+    showNotification,
+    reset,
+    onCloseForm,
+    editPlanData,
+    setPlanId,
+  ]);
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(editPlanData ? onSavePlan : onAddPlan)}
+        onSubmit={form.handleSubmit(editPlanData ? onUpdatePlan : onAddPlan)}
         className="grid gap-2"
       >
         <FormField
@@ -127,7 +147,7 @@ const EditPlanForm: FC<EditPlanFormProps> = ({ editPlanData, onCloseForm }) => {
                 <Input
                   id="name"
                   className="col-span-9"
-                  placeholder="New Item"
+                  placeholder="Name"
                   {...field}
                 />
               </div>
@@ -151,7 +171,7 @@ const EditPlanForm: FC<EditPlanFormProps> = ({ editPlanData, onCloseForm }) => {
         />
         <div className="space-x-2">
           {editPlanData && (
-            <Button type="button" variant="outline" onClick={onDeletPlan}>
+            <Button type="button" variant="outline" onClick={onDeletePlan}>
               Delete
             </Button>
           )}

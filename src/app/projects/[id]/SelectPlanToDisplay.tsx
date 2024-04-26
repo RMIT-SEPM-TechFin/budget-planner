@@ -1,18 +1,8 @@
 'use client';
 
 import { MoreVertical, Plus } from 'lucide-react';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import {
   Select,
   SelectContent,
@@ -25,8 +15,8 @@ import {
 } from '@/components/ui/select';
 import type { Plan } from '@/types';
 
+import EditPlanButton from './EditPlanButton';
 import { usePlanIdQueryParam } from './hooks';
-import PlanForm from './EditPlanForm';
 
 interface SelectPlanProps {
   plans: Plan[];
@@ -34,15 +24,13 @@ interface SelectPlanProps {
 
 const SelectPlanToDisplay: FC<SelectPlanProps> = ({ plans }) => {
   const { planId, setPlanId } = usePlanIdQueryParam();
-  const [openAdd, setOpenAdd] = useState(false);
-  const [openEdit, setOpenEdit] = useState(false);
 
   return (
     <Select
-      defaultValue={planId ?? 'all'}
       onValueChange={(value) => {
         setPlanId(value === 'all' ? undefined : value);
       }}
+      value={planId ?? 'all'}
     >
       <SelectTrigger className="w-[280px]">
         <SelectValue placeholder="Select a plan" />
@@ -53,61 +41,14 @@ const SelectPlanToDisplay: FC<SelectPlanProps> = ({ plans }) => {
         <SelectGroup>
           <div className="relative">
             <SelectLabel>Plans</SelectLabel>
-            <Dialog open={openAdd} onOpenChange={setOpenAdd}>
-              <DialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="absolute h-8 w-8 right-0 top-0 z-100"
-                >
-                  <span className="sr-only">Open menu</span>
-                  <Plus className="h-4 w-4 absolute" />
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[1000px] overflow-y-scroll max-h-screen">
-                <DialogHeader>
-                  <DialogTitle>Create New Plan</DialogTitle>
-                  <DialogDescription>
-                    Choose the items you want to display
-                  </DialogDescription>
-                  <DialogClose />
-                </DialogHeader>
-
-                {/* Plan Form for creating new Plan */}
-                <PlanForm onCloseForm={() => setOpenAdd(false)} />
-              </DialogContent>
-            </Dialog>
+            <EditPlanButton Icon={Plus} />
           </div>
           <div className="relative">
             {plans.map((plan) => {
               return (
                 <div className="relative z-0" key={plan.id}>
                   <SelectItem value={plan.id}>{plan.name}</SelectItem>
-                  <Dialog key={plan.id}>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        className="absolute h-8 w-8 right-0 top-0 z-100"
-                      >
-                        <span className="sr-only">Open menu</span>
-                        <MoreVertical className="h-4 w-4 absolute" />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[1000px] overflow-y-scroll max-h-screen">
-                      <DialogHeader>
-                        <DialogTitle>Edit Plan {plan.name}</DialogTitle>
-                        <DialogDescription>
-                          Edit the items you want to display
-                        </DialogDescription>
-                        <DialogClose />
-                      </DialogHeader>
-
-                      {/* Plan Form for editing Plan */}
-                      <PlanForm
-                        editPlanData={plan}
-                        onCloseForm={() => setOpenEdit(false)}
-                      />
-                    </DialogContent>
-                  </Dialog>
+                  <EditPlanButton Icon={MoreVertical} plan={plan} />
                 </div>
               );
             })}

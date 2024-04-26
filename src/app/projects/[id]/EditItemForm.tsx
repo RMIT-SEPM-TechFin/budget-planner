@@ -16,7 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 import useNotification from '@/hooks/useNotification';
 import type { Item, Plan } from '@/types';
 
-import { addItem, saveItem } from './actions';
+import { addItem, updateItem } from './actions';
 import { useProject } from './context';
 import SelectCategoryForItem from './SelectCategoryForItem';
 import SelectPlansForItem from './SelectPlansForItem';
@@ -93,7 +93,7 @@ const EditItemForm: FC<EditItemFormProps> = ({ editItemData, onCloseForm }) => {
     (data: z.infer<typeof schema>) => {
       startTransition(() => {
         try {
-          saveItem(
+          updateItem(
             projectId,
             editItemData?.id ?? '',
             data as Item,
