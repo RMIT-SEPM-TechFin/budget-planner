@@ -25,7 +25,7 @@ import useNotification from '@/hooks/useNotification';
 import { addCategory, deleteCategory, editCategory } from './actions';
 import { useProject } from './context';
 
-const SelectCategory: FC<{
+const SelectCategoryForItem: FC<{
   className?: string;
   fieldOnChange: (value: string) => void;
   defaultValue?: string;
@@ -56,7 +56,7 @@ const SelectCategory: FC<{
   );
 };
 
-export default SelectCategory;
+export default SelectCategoryForItem;
 
 const SelectItemEdit: FC<{
   projectId: string;

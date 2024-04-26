@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-import ItemForm from './ItemForm';
+import EditItemForm from './EditItemForm';
 
 const AddItemButton: FC<{ className?: string }> = ({ className }) => {
   const [openForm, setOpenForm] = useState(false);
@@ -31,7 +31,7 @@ const AddItemButton: FC<{ className?: string }> = ({ className }) => {
           <DialogDescription>Add the item details below</DialogDescription>
           <DialogClose />
         </DialogHeader>
-        <ItemForm onCloseForm={() => setOpenForm(false)} />
+        <EditItemForm onCloseForm={() => setOpenForm(false)} />
       </DialogContent>
     </Dialog>
   );

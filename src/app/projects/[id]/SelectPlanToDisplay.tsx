@@ -1,5 +1,6 @@
 'use client';
 
+import { MoreVertical, Plus } from 'lucide-react';
 import { FC } from 'react';
 
 import {
@@ -14,6 +15,7 @@ import {
 } from '@/components/ui/select';
 import type { Plan } from '@/types';
 
+import EditPlanButton from './EditPlanButton';
 import { usePlanIdQueryParam } from './hooks';
 
 interface SelectPlanProps {
@@ -25,10 +27,10 @@ const SelectPlanToDisplay: FC<SelectPlanProps> = ({ plans }) => {
 
   return (
     <Select
-      defaultValue={planId ?? 'all'}
       onValueChange={(value) => {
         setPlanId(value === 'all' ? undefined : value);
       }}
+      value={planId ?? 'all'}
     >
       <SelectTrigger className="w-[280px]">
         <SelectValue placeholder="Select a plan" />
@@ -37,12 +39,20 @@ const SelectPlanToDisplay: FC<SelectPlanProps> = ({ plans }) => {
         <SelectItem value="all">All Items</SelectItem>
         <SelectSeparator />
         <SelectGroup>
-          <SelectLabel>Plans</SelectLabel>
-          {plans.map((plan) => (
-            <SelectItem value={plan.id} key={plan.id}>
-              {plan.name}
-            </SelectItem>
-          ))}
+          <div className="relative">
+            <SelectLabel>Plans</SelectLabel>
+            <EditPlanButton Icon={Plus} />
+          </div>
+          <div className="relative">
+            {plans.map((plan) => {
+              return (
+                <div className="relative z-0" key={plan.id}>
+                  <SelectItem value={plan.id}>{plan.name}</SelectItem>
+                  <EditPlanButton Icon={MoreVertical} plan={plan} />
+                </div>
+              );
+            })}
+          </div>
           {plans.length === 0 && 'No plans available'}
         </SelectGroup>
       </SelectContent>
