@@ -18,7 +18,7 @@ const ExportData: FC<{
   const handleExport = useCallback(() => {
     // handle all items
     const workbook = XLSX.utils.book_new();
-    const allItemData = data.map((item)=>{
+    const allItemData = data.map((item) => {
       const { category, id, ...rest } = item;
       const cate = categories.find((cat) => cat.id === item.category);
       return {
