@@ -1,9 +1,9 @@
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
 import db from '@/firebase/db';
-import type { Category, Item, Plan } from '@/types';
+import type { Category, Item, Plan, Project } from '@/types';
 
-export async function fetchProjectName(projectId: string) {
+export async function fetchProjectInfo(projectId: string) {
   const projectRef = doc(db, 'projects', projectId);
 
   const project = (await getDoc(projectRef)).data();
@@ -11,7 +11,10 @@ export async function fetchProjectName(projectId: string) {
     throw new Error('Project not found');
   }
 
-  return project.name satisfies string;
+  return {
+    ...project,
+    id: projectId,
+  } as Project;
 }
 
 export async function fetchProjectPlans(projectId: string) {

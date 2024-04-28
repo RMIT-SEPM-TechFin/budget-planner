@@ -1,9 +1,10 @@
 'use client';
 
+import { PieChart } from 'lucide-react';
 import { FC, useMemo, useState } from 'react';
 
+import ActionIconButton from '@/components/ActionIconButton';
 import ItemsChart from '@/components/ItemsChart';
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -18,14 +19,13 @@ import { Item, Plan } from '@/types';
 import { usePlanIdQueryParam } from './hooks';
 
 const ViewChartButton: FC<{
-  className?: string;
   projectName: string;
   items: Item[];
   plans: Plan[];
-}> = ({ className, projectName, items, plans }) => {
-  const [open, setOpen] = useState(false);
-
+}> = ({ projectName, items, plans }) => {
   const { planId } = usePlanIdQueryParam();
+
+  const [open, setOpen] = useState(false);
 
   const selectedPlan = useMemo(
     () => plans.find((plan) => plan.id == planId),
@@ -51,13 +51,11 @@ const ViewChartButton: FC<{
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant={'secondary'}
-          className={className}
+        <ActionIconButton
+          Icon={PieChart}
+          tooltip="View Chart"
           onClick={() => setOpen(true)}
-        >
-          View Chart
-        </Button>
+        />
       </DialogTrigger>
       <DialogContent className="!max-w-fit">
         <DialogHeader>
