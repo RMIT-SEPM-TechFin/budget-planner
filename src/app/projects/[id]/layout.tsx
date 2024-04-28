@@ -53,7 +53,7 @@ export default async function Layout({
             <SelectPlanToDisplay plans={plans} />
 
             <div className="justify-between items-center flex gap-2">
-              <ViewChartButton projectName={name} data={items} plans={plans} />
+              <ViewChartButton projectName={name} items={items} plans={plans} />
               <Button variant="secondary">Compare</Button>
             </div>
           </div>
