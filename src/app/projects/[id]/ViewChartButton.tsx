@@ -19,14 +19,13 @@ import { Item, Plan } from '@/types';
 import { usePlanIdQueryParam } from './hooks';
 
 const ViewChartButton: FC<{
-  className?: string;
   projectName: string;
   items: Item[];
   plans: Plan[];
-}> = ({ className, projectName, items, plans }) => {
-  const [open, setOpen] = useState(false);
-
+}> = ({ projectName, items, plans }) => {
   const { planId } = usePlanIdQueryParam();
+
+  const [open, setOpen] = useState(false);
 
   const selectedPlan = useMemo(
     () => plans.find((plan) => plan.id == planId),

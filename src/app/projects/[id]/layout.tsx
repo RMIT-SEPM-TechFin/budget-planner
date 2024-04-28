@@ -1,16 +1,13 @@
-import { ArrowLeftRight, User, UserPlus } from 'lucide-react';
 import { ReactNode } from 'react';
-
-import ActionIconButton from '@/components/ActionIconButton';
-import { Button } from '@/components/ui/button';
 
 import { ProjectContextProvider } from './context';
 import ExportDataButton from './ExportDataButton';
 import {
+  fetchProjectInfo,
   fetchProjectItemsAndCategories,
-  fetchProjectName,
   fetchProjectPlans,
 } from './fetch';
+import ManageMembersButton from './ManageMembersButton';
 import SelectPlanToDisplay from './SelectPlanToDisplay';
 import ViewChartButton from './ViewChartButton';
 
@@ -23,8 +20,8 @@ export default async function Layout({
 }) {
   const { id } = params;
 
-  const [name, plans, { items, categories }] = await Promise.all([
-    fetchProjectName(id),
+  const [{ name, members }, plans, { items, categories }] = await Promise.all([
+    fetchProjectInfo(id),
     fetchProjectPlans(id),
     fetchProjectItemsAndCategories(id),
   ]);
@@ -55,16 +52,7 @@ export default async function Layout({
                 plans={plans}
               />
               <ViewChartButton projectName={name} items={items} plans={plans} />
-              {/* <ActionIconButton
-                Icon={ArrowLeftRight}
-                tooltip="Compare Plans"
-                onClick={() => {}}
-              />
-              <ActionIconButton
-                Icon={UserPlus}
-                tooltip="Invite Members"
-                onClick={() => {}}
-              /> */}
+              <ManageMembersButton projectId={id} initialMembers={members} />
             </div>
           </div>
         </div>
