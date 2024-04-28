@@ -12,8 +12,6 @@ import ItemTable from './ItemTable';
 export const dynamic = 'force-dynamic';
 
 export default async function Project({ params }: { params: { id: string } }) {
-  const { id } = params;
-
   const userEmail = getCookie(USER_EMAIL_COOKIE_NAME, { cookies });
   if (!userEmail) redirect('/');
 
