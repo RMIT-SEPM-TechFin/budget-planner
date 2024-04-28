@@ -58,6 +58,16 @@ const ManageMembersButton: FC<ManageMembersButtonProps> = ({
 
   const { reset } = form;
 
+  const onOpenChange = useCallback(
+    (open: boolean) => {
+      if (!open) {
+        setMembers(initialMembers);
+      }
+      setOpen(open);
+    },
+    [initialMembers],
+  );
+
   const onAddMember = useCallback(
     ({ email }: z.infer<typeof schema>) => {
       // TODO: check if email is already in members
@@ -91,7 +101,7 @@ const ManageMembersButton: FC<ManageMembersButtonProps> = ({
   }, [members, projectId, showNotification, startTransition]);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <ActionIconButton
           Icon={User}

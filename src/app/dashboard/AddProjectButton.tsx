@@ -40,6 +40,16 @@ const AddProjectButton: FC<{ className?: string }> = ({ className }) => {
     setMemberEmailValue('');
   }, []);
 
+  const onOpenChange = useCallback(
+    (open: boolean) => {
+      if (!open) {
+        setInitialState();
+      }
+      setOpen(open);
+    },
+    [setInitialState],
+  );
+
   const onAddMember = useCallback(() => {
     setMembers([...members, memberEmailValue]);
     setMemberEmailValue('');
@@ -88,7 +98,7 @@ const AddProjectButton: FC<{ className?: string }> = ({ className }) => {
   ]);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button className={className} onClick={() => setOpen(true)}>
           New Project
