@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 
+import Breadcrumbs from '@/components/Breadcrumbs';
+
 import { ProjectContextProvider } from './context';
 import ExportDataButton from './ExportDataButton';
 import {
@@ -34,6 +36,9 @@ export default async function Layout({
       plans={plans}
     >
       <div className="space-y-4">
+        <Breadcrumbs
+          items={[{ label: 'Dashboard', href: '/dashboard' }, { label: name }]}
+        />
         <div className="flex justify-between">
           <h1>{name}</h1>
         </div>
