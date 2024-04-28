@@ -136,7 +136,7 @@ const ManageMembersButton: FC<ManageMembersButtonProps> = ({
           {members.map((member) => (
             <Badge
               key={member}
-              variant="outline"
+              variant="secondary"
               className="flex items-center gap-1"
             >
               <p>{member}</p>

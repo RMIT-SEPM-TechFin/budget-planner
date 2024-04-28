@@ -1,9 +1,10 @@
 'use client';
 
-import { Check, X } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { FC, useCallback, useState, useTransition } from 'react';
 
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -19,7 +20,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import useAuth from '@/hooks/useAuth';
 import useNotification from '@/hooks/useNotification';
-import { cn } from '@/lib/utils';
 
 import { saveNewProject } from './actions';
 
@@ -94,7 +94,7 @@ const AddProjectButton: FC<{ className?: string }> = ({ className }) => {
           New Project
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Create New Project</DialogTitle>
           <DialogDescription>
@@ -107,7 +107,6 @@ const AddProjectButton: FC<{ className?: string }> = ({ className }) => {
             <Label htmlFor="project-name" className="text-right">
               Name
             </Label>
-            {/* TODO: input turns white when selecting existing option */}
             <Input
               id="project-name"
               className="col-span-3"
@@ -123,22 +122,20 @@ const AddProjectButton: FC<{ className?: string }> = ({ className }) => {
               Member Email
             </Label>
             <div className="relative col-span-3">
-              {/* TODO: input turns white when selecting existing option */}
-              <Input
-                id="project-member-email"
-                placeholder="john123@gmail.com"
-                value={memberEmailValue}
-                onChange={(e) => {
-                  setMemberEmailValue(e.target.value);
-                }}
-              />
-              <Button
-                variant="ghost"
-                className="absolute right-0 top-0"
-                onClick={onAddMember}
-              >
-                <Check size={16} className="stroke-muted-foreground" />
-              </Button>
+              {/* TODO: form validator */}
+              <div className="flex items-center gap-1">
+                <Input
+                  id="project-member-email"
+                  placeholder="john123@gmail.com"
+                  value={memberEmailValue}
+                  onChange={(e) => {
+                    setMemberEmailValue(e.target.value);
+                  }}
+                />
+                <Button variant="outline" size="icon" onClick={onAddMember}>
+                  <Plus size={16} className="stroke-muted-foreground" />
+                </Button>
+              </div>
             </div>
             <div />
             {members.length === 0 && (
@@ -146,24 +143,22 @@ const AddProjectButton: FC<{ className?: string }> = ({ className }) => {
                 You can add members later!
               </small>
             )}
-            {members.map((member, idx) => (
-              <div
-                key={idx}
-                className={cn(
-                  'col-start-2 mt-1 space-y-1 col-span-3',
-                  'flex justify-between items-center',
-                )}
-              >
-                <p className="text-sm text-muted-foreground">
-                  {idx + 1}. {member}
-                </p>
-                <X
-                  size={14}
-                  className="stroke-muted-foreground"
-                  onClick={() => onRemoveMember(member)}
-                />
-              </div>
-            ))}
+            <div className="mt-2 col-span-3 flex flex-wrap gap-1">
+              {members.map((member) => (
+                <Badge
+                  key={member}
+                  variant="secondary"
+                  className="flex items-center gap-1"
+                >
+                  <p>{member}</p>
+                  <X
+                    size={12}
+                    className="cursor-pointer"
+                    onClick={() => onRemoveMember(member)}
+                  />
+                </Badge>
+              ))}
+            </div>
           </div>
         </div>
         <DialogFooter>
