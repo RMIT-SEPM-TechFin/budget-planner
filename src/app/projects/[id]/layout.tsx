@@ -1,10 +1,11 @@
-import { MessageCircle } from 'lucide-react';
+import { ArrowLeftRight, User, UserPlus } from 'lucide-react';
 import { ReactNode } from 'react';
 
+import ActionIconButton from '@/components/ActionIconButton';
 import { Button } from '@/components/ui/button';
 
 import { ProjectContextProvider } from './context';
-import ExportData from './ExportData';
+import ExportDataButton from './ExportDataButton';
 import {
   fetchProjectItemsAndCategories,
   fetchProjectName,
@@ -38,23 +39,32 @@ export default async function Layout({
       <div className="space-y-4">
         <div className="flex justify-between">
           <h1>{name}</h1>
-          <div className="flex justify-between items-center gap-2">
-            <ExportData categories={categories} data={items} plans={plans} />
-            <Button variant={'ghost'}>
-              <MessageCircle />
-            </Button>
-            <Button>Invite</Button>
-          </div>
         </div>
         <div className="justify-between items-center flex gap-5">
           {/* TODO: add breadcrumb */}
 
           <div className="w-full flex items-center justify-between">
-            <SelectPlanToDisplay plans={plans} />
+            <div className="flex items-center gap-2">
+              <SelectPlanToDisplay plans={plans} />
+            </div>
 
             <div className="justify-between items-center flex gap-2">
+              <ExportDataButton
+                categories={categories}
+                data={items}
+                plans={plans}
+              />
               <ViewChartButton projectName={name} items={items} plans={plans} />
-              <Button variant="secondary">Compare</Button>
+              {/* <ActionIconButton
+                Icon={ArrowLeftRight}
+                tooltip="Compare Plans"
+                onClick={() => {}}
+              />
+              <ActionIconButton
+                Icon={UserPlus}
+                tooltip="Invite Members"
+                onClick={() => {}}
+              /> */}
             </div>
           </div>
         </div>

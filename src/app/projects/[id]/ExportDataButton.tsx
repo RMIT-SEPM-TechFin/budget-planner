@@ -1,18 +1,17 @@
 'use client';
 
 import { ArrowDownToLine } from 'lucide-react';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback } from 'react';
 import * as XLSX from 'xlsx';
 
-import { Button } from '@/components/ui/button';
+import ActionIconButton from '@/components/ActionIconButton';
 import { Category, Item, Plan } from '@/types';
 
-const ExportData: FC<{
-  className?: string;
+const ExportDataButton: FC<{
   categories: Category[];
   data: Item[];
   plans: Plan[];
-}> = ({ className, categories, data, plans }) => {
+}> = ({ categories, data, plans }) => {
   const handleExport = useCallback(() => {
     // handle all items
     const workbook = XLSX.utils.book_new();
@@ -54,14 +53,12 @@ const ExportData: FC<{
   }, [data, categories, plans]);
 
   return (
-    <Button
-      variant={'ghost'}
-      className={className}
+    <ActionIconButton
+      Icon={ArrowDownToLine}
       onClick={() => handleExport()}
-    >
-      <ArrowDownToLine />
-    </Button>
+      tooltip="Export Data"
+    />
   );
 };
 
-export default ExportData;
+export default ExportDataButton;
