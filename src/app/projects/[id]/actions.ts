@@ -15,6 +15,16 @@ import { revalidatePath } from 'next/cache';
 import db from '@/firebase/db';
 import type { Item } from '@/types';
 
+export async function updateProjectMembers(
+  projectId: string,
+  members: string[],
+) {
+  await updateDoc(doc(db, 'projects', projectId), {
+    members,
+  });
+  revalidatePath('/projects');
+}
+
 export async function addCategory(projectId: string, name: string) {
   await addDoc(collection(db, 'projects', projectId, 'categories'), {
     name,

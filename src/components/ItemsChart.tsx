@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  ComponentProps,
   FC,
   MouseEvent,
   useCallback,
@@ -10,7 +11,11 @@ import {
 } from 'react';
 import { Cell, Legend, Pie, PieChart, Sector } from 'recharts';
 
-const renderActiveShape = (props: any) => {
+import type { Item } from '@/types';
+
+const renderActiveShape: ComponentProps<typeof Pie>['activeShape'] = (
+  props: Record<string, any>,
+) => {
   const RADIAN = Math.PI / 180;
   const {
     cx,
@@ -83,19 +88,19 @@ const renderActiveShape = (props: any) => {
   );
 };
 
-const Chart: FC<{ className?: string; data: any }> = ({ className, data }) => {
+const ItemsChart: FC<{ items: Item[] }> = ({ items: items_ }) => {
   const randomColor = require('randomcolor');
 
-  const [COLORS, setCOLORS] = useState<string[]>([]);
+  const [colors, setColors] = useState<string[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
   // Preprocess the data to include the totalValue
-  const modifiedData = useMemo(() => {
-    return data.map((entry: any) => ({
-      ...entry,
-      totalValue: entry.price * entry.quantity,
+  const items = useMemo(() => {
+    return items_.map((item) => ({
+      ...item,
+      totalValue: item.price * item.quantity,
     }));
-  }, [data]);
+  }, [items_]);
 
   const onPieEnter = useCallback(
     (_: MouseEvent, index: number) => {
@@ -105,20 +110,20 @@ const Chart: FC<{ className?: string; data: any }> = ({ className, data }) => {
   );
 
   useEffect(() => {
-    setCOLORS(
+    setColors(
       randomColor({
         hue: '#e11d48',
-        count: modifiedData.length,
+        count: items.length,
       }),
     );
-  }, [modifiedData.length, randomColor]);
+  }, [items.length, randomColor]);
 
   return (
     <PieChart width={900} height={500}>
       <Pie
         activeIndex={activeIndex}
         activeShape={renderActiveShape}
-        data={modifiedData}
+        data={items}
         cx={350}
         cy={250}
         innerRadius={100}
@@ -126,8 +131,8 @@ const Chart: FC<{ className?: string; data: any }> = ({ className, data }) => {
         dataKey="totalValue"
         onMouseEnter={onPieEnter}
       >
-        {modifiedData.map((entry: any, index: any) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+        {items.map((items, index) => (
+          <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
         ))}
       </Pie>
       <Legend
@@ -135,10 +140,10 @@ const Chart: FC<{ className?: string; data: any }> = ({ className, data }) => {
         verticalAlign="middle"
         align="right"
         iconType="square"
-        payload={modifiedData.map((entry: any, index: any) => ({
-          value: entry.name + ': ' + entry.totalValue + '$',
+        payload={items.map((item, index) => ({
+          value: item.name + ': ' + item.totalValue + '$',
           type: 'square',
-          color: COLORS[index % COLORS.length],
+          color: colors[index % colors.length],
         }))}
         height={50}
       />
@@ -146,4 +151,4 @@ const Chart: FC<{ className?: string; data: any }> = ({ className, data }) => {
   );
 };
 
-export default Chart;
+export default ItemsChart;

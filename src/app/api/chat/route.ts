@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   // console.log('searchParams',searchParams)
   // const projectId = searchParams.get('id')
 
-  const projectId = 'i0YRXACIJ2OQpiaPtyrt';
+  const projectId = 'KXvSYnxxqaBhdomyzX6d';
 
   const messages: ChatCompletionMessage[] = body.messages;
 

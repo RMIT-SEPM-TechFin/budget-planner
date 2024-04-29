@@ -1,8 +1,10 @@
 'use client';
 
-import { FC, useEffect, useState } from 'react';
+import { PieChart } from 'lucide-react';
+import { FC, useMemo, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
+import ActionIconButton from '@/components/ActionIconButton';
+import ItemsChart from '@/components/ItemsChart';
 import {
   Dialog,
   DialogClose,
@@ -14,52 +16,55 @@ import {
 } from '@/components/ui/dialog';
 import { Item, Plan } from '@/types';
 
-import Chart from '../../../components/Chart/PieChart';
 import { usePlanIdQueryParam } from './hooks';
 
 const ViewChartButton: FC<{
-  className?: string;
   projectName: string;
-  data: any;
+  items: Item[];
   plans: Plan[];
-}> = ({ className, projectName, data, plans }) => {
+}> = ({ projectName, items, plans }) => {
+  const { planId } = usePlanIdQueryParam();
+
   const [open, setOpen] = useState(false);
 
-  const { planId, setPlanId } = usePlanIdQueryParam();
-  const [planItems, setPlanItems] = useState<Item[]>([]);
-  const selectedPlan = plans.find((plan) => plan.id == planId);
+  const selectedPlan = useMemo(
+    () => plans.find((plan) => plan.id == planId),
+    [plans, planId],
+  );
 
-  const planName = selectedPlan ? selectedPlan.name : projectName;
+  const itemsToDisplay = useMemo(
+    () =>
+      selectedPlan
+        ? items.filter((item: { id: string }) =>
+            selectedPlan.items.includes(item.id),
+          )
+        : items,
+    [items, selectedPlan],
+  );
 
-  useEffect(() => {
-    if (selectedPlan) {
-      const selectedPlanItems = data.filter((item: { id: string }) =>
-        selectedPlan.items.includes(item.id),
-      );
-      setPlanItems(selectedPlanItems);
-    }
-  }, [selectedPlan, data]);
-  const displayDataItem = selectedPlan ? planItems : data;
-  const planDataItem = selectedPlan
-    ? planItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
-    : data.reduce((acc: any, curr: any) => acc + curr.price * curr.quantity, 0);
+  const planDataItem = useMemo(
+    () =>
+      itemsToDisplay.reduce((acc, item) => acc + item.price * item.quantity, 0),
+    [itemsToDisplay],
+  );
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant={'secondary'}
-          className={className}
+        <ActionIconButton
+          Icon={PieChart}
+          tooltip="View Chart"
           onClick={() => setOpen(true)}
-        >
-          View Chart
-        </Button>
+        />
       </DialogTrigger>
       <DialogContent className="!max-w-fit">
         <DialogHeader>
-          <DialogTitle>{planName} Cost Breakdown</DialogTitle>
+          <DialogTitle>
+            {selectedPlan ? selectedPlan.name : projectName} Cost Breakdown
+          </DialogTitle>
           <DialogClose />
         </DialogHeader>
-        <Chart className="text-2xl" data={displayDataItem} />
+        <ItemsChart items={itemsToDisplay} />
         <DialogFooter className="flex !justify-center ">
           <div className="text-2xl font-bold">Total:</div>
           <div className="text-2xl">{planDataItem}$</div>
