@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 
 import { Button } from '@/components/ui/button';
 
+import AIChatButton from './AIChatButton';
 import { ProjectContextProvider } from './context';
 import ExportData from './ExportData';
 import {
@@ -27,7 +28,7 @@ export default async function Layout({
     fetchProjectPlans(id),
     fetchProjectItemsAndCategories(id),
   ]);
-
+  console.log(id);
   return (
     <ProjectContextProvider
       projectId={id}
@@ -55,6 +56,7 @@ export default async function Layout({
             <div className="justify-between items-center flex gap-2">
               <ViewChartButton projectName={name} data={items} plans={plans} />
               <Button variant="secondary">Compare</Button>
+              <AIChatButton projectId={id} />
             </div>
           </div>
         </div>

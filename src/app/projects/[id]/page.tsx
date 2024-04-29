@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation';
 import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 
 import AddItemButton from './AddItemButton';
-import { fetchProjectItemsAndCategories } from './fetch';
 import ItemTable from './ItemTable';
 
 // Force dynamic to be able to use cookies
