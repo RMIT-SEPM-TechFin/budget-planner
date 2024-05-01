@@ -4,15 +4,15 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { FC, useCallback, useMemo, useTransition } from 'react';
 
 import {
-  Table,
   TableActionCell,
   TableSortableHeader,
 } from '@/components/table';
 import useNotification from '@/hooks/useNotification';
-import type { Category, Item } from '@/types';
+import type { Category, ComparisonProps, Item } from '@/types';
 
 import { deleteItem } from '../../projects/[id]/actions';
 import { useProject } from '../../projects/[id]/context';
+import Table from './Table';
 
 const columnHelper = createColumnHelper<Item>();
 
@@ -42,8 +42,9 @@ const staticColumns = [
   }),
 ] as ColumnDef<Item>[];
 
-const ItemTable: FC<{ planId: string | undefined, filteredItems: Item[], categories: Category[] }> = ({ planId, filteredItems, categories }) => {
+const ItemTable: FC<{ planId: string | undefined, filteredItems: Item[], categories: Category[], itemMap: ComparisonProps }> = ({ planId, filteredItems, categories, itemMap }) => {
 
+  console.log("itemMap in ItemTable:", itemMap);
   const columns = useMemo(
     () =>
       [
@@ -61,7 +62,7 @@ const ItemTable: FC<{ planId: string | undefined, filteredItems: Item[], categor
   );
 
   return (
-    <Table columns={columns} data={filteredItems} showPagination={false} />
+    <Table columns={columns} data={filteredItems} showPagination={false} itemMap={itemMap}/>
   );
 };
 
