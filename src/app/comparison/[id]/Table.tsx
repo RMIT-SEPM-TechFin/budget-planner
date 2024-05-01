@@ -133,7 +133,7 @@ function Table<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className={itemMap[row.original.id]}
+                  className={itemMap[row.original.id] + " hover:bg-default"}
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
