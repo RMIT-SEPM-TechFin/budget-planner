@@ -5,7 +5,7 @@ import { FC, use, useEffect, useState } from 'react';
 import { string } from 'zod';
 
 import { ScrollArea, ScrollBar } from '@/components/ui/scrollarea';
-import type { Category, Item, Plan } from '@/types';
+import type { Category, ComparisonProps, Item, Plan } from '@/types';
 
 import {
   fetchProjectItemsAndCategories,
@@ -20,12 +20,14 @@ const ScrollAreaHorizontalDemo: FC<{
   planId: string | undefined;
   filteredItems: Item[];
   categories: Category[];
-}> = ({ classname, filteredItems, categories, planId }) => {
+  itemMap: ComparisonProps;
+}> = ({ classname, filteredItems, categories, planId, itemMap }) => {
 
+  console.log("iteMap in ScrollAreaHorizontalDemo:", itemMap);
   return (
     <ScrollArea className="w-max whitespace-nowrap rounded-md border">
       <div className="flex flex-col w-max gap-3 p-4">
-        <ItemTable filteredItems={filteredItems} categories={categories} planId={planId} />
+        <ItemTable filteredItems={filteredItems} categories={categories} planId={planId} itemMap={itemMap} />
       </div>
       <ScrollBar orientation="horizontal" />
     </ScrollArea>
