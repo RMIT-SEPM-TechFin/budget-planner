@@ -18,7 +18,7 @@ const ScrollAreaHorizontalDemo: FC<{
 
   console.log("iteMap in ScrollAreaHorizontalDemo:", itemMap);
   return (
-    <ScrollArea className="w-max whitespace-nowrap rounded-md border">
+    <ScrollArea className="w-full whitespace-nowrap rounded-md border">
       <div className="flex flex-col w-max gap-3 p-4">
         <ItemTable filteredItems={filteredItems} categories={categories} planId={planId} itemMap={itemMap} />
       </div>
