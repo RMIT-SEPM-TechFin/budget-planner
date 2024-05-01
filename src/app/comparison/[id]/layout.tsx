@@ -1,4 +1,7 @@
+import Link from 'next/link';
 import { ReactNode } from 'react';
+
+import { Button } from '@/components/ui/button';
 
 import { ProjectContextProvider } from '../../projects/[id]/context';
 import {
@@ -29,8 +32,15 @@ export default async function Layout({
       items={items}
       plans={plans}
     >
-      <div className="space-y-6">
-        <h1>{name}</h1>
+      <div className="space-y-10">
+        <div className='flex flex-col items-center gap-3'>
+          <h1>{name}</h1>
+          <Link
+            href={`/projects/${id}`}
+          >
+            <Button variant="secondary">Back to Project Page</Button>
+          </Link>
+        </div>
         <div className="relative">{children}</div>
       </div>
     </ProjectContextProvider>
