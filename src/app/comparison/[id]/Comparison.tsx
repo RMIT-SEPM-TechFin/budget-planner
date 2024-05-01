@@ -86,40 +86,42 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
   
   return (
     <div className="relative flex gap-2">
-      <div className='flex flex-col gap-2'>
-        <Select
-          onValueChange={(value) => {
-            console.log('New plan selected:', value); // Debug: Check if this logs correctly
-            setPlanId(value === 'all' ? undefined : value);
-          }}
-          value={planId ?? 'all'}
-        >
-          <SelectTrigger className="w-max">
-            <SelectValue placeholder="Select a plan" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Items</SelectItem>
-            <SelectSeparator />
-            <SelectGroup>
-              <div className="relative">
-                <SelectLabel>Plans</SelectLabel>
-              </div>
-              <div className="relative">
-                {data.plans.map((plan) => {
-                  return (
-                    <div className="relative z-0" key={plan.id}>
-                      <SelectItem value={plan.id}>{plan.name}</SelectItem>
-                    </div>
-                  );
-                })}
-              </div>
-              {data.plans.length === 0 && 'No plans available'}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+      <div className='flex w-[50%] flex-col gap-2'>
+        <div className='flex flex-row-reverse'>
+          <Select
+            onValueChange={(value) => {
+              console.log('New plan selected:', value); // Debug: Check if this logs correctly
+              setPlanId(value === 'all' ? undefined : value);
+            }}
+            value={planId ?? 'all'}
+          >
+            <SelectTrigger className="w-max">
+              <SelectValue placeholder="Select a plan" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Items</SelectItem>
+              <SelectSeparator />
+              <SelectGroup>
+                <div className="relative">
+                  <SelectLabel>Plans</SelectLabel>
+                </div>
+                <div className="relative">
+                  {data.plans.map((plan) => {
+                    return (
+                      <div className="relative z-0" key={plan.id}>
+                        <SelectItem value={plan.id}>{plan.name}</SelectItem>
+                      </div>
+                    );
+                  })}
+                </div>
+                {data.plans.length === 0 && 'No plans available'}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
         <ScrollAreaHorizontalDemo planId={planId} filteredItems={filteredItems1} categories={categories} itemMap={itemMap1}/>
       </div>
-      <div className='flex flex-col gap-2'>
+      <div className='flex w-[50%] flex-col gap-2'>
         <Select
           onValueChange={(value) => {
             console.log('New plan selected:', value); // Debug: Check if this logs correctly
