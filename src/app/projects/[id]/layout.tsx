@@ -38,7 +38,7 @@ export default async function Layout({
           {/* TODO: add breadcrumb */}
 
           <div className="w-full flex items-center justify-between">
-            <SelectPlanToDisplay plans={plans} />
+            <SelectPlanToDisplay classname='w-max' plans={plans} />
 
             <div className="justify-between items-center flex gap-2">
               <Button variant="secondary">View Chart</Button>
