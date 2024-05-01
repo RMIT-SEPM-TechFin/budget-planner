@@ -32,3 +32,11 @@ export interface User {
   email: string;
   photoUrl: string;
 }
+
+export interface ComparisonProps {
+  [id: string] : string | undefined;
+}
+
+export interface Identifiable {
+  id: string;
+}
