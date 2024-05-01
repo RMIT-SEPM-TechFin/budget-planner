@@ -1,19 +1,13 @@
 'use client'
 
-import { getCookie } from 'cookies-next';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { FC, useEffect, useMemo, useState } from 'react';
 
 import { useProject } from '@/app/projects/[id]/context';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 import { Category, ComparisonProps,Item, Plan } from '@/types';
 
 import { fetchProjectItemsAndCategories, fetchProjectName, fetchProjectPlans } from '../../projects/[id]/fetch';
-import ItemTable from '../../projects/[id]/ItemTable';
 import compareItems from './compareItems';
-import ScrollArea from './ScrollArea';
 import ScrollAreaHorizontalDemo from './ScrollArea';
 import { usePlanIdLocal } from './useLocalId';
 

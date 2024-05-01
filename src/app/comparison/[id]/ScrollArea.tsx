@@ -1,19 +1,11 @@
 'use client';
 
-import Image from 'next/image';
-import { FC, use, useEffect, useState } from 'react';
-import { string } from 'zod';
+import { FC } from 'react';
 
 import { ScrollArea, ScrollBar } from '@/components/ui/scrollarea';
-import type { Category, ComparisonProps, Item, Plan } from '@/types';
+import type { Category, ComparisonProps, Item } from '@/types';
 
-import {
-  fetchProjectItemsAndCategories,
-  fetchProjectName,
-  fetchProjectPlans,
-} from '../../projects/[id]/fetch';
 import ItemTable from './ComparisonItemTable';
-import { usePlanIdLocal } from './useLocalId';
 
 // Component to display a horizontal scroll area
 const ScrollAreaHorizontalDemo: FC<{

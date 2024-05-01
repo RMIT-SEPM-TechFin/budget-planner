@@ -1,5 +1,3 @@
-import { FC } from "react";
-
 import { ComparisonProps, Item } from "@/types";
 
 const compareItems = (items1: Item[], items2: Item[]) => {

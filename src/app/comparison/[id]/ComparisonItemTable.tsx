@@ -1,17 +1,13 @@
 'use client';
 
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
-import { FC, useCallback, useMemo, useTransition } from 'react';
+import { FC, useMemo } from 'react';
 
 import {
-  TableActionCell,
   TableSortableHeader,
 } from '@/components/table';
-import useNotification from '@/hooks/useNotification';
 import type { Category, ComparisonProps, Item } from '@/types';
 
-import { deleteItem } from '../../projects/[id]/actions';
-import { useProject } from '../../projects/[id]/context';
 import Table from './ComparisonTable';
 
 const columnHelper = createColumnHelper<Item>();
