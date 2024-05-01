@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ReactNode } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -42,7 +43,11 @@ export default async function Layout({
 
             <div className="justify-between items-center flex gap-2">
               <Button variant="secondary">View Chart</Button>
-              <Button variant="secondary">Compare</Button>
+              <Link
+                href={`/comparison/${id}`}
+              >
+                <Button variant="secondary">Compare</Button>
+              </Link>
             </div>
           </div>
         </div>
