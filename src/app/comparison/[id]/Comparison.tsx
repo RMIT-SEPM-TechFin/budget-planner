@@ -12,6 +12,7 @@ import { Category, ComparisonProps,Item, Plan } from '@/types';
 
 import { fetchProjectItemsAndCategories, fetchProjectName, fetchProjectPlans } from '../../projects/[id]/fetch';
 import ItemTable from '../../projects/[id]/ItemTable';
+import compareItems from './compareItems';
 import ScrollArea from './ScrollArea';
 import ScrollAreaHorizontalDemo from './ScrollArea';
 import { usePlanIdLocal } from './useLocalId';
@@ -26,6 +27,7 @@ interface ProjectData {
   categories: Category[];
 }
 
+// Comment: This component is used to compare two plans
 const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
   const { id } = params;
 
@@ -40,6 +42,7 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
     categories: [],
   });
 
+  // Fetch project data
   useEffect(() => {
     async function fetchData() {
       const [name, plans, { items, categories }] = await Promise.all([
@@ -53,6 +56,7 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
     fetchData().catch(console.error);
   }, [id]); // Dependency array to refetch when id changes
 
+  // Filter items based on selected plan
   const filteredItems1 = useMemo(() => {
     const filteredItemIds =
       typeof planId === 'string'
@@ -64,6 +68,7 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
     return items.filter((item) => filteredItemIds.includes(item.id));
   }, [planId, plans, items]);
 
+  // Filter items based on selected plan
   const filteredItems2 = useMemo(() => {
     const filteredItemIds2 =
       typeof planId2 === 'string'
@@ -75,65 +80,10 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
     return items.filter((item) => filteredItemIds2.includes(item.id));
   }, [planId2, plans, items]);
 
-  function compareItems(items1: Item[], items2: Item[]) {
-    const itemMap1: ComparisonProps = {};
-
-    const itemMap2: ComparisonProps = {};
-
-    const items1Map = new Map(items1.map(item => [`${item.category}-${item.name}`, item]));
-    const items2Map = new Map(items2.map(item => [`${item.category}-${item.name}`, item]));
-    console.log('Items 1 Map:', items1Map);
-    console.log('Items 2 Map:', items2Map);
-  
-    // Check for items in items1 not in items2 or different
-    items1.forEach(item => {
-      const key = `${item.category}-${item.name}`;
-      const item2 = items2Map.get(key);
-    
-      if (!item2) {
-        itemMap1[item.id] = "bg-comparison-red";  // Item by this name and category doesn't exist in items2
-      } else {
-        let propertiesDiffer = false;
-        loop1:
-        for (const [key, value] of Object.entries(item)) {
-          if (value !== item2[key as keyof typeof item2]) {
-            propertiesDiffer = true;
-            break loop1;  // Stop at the first differing property
-          }
-        }
-        if (propertiesDiffer) {
-          itemMap1[item.id] = "bg-comparison-yellow";  // Properties differ
-        }
-      }
-    });
-
-    // Check for items in items2 not in items1 or different
-    items2.forEach(item => {
-      const key = `${item.category}-${item.name}`;
-      const item1 = items1Map.get(key);
-    
-      if (!item1) {
-        itemMap2[item.id] = "bg-comparison-green";  // Item by this name and category doesn't exist in items2
-      } else {
-        let propertiesDiffer = false;
-        loop2:
-        for (const [key, value] of Object.entries(item)) {
-          if (value !== item1[key as keyof typeof item1]) {
-            propertiesDiffer = true;
-            break loop2;  // Stop at the first differing property
-          }
-        }
-        if (propertiesDiffer) {
-          itemMap2[item.id] = "bg-comparison-yellow";  // Properties differ
-        }
-      }
-    });
-    return [itemMap1, itemMap2];
-  };
-
   const [itemMap1, setItemMap1] = useState<ComparisonProps>({});
   const [itemMap2, setItemMap2] = useState<ComparisonProps>({});
   
+  // Compare items when filteredItems1 or filteredItems2 change
   useEffect(() => {
     const [newItemMap1, newItemMap2] = compareItems(filteredItems1, filteredItems2);
     setItemMap1(newItemMap1);

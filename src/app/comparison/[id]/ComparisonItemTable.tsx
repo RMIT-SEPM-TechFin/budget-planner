@@ -12,10 +12,11 @@ import type { Category, ComparisonProps, Item } from '@/types';
 
 import { deleteItem } from '../../projects/[id]/actions';
 import { useProject } from '../../projects/[id]/context';
-import Table from './Table';
+import Table from './ComparisonTable';
 
 const columnHelper = createColumnHelper<Item>();
 
+// Define static columns
 const staticColumns = [
   columnHelper.accessor('name', {
     header: 'Name',
@@ -42,6 +43,7 @@ const staticColumns = [
   }),
 ] as ColumnDef<Item>[];
 
+// Comment: This is a table component that uses the react-table library
 const ItemTable: FC<{ planId: string | undefined, filteredItems: Item[], categories: Category[], itemMap: ComparisonProps }> = ({ planId, filteredItems, categories, itemMap }) => {
 
   console.log("itemMap in ItemTable:", itemMap);

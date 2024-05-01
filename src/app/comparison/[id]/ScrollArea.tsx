@@ -12,9 +12,10 @@ import {
   fetchProjectName,
   fetchProjectPlans,
 } from '../../projects/[id]/fetch';
-import ItemTable from './ItemTable';
+import ItemTable from './ComparisonItemTable';
 import { usePlanIdLocal } from './useLocalId';
 
+// Component to display a horizontal scroll area
 const ScrollAreaHorizontalDemo: FC<{
   classname?: string;
   planId: string | undefined;
