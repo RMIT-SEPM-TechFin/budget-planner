@@ -28,7 +28,7 @@ import {
 import { Input } from '@/components/ui/input';
 import useNotification from '@/hooks/useNotification';
 
-import { updateProjectMembers } from './actions';
+import { updateProjectMembers } from './(project)/actions';
 
 interface ManageMembersButtonProps {
   projectId: string;
