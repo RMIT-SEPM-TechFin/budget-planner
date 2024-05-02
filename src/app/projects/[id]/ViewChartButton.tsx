@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/dialog';
 import { Item, Plan } from '@/types';
 
-import { usePlanIdQueryParam } from './hooks';
+import { usePlanIdQueryParam } from './(project)/hooks';
 
 const ViewChartButton: FC<{
   projectName: string;
