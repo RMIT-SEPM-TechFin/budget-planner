@@ -4,16 +4,16 @@ import { ReactNode } from 'react';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { Button } from '@/components/ui/button';
 
+import ExportDataButton from '../ExportDataButton';
+import ManageMembersButton from '../ManageMembersButton';
+import ViewChartButton from '../ViewChartButton';
 import { ProjectContextProvider } from './context';
-import ExportDataButton from './ExportDataButton';
 import {
   fetchProjectInfo,
   fetchProjectItemsAndCategories,
   fetchProjectPlans,
 } from './fetch';
-import ManageMembersButton from './ManageMembersButton';
 import SelectPlanToDisplay from './SelectPlanToDisplay';
-import ViewChartButton from './ViewChartButton';
 
 export default async function Layout({
   params,
@@ -61,7 +61,7 @@ export default async function Layout({
               <Link
                 href={`/projects/${id}/comparison`}
               >
-                <Button variant="secondary">Compare</Button>
+                <Button className='bg-white border-[1px] border-[#e4e4e7]' variant="secondary">Compare</Button>
               </Link>
               <ViewChartButton projectName={name} items={items} plans={plans} />
               <ManageMembersButton projectId={id} initialMembers={members} />
