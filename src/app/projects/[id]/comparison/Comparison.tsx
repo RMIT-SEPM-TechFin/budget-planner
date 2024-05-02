@@ -6,7 +6,7 @@ import { useProject } from '@/app/projects/[id]/(project)/context';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Category, ComparisonProps,Item, Plan } from '@/types';
 
-import { fetchProjectItemsAndCategories, fetchProjectName, fetchProjectPlans } from '../(project)/fetch';
+import { fetchProjectInfo, fetchProjectItemsAndCategories, fetchProjectPlans } from '../(project)/fetch';
 import compareItems from './compareItems';
 import ScrollAreaHorizontalDemo from './ScrollArea';
 import { usePlanIdLocal } from './useLocalId';
@@ -39,8 +39,8 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
   // Fetch project data
   useEffect(() => {
     async function fetchData() {
-      const [name, plans, { items, categories }] = await Promise.all([
-        fetchProjectName(id),
+      const [{name, members} , plans, { items, categories }] = await Promise.all([
+        fetchProjectInfo(id),
         fetchProjectPlans(id),
         fetchProjectItemsAndCategories(id),
       ]);
