@@ -3,9 +3,7 @@
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { FC, useMemo } from 'react';
 
-import {
-  TableSortableHeader,
-} from '@/components/table';
+import { TableSortableHeader } from '@/components/table';
 import type { Category, ComparisonProps, Item } from '@/types';
 
 import Table from './ComparisonTable';
@@ -40,9 +38,13 @@ const staticColumns = [
 ] as ColumnDef<Item>[];
 
 // Comment: This is a table component that uses the react-table library
-const ItemTable: FC<{ planId: string | undefined, filteredItems: Item[], categories: Category[], itemMap: ComparisonProps }> = ({ planId, filteredItems, categories, itemMap }) => {
-
-  console.log("itemMap in ItemTable:", itemMap);
+const ItemTable: FC<{
+  planId: string | undefined;
+  filteredItems: Item[];
+  categories: Category[];
+  itemMap: ComparisonProps;
+}> = ({ planId, filteredItems, categories, itemMap }) => {
+  console.log('itemMap in ItemTable:', itemMap);
   const columns = useMemo(
     () =>
       [
@@ -60,7 +62,12 @@ const ItemTable: FC<{ planId: string | undefined, filteredItems: Item[], categor
   );
 
   return (
-    <Table columns={columns} data={filteredItems} showPagination={false} itemMap={itemMap}/>
+    <Table
+      columns={columns}
+      data={filteredItems}
+      showPagination={false}
+      itemMap={itemMap}
+    />
   );
 };
 

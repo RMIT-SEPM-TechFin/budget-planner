@@ -15,12 +15,16 @@ const ScrollAreaHorizontalDemo: FC<{
   categories: Category[];
   itemMap: ComparisonProps;
 }> = ({ classname, filteredItems, categories, planId, itemMap }) => {
-
-  console.log("iteMap in ScrollAreaHorizontalDemo:", itemMap);
+  console.log('iteMap in ScrollAreaHorizontalDemo:', itemMap);
   return (
     <ScrollArea className="w-full whitespace-nowrap rounded-md border">
       <div className="flex flex-col w-max gap-3 p-4">
-        <ItemTable filteredItems={filteredItems} categories={categories} planId={planId} itemMap={itemMap} />
+        <ItemTable
+          filteredItems={filteredItems}
+          categories={categories}
+          planId={planId}
+          itemMap={itemMap}
+        />
       </div>
       <ScrollBar orientation="horizontal" />
     </ScrollArea>

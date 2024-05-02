@@ -58,10 +58,13 @@ export default async function Layout({
                 data={items}
                 plans={plans}
               />
-              <Link
-                href={`/projects/${id}/comparison`}
-              >
-                <Button className='bg-white border-[1px] border-[#e4e4e7]' variant="secondary">Compare</Button>
+              <Link href={`/projects/${id}/comparison`}>
+                <Button
+                  className="bg-white border-[1px] border-[#e4e4e7]"
+                  variant="secondary"
+                >
+                  Compare
+                </Button>
               </Link>
               <ViewChartButton projectName={name} items={items} plans={plans} />
               <ManageMembersButton projectId={id} initialMembers={members} />

@@ -34,7 +34,7 @@ export interface User {
 }
 
 export interface ComparisonProps {
-  [id: string] : string | undefined;
+  [id: string]: string | undefined;
 }
 
 export interface Identifiable {

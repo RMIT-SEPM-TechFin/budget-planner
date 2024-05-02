@@ -1,12 +1,25 @@
-'use client'
+'use client';
 
 import { FC, useEffect, useMemo, useState } from 'react';
 
 import { useProject } from '@/app/projects/[id]/(project)/context';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Category, ComparisonProps,Item, Plan } from '@/types';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Category, ComparisonProps, Item, Plan } from '@/types';
 
-import { fetchProjectInfo, fetchProjectItemsAndCategories, fetchProjectPlans } from '../(project)/fetch';
+import {
+  fetchProjectInfo,
+  fetchProjectItemsAndCategories,
+  fetchProjectPlans,
+} from '../(project)/fetch';
 import compareItems from './compareItems';
 import ScrollAreaHorizontalDemo from './ScrollArea';
 import { usePlanIdLocal } from './useLocalId';
@@ -39,11 +52,12 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
   // Fetch project data
   useEffect(() => {
     async function fetchData() {
-      const [{name, members} , plans, { items, categories }] = await Promise.all([
-        fetchProjectInfo(id),
-        fetchProjectPlans(id),
-        fetchProjectItemsAndCategories(id),
-      ]);
+      const [{ name, members }, plans, { items, categories }] =
+        await Promise.all([
+          fetchProjectInfo(id),
+          fetchProjectPlans(id),
+          fetchProjectItemsAndCategories(id),
+        ]);
       setData({ name, plans, items, categories });
     }
 
@@ -56,9 +70,9 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
       typeof planId === 'string'
         ? plans.find((plan) => plan.id === planId)?.items
         : undefined;
-  
+
     if (filteredItemIds === undefined) return items;
-    
+
     return items.filter((item) => filteredItemIds.includes(item.id));
   }, [planId, plans, items]);
 
@@ -68,25 +82,28 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
       typeof planId2 === 'string'
         ? plans.find((plan) => plan.id === planId2)?.items
         : undefined;
-  
+
     if (filteredItemIds2 === undefined) return items;
-    
+
     return items.filter((item) => filteredItemIds2.includes(item.id));
   }, [planId2, plans, items]);
 
   const [itemMap1, setItemMap1] = useState<ComparisonProps>({});
   const [itemMap2, setItemMap2] = useState<ComparisonProps>({});
-  
+
   // Compare items when filteredItems1 or filteredItems2 change
   useEffect(() => {
-    const [newItemMap1, newItemMap2] = compareItems(filteredItems1, filteredItems2);
+    const [newItemMap1, newItemMap2] = compareItems(
+      filteredItems1,
+      filteredItems2,
+    );
     setItemMap1(newItemMap1);
     setItemMap2(newItemMap2);
   }, [filteredItems1, filteredItems2]); // Dependencies
-  
+
   return (
     <div className="relative flex gap-2">
-      <div className='flex w-[50%] flex-col gap-2'>
+      <div className="flex w-[50%] flex-col gap-2">
         <Select
           onValueChange={(value) => {
             console.log('New plan selected:', value); // Debug: Check if this logs correctly
@@ -106,10 +123,12 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
               </div>
               <div className="relative">
                 {data.plans.map((plan) => {
-                  console.log("Plan Id: ",plan.id);
+                  console.log('Plan Id: ', plan.id);
                   return (
                     <div className="relative z-0" key={plan.id}>
-                      <SelectItem disabled={planId2 == plan.id} value={plan.id}>{plan.name}</SelectItem>
+                      <SelectItem disabled={planId2 == plan.id} value={plan.id}>
+                        {plan.name}
+                      </SelectItem>
                     </div>
                   );
                 })}
@@ -118,9 +137,14 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <ScrollAreaHorizontalDemo planId={planId} filteredItems={filteredItems1} categories={categories} itemMap={itemMap1}/>
+        <ScrollAreaHorizontalDemo
+          planId={planId}
+          filteredItems={filteredItems1}
+          categories={categories}
+          itemMap={itemMap1}
+        />
       </div>
-      <div className='flex w-[50%] flex-col gap-2'>
+      <div className="flex w-[50%] flex-col gap-2">
         <Select
           onValueChange={(value) => {
             console.log('New plan selected:', value); // Debug: Check if this logs correctly
@@ -140,10 +164,12 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
               </div>
               <div className="relative">
                 {data.plans.map((plan) => {
-                  console.log("Plan Id: ", plan.id);
+                  console.log('Plan Id: ', plan.id);
                   return (
                     <div className="relative z-0" key={plan.id}>
-                      <SelectItem disabled={planId == plan.id} value={plan.id}>{plan.name}</SelectItem>
+                      <SelectItem disabled={planId == plan.id} value={plan.id}>
+                        {plan.name}
+                      </SelectItem>
                     </div>
                   );
                 })}
@@ -152,10 +178,15 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <ScrollAreaHorizontalDemo planId={planId2} filteredItems={filteredItems2} categories={categories} itemMap={itemMap2}/>
+        <ScrollAreaHorizontalDemo
+          planId={planId2}
+          filteredItems={filteredItems2}
+          categories={categories}
+          itemMap={itemMap2}
+        />
       </div>
     </div>
   );
-}
+};
 
 export default Comparison;

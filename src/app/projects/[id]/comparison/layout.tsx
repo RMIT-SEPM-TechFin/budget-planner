@@ -20,7 +20,7 @@ export default async function Layout({
 }) {
   const { id } = params;
 
-  const [{name, members}, plans, { items, categories }] = await Promise.all([
+  const [{ name, members }, plans, { items, categories }] = await Promise.all([
     fetchProjectInfo(id),
     fetchProjectPlans(id),
     fetchProjectItemsAndCategories(id),
@@ -35,14 +35,21 @@ export default async function Layout({
     >
       <div className="space-y-10">
         <Breadcrumbs
-          items={[{ label: 'Dashboard', href: '/dashboard' }, { label: name, href: `/projects/${id}`}, { label: 'Comparison' }]}
+          items={[
+            { label: 'Dashboard', href: '/dashboard' },
+            { label: name, href: `/projects/${id}` },
+            { label: 'Comparison' },
+          ]}
         />
-        <div className='flex justify-between'>
+        <div className="flex justify-between">
           <h1>{name}</h1>
-          <Link
-            href={`/projects/${id}`}
-          >
-            <Button className='bg-white border-[1px] border-[#e4e4e7]' variant="secondary">Back to Project Page</Button>
+          <Link href={`/projects/${id}`}>
+            <Button
+              className="bg-white border-[1px] border-[#e4e4e7]"
+              variant="secondary"
+            >
+              Back to Project Page
+            </Button>
           </Link>
         </div>
         <div className="relative">{children}</div>
