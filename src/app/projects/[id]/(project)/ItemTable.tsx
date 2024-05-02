@@ -43,11 +43,12 @@ const staticColumns = [
     header: (props) => <TableSortableHeader title="Quantity" props={props} />,
     cell: (props) => props.getValue(),
   }),
-  columnHelper.accessor((row) => '$' + row.price * row.quantity, {
+  columnHelper.accessor((row) => row.price * row.quantity, {
     id: 'total-price',
     header: (props) => (
       <TableSortableHeader title="Total Price" props={props} />
     ),
+    cell: (props) => '$' + props.getValue(),
   }),
 ] as ColumnDef<Item>[];
 
