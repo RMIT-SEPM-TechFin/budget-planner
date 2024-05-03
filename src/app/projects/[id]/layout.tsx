@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 
 import Breadcrumbs from '@/components/Breadcrumbs';
-import { Button } from '@/components/ui/button';
 
 import AIChatButton from './AIChatButton';
 import { ProjectContextProvider } from './context';

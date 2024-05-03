@@ -30,8 +30,12 @@ export default function AIChatBox({
     setMessages,
     isLoading,
     error,
-  } = useChat();
-  console.log('projectId:', projectId);
+  } = useChat({
+    body: {
+      projectId,
+    },
+  });
+
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
