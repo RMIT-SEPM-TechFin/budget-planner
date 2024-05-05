@@ -145,7 +145,7 @@ const ItemsChart: FC<{ items: Item[] }> = ({ items: items_ }) => {
           type: 'square',
           color: colors[index % colors.length],
         }))}
-        height={50}
+        height={200}
       />
     </PieChart>
   );

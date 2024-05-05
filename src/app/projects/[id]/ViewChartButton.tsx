@@ -14,6 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Item, Plan } from '@/types';
 
 import { usePlanIdQueryParam } from './hooks';
@@ -63,12 +64,30 @@ const ViewChartButton: FC<{
             {selectedPlan ? selectedPlan.name : projectName} Cost Breakdown
           </DialogTitle>
           <DialogClose />
+
+          <Tabs defaultValue="item" className="!max-w-fit">
+            <TabsList>
+              <TabsTrigger value="item">Items</TabsTrigger>
+              <TabsTrigger value="category">Categories</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="item">
+              <ItemsChart items={itemsToDisplay} />
+              <DialogFooter className="flex !justify-center ">
+                <div className="text-2xl font-bold">Total:</div>
+                <div className="text-2xl">{planDataItem}$</div>
+              </DialogFooter>
+            </TabsContent>
+
+            <TabsContent value="category">
+              <ItemsChart items={itemsToDisplay} />
+              <DialogFooter className="flex !justify-center ">
+                <div className="text-2xl font-bold">Total:</div>
+                <div className="text-2xl">{planDataItem}$</div>
+              </DialogFooter>
+            </TabsContent>
+          </Tabs>
         </DialogHeader>
-        <ItemsChart items={itemsToDisplay} />
-        <DialogFooter className="flex !justify-center ">
-          <div className="text-2xl font-bold">Total:</div>
-          <div className="text-2xl">{planDataItem}$</div>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

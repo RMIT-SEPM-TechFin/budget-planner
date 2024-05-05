@@ -26,8 +26,10 @@ const NavBar: FC = () => {
       )}
     >
       <div className="flex-1 max-w-[1200px] flex items-center justify-between">
-        {/* TODO: Add Logo */}
-        <Logo />
+        <div className="flex flex-row items-center gap-4">
+          <Logo />
+          <div className="text-lg font-bold">Budget Planner</div>
+        </div>
 
         <div>
           {/* User hasn't signed in, show Sign In button */}
