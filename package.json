@@ -12,7 +12,6 @@
     "format-fix": "prettier --write ."
   },
   "dependencies": {
-    ".": ".",
     "@hookform/resolvers": "^3.3.4",
     "@langchain/openai": "^0.0.28",
     "@pinecone-database/pinecone": "^2.2.0",
