@@ -15,8 +15,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
-  ChevronsRight,
-  Rows,
+  ChevronsRight
 } from 'lucide-react';
 import { useState } from 'react';
 
