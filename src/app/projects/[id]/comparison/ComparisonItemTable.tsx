@@ -44,7 +44,6 @@ const ItemTable: FC<{
   categories: Category[];
   itemMap: ComparisonProps;
 }> = ({ planId, filteredItems, categories, itemMap }) => {
-  console.log('itemMap in ItemTable:', itemMap);
   const columns = useMemo(
     () =>
       [
