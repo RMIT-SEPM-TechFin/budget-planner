@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useMemo, useState } from 'react';
 
-import { useProject } from '@/app/projects/[id]/(project)/context';
+import { useProject } from '@/app/projects/[id]/context';
 import {
   Select,
   SelectContent,
@@ -15,17 +15,9 @@ import {
 } from '@/components/ui/select';
 import { Category, ComparisonProps, Item, Plan } from '@/types';
 
-import {
-  fetchProjectInfo,
-  fetchProjectItemsAndCategories,
-  fetchProjectPlans,
-} from '../(project)/fetch';
 import compareItems from './compareItems';
-import ScrollAreaHorizontalDemo from './ScrollArea';
+import ScrollAreaHorizontal from './ScrollArea';
 import { usePlanIdLocal } from './useLocalId';
-
-// Force dynamic to be able to use cookies
-export const dynamic = 'force-dynamic';
 
 interface ProjectData {
   name: string;
@@ -40,7 +32,7 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
 
   const { planId, setPlanId } = usePlanIdLocal();
   const { planId: planId2, setPlanId: setPlanId2 } = usePlanIdLocal();
-  const { categories, items, plans } = useProject();
+  const { plans, items, categories } = useProject();
 
   const [data, setData] = useState<ProjectData>({
     name: '',
@@ -50,19 +42,7 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
   });
 
   // Fetch project data
-  useEffect(() => {
-    async function fetchData() {
-      const [{ name, members }, plans, { items, categories }] =
-        await Promise.all([
-          fetchProjectInfo(id),
-          fetchProjectPlans(id),
-          fetchProjectItemsAndCategories(id),
-        ]);
-      setData({ name, plans, items, categories });
-    }
 
-    fetchData().catch(console.error);
-  }, [id]); // Dependency array to refetch when id changes
 
   // Filter items based on selected plan
   const filteredItems1 = useMemo(() => {
@@ -106,7 +86,6 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
       <div className="flex w-[50%] flex-col gap-2">
         <Select
           onValueChange={(value) => {
-            console.log('New plan selected:', value); // Debug: Check if this logs correctly
             setPlanId(value === 'all' ? undefined : value);
           }}
           value={planId ?? 'all'}
@@ -123,7 +102,6 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
               </div>
               <div className="relative">
                 {data.plans.map((plan) => {
-                  console.log('Plan Id: ', plan.id);
                   return (
                     <div className="relative z-0" key={plan.id}>
                       <SelectItem disabled={planId2 == plan.id} value={plan.id}>
@@ -137,7 +115,7 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <ScrollAreaHorizontalDemo
+        <ScrollAreaHorizontal
           planId={planId}
           filteredItems={filteredItems1}
           categories={categories}
@@ -147,7 +125,6 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
       <div className="flex w-[50%] flex-col gap-2">
         <Select
           onValueChange={(value) => {
-            console.log('New plan selected:', value); // Debug: Check if this logs correctly
             setPlanId2(value === 'all' ? undefined : value);
           }}
           value={planId2 ?? 'all'}
@@ -164,7 +141,6 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
               </div>
               <div className="relative">
                 {data.plans.map((plan) => {
-                  console.log('Plan Id: ', plan.id);
                   return (
                     <div className="relative z-0" key={plan.id}>
                       <SelectItem disabled={planId == plan.id} value={plan.id}>
@@ -178,7 +154,7 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <ScrollAreaHorizontalDemo
+        <ScrollAreaHorizontal
           planId={planId2}
           filteredItems={filteredItems2}
           categories={categories}
