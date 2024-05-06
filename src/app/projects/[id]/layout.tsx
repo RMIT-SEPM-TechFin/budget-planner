@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import Breadcrumbs from '@/components/Breadcrumbs';
 
 import { ProjectContextProvider } from './context';
+import ConversationButton from './ConversationButton';
 import ExportDataButton from './ExportDataButton';
 import {
   fetchProjectInfo,
@@ -58,6 +59,7 @@ export default async function Layout({
               />
               <ViewChartButton projectName={name} items={items} plans={plans} />
               <ManageMembersButton projectId={id} initialMembers={members} />
+              <ConversationButton projectId={id} />
             </div>
           </div>
         </div>

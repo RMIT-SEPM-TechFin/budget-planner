@@ -32,3 +32,11 @@ export interface User {
   email: string;
   photoUrl: string;
 }
+
+export interface Chat {
+  id: string;
+  authorName: string;
+  authorEmail: string;
+  text: string;
+  createdAt: Date;
+}
