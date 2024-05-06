@@ -66,7 +66,6 @@ function Table<TData, TValue>({
     },
   });
 
-  console.log('itemMap in Table: ', itemMap);
 
   return (
     <div className="flex flex-col gap-4">
