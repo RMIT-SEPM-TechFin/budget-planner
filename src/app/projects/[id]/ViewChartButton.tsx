@@ -14,15 +14,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Item, Plan } from '@/types';
 
-import { usePlanIdQueryParam } from './(project)/hooks';
+import { useProject } from './context';
+import { usePlanIdQueryParam } from './hooks';
 
-const ViewChartButton: FC<{
-  projectName: string;
-  items: Item[];
-  plans: Plan[];
-}> = ({ projectName, items, plans }) => {
+const ViewChartButton: FC<{}> = () => {
+  const {name, plans, items} = useProject();
   const { planId } = usePlanIdQueryParam();
 
   const [open, setOpen] = useState(false);
@@ -60,7 +57,7 @@ const ViewChartButton: FC<{
       <DialogContent className="!max-w-fit">
         <DialogHeader>
           <DialogTitle>
-            {selectedPlan ? selectedPlan.name : projectName} Cost Breakdown
+            {selectedPlan ? selectedPlan.name : name} Cost Breakdown
           </DialogTitle>
           <DialogClose />
         </DialogHeader>
