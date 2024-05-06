@@ -52,7 +52,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
           variant: 'success',
         });
       }
-      router.push('/dashboard');
+      router.push('/');
     } catch (error) {
       showNotification({
         title: 'Sign In Failed',

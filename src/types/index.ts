@@ -17,15 +17,15 @@ export interface Item {
   quantity: number;
 }
 
+export interface Category {
+  id: string;
+  name: string;
+}
+
 export interface Plan {
   id: string;
   name: string;
   items: string[];
-}
-
-export interface Category {
-  id: string;
-  name: string;
 }
 
 export interface User {

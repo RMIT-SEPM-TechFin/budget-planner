@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React, { FC } from 'react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -26,10 +27,10 @@ const NavBar: FC = () => {
       )}
     >
       <div className="flex-1 max-w-[1200px] flex items-center justify-between">
-        <div className="flex flex-row items-center gap-4">
+        <Link className="flex flex-row items-center gap-4" href="/">
           <Logo />
           <div className="text-lg font-bold">Budget Planner</div>
-        </div>
+        </Link>
 
         <div>
           {/* User hasn't signed in, show Sign In button */}
