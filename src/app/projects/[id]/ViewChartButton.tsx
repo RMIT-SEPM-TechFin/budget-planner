@@ -4,6 +4,7 @@ import { PieChart } from 'lucide-react';
 import { FC, useMemo, useState } from 'react';
 
 import ActionIconButton from '@/components/ActionIconButton';
+import CategoriesChart from '@/components/CategoriesChart';
 import ItemsChart from '@/components/ItemsChart';
 import {
   Dialog,
@@ -15,7 +16,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Item, Plan } from '@/types';
+import { Category, Item, Plan } from '@/types';
 
 import { usePlanIdQueryParam } from './hooks';
 
@@ -23,7 +24,8 @@ const ViewChartButton: FC<{
   projectName: string;
   items: Item[];
   plans: Plan[];
-}> = ({ projectName, items, plans }) => {
+  categories: Category[];
+}> = ({ projectName, items, plans, categories }) => {
   const { planId } = usePlanIdQueryParam();
 
   const [open, setOpen] = useState(false);
@@ -41,6 +43,33 @@ const ViewChartButton: FC<{
           )
         : items,
     [items, selectedPlan],
+  );
+  console.log('itemsToDisplay', itemsToDisplay);
+
+  const itemsToDisplayWithCategoryNames = useMemo(() => {
+    // Create a mapping of category IDs to category names
+    const categoryMap: { [categoryId: string]: string } = {};
+    categories.forEach((category) => {
+      categoryMap[category.id] = category.name;
+    });
+
+    // Map items to display with their corresponding category names
+    return selectedPlan
+      ? items
+          .filter((item) => selectedPlan.items.includes(item.id))
+          .map((item) => ({
+            ...item,
+            category: categoryMap[item.category],
+          }))
+      : items.map((item) => ({
+          ...item,
+          category: categoryMap[item.category],
+        }));
+  }, [items, selectedPlan, categories]);
+
+  console.log(
+    'itemsToDisplayWithCategoryNames',
+    itemsToDisplayWithCategoryNames,
   );
 
   const planDataItem = useMemo(
@@ -80,7 +109,7 @@ const ViewChartButton: FC<{
             </TabsContent>
 
             <TabsContent value="category">
-              <ItemsChart items={itemsToDisplay} />
+              <CategoriesChart items={itemsToDisplayWithCategoryNames} />
               <DialogFooter className="flex !justify-center ">
                 <div className="text-2xl font-bold">Total:</div>
                 <div className="text-2xl">{planDataItem}$</div>

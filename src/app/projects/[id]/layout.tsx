@@ -57,7 +57,12 @@ export default async function Layout({
                 data={items}
                 plans={plans}
               />
-              <ViewChartButton projectName={name} items={items} plans={plans} />
+              <ViewChartButton
+                projectName={name}
+                items={items}
+                plans={plans}
+                categories={categories}
+              />
               <ManageMembersButton projectId={id} initialMembers={members} />
               <AIChatButton projectId={id} />
             </div>

@@ -16,7 +16,7 @@ export default function Home() {
         <div className="flex flex-row">
           <div className="max-w-[700px]">
             <div className="flex flex-row gap-x-4 mt-10 ">
-              <Button className="border-rose-500 text-black active:text-white bg-white border-2 hover:text-white flex flex-row gap-2 ">
+              <Button className="border-rose-500  text-black bg-white border-2 flex flex-row gap-2 pointer-events-none">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -35,7 +35,7 @@ export default function Home() {
                 </svg>
                 Automated
               </Button>
-              <Button className=" border-rose-500 text-black active:text-white bg-white border-2 hover:text-white flex flex-row gap-2">
+              <Button className="  border-rose-500 text-black active:hover:bg-white  bg-white border-2 flex flex-row gap-2 pointer-events-none">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -53,7 +53,7 @@ export default function Home() {
                 </svg>
                 Visualizable
               </Button>
-              <Button className="border-rose-500 text-black active:text-white bg-white border-2 hover:text-white flex flex-row gap-2">
+              <Button className="border-rose-500 text-black active:text-white bg-white border-2 hover:text-white flex flex-row gap-2 pointer-events-none">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -126,14 +126,16 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex flex-row mt-10  gap-8">
-              <Button className="text-2xl font-semibold py-7">
-                <Link href={path}>Start Now</Link>
-              </Button>
+            <div className="flex flex-row mt-10 gap-8">
+              {user && (
+                <Button className="text-xl font-semibold py-6 px-3">
+                  <Link href={path}>Start Now</Link>
+                </Button>
+              )}
               {!user && (
                 <Button
                   onClick={signIn}
-                  className="bg-black text-2xl font-semibold hover:bg-accent hover:text-accent-foreground py-7"
+                  className="bg-black text-xl font-semibold hover:bg-accent hover:text-accent-foreground py-6 px-3"
                 >
                   Sign In
                 </Button>
@@ -156,7 +158,7 @@ export default function Home() {
           quality={100}
         />
 
-        <div className="">
+        <div className="flex justify-center flex-col">
           <div className="max-w-[500px] text-4xl font-bold mb-5 ">
             Easy Management with Budget Plan
           </div>

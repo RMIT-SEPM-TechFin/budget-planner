@@ -78,6 +78,10 @@ const config = {
       },
     },
   },
+  variants: {
+    backgroundColor: ['responsive', 'hover', 'focus', 'active', 'disabled'],
+    textColor: ['responsive', 'hover', 'focus', 'active', 'disabled'],
+  },
   plugins: [require('tailwindcss-animate')],
 } satisfies Config;
 
