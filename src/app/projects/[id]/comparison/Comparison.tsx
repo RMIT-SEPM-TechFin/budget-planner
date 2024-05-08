@@ -43,7 +43,6 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
 
   // Fetch project data
 
-
   // Filter items based on selected plan
   const filteredItems1 = useMemo(() => {
     const filteredItemIds =

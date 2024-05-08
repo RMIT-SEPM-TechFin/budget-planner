@@ -5,10 +5,11 @@ import { X } from 'lucide-react';
 import {
   Dispatch,
   FC,
-  SetStateAction, useCallback,
+  SetStateAction,
+  useCallback,
   useMemo,
   useRef,
-  useState
+  useState,
 } from 'react';
 
 import { Badge } from '@/components/ui/badge';

@@ -9,7 +9,7 @@ import ActionIconButton from '@/components/ActionIconButton';
 import { useProject } from './context';
 
 const ExportDataButton: FC<{}> = () => {
-  const {categories, items, plans} = useProject();
+  const { categories, items, plans } = useProject();
   const handleExport = useCallback(() => {
     // handle all items
     const workbook = XLSX.utils.book_new();

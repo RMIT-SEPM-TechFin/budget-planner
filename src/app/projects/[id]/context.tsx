@@ -19,14 +19,16 @@ export const ProjectContext = createContext<ProjectContextType>({
   items: [],
   plans: [],
   name: '',
-  members: [], 
+  members: [],
 } as ProjectContextType);
 
 export const ProjectContextProvider: FC<
   PropsWithChildren<ProjectContextType>
 > = ({ children, projectId, categories, items, plans, name, members }) => {
   return (
-    <ProjectContext.Provider value={{ projectId, categories, items, plans, name, members }}>
+    <ProjectContext.Provider
+      value={{ projectId, categories, items, plans, name, members }}
+    >
       {children}
     </ProjectContext.Provider>
   );

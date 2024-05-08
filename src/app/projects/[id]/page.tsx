@@ -25,29 +25,29 @@ export default async function Project({ params }: { params: { id: string } }) {
 
   return (
     <div className="relative">
-        <div className="flex flex-col justify-between items-center flex gap-2 mb-5">
-          {/* TODO: add breadcrumb */}
-          <div className="w-full flex items-center justify-between mb-2">
-            <BreadcrumbProject />
-            <div className="justify-between items-center flex gap-2">
-              <ExportDataButton/>
-              <Link href={`/projects/${id}/comparison`}>
-                <Button
-                  className="bg-white border-[1px] border-[#e4e4e7]"
-                  variant="secondary"
-                >
-                  Compare
-                </Button>
-              </Link>
-              <ViewChartButton/>
-              <ManageMembersButton/>
-            </div>
-          </div>
-          <div className="w-full flex justify-between gap-2">
-              <SelectPlanToDisplay classname='w-max' />
-              <AddItemButton />
+      <div className="flex flex-col justify-between items-center flex gap-2 mb-5">
+        {/* TODO: add breadcrumb */}
+        <div className="w-full flex items-center justify-between mb-2">
+          <BreadcrumbProject />
+          <div className="justify-between items-center flex gap-2">
+            <ExportDataButton />
+            <ViewChartButton />
+            <ManageMembersButton />
+            <Link href={`/projects/${id}/comparison`}>
+              <Button
+                className="bg-white border-[1px] border-[#e4e4e7]"
+                variant="secondary"
+              >
+                Compare
+              </Button>
+            </Link>
           </div>
         </div>
+        <div className="w-full flex justify-between gap-2">
+          <SelectPlanToDisplay classname="w-max" />
+          <AddItemButton />
+        </div>
+      </div>
       <ItemTable />
     </div>
   );

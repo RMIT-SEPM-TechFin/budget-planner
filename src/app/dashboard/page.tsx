@@ -2,7 +2,6 @@ import { getCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import Breadcrumbs from '@/components/Breadcrumbs';
 import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 
 import AddProjectButton from './AddProjectButton';

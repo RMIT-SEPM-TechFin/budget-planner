@@ -19,7 +19,7 @@ import { useProject } from './context';
 import { usePlanIdQueryParam } from './hooks';
 
 const ViewChartButton: FC<{}> = () => {
-  const {name, plans, items} = useProject();
+  const { name, plans, items } = useProject();
   const { planId } = usePlanIdQueryParam();
 
   const [open, setOpen] = useState(false);
