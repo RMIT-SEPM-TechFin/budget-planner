@@ -37,7 +37,6 @@ const staticColumns = [
   }),
 ] as ColumnDef<Item>[];
 
-// Comment: This is a table component that uses the react-table library
 const ItemTable: FC<{
   planId: string | undefined;
   filteredItems: Item[];
