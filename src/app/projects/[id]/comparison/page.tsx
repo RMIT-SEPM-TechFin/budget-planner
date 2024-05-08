@@ -4,12 +4,6 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 
 import BreadcrumbComparison from './BreadcumbsComparison';
