@@ -39,7 +39,7 @@ export async function fetchProjectItemsAndCategories(projectId: string) {
   // Reference to the project document
   const projectRef = doc(db, 'projects', projectId);
 
-  // Reference to the items subcollection within the project document
+  // Reference to the items sub collection within the project document
   const itemsRef = collection(projectRef, 'items');
 
   const categoryRef = collection(projectRef, 'categories');

@@ -40,3 +40,10 @@ export interface ComparisonProps {
 export interface Identifiable {
   id: string;
 }
+export interface Chat {
+  id: string;
+  authorName: string;
+  authorEmail: string;
+  text: string;
+  createdAt: Date;
+}
