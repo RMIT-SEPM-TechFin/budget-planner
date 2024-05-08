@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ComparisonProps, Identifiable } from '@/types';
+import { ComparisonProps } from '@/types';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -34,6 +34,10 @@ interface DataTableProps<TData, TValue> {
    */
   searchableColumnKey?: string;
   itemMap: ComparisonProps;
+}
+
+interface Identifiable {
+  id: string;
 }
 
 // Comment: This is a table component that uses the react-table library
