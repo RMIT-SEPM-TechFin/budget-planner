@@ -1,6 +1,7 @@
 'use client';
 
 import { FC, useEffect, useMemo, useState } from 'react';
+import { set } from 'react-hook-form';
 
 import { useProject } from '@/app/projects/[id]/context';
 import {
@@ -41,7 +42,14 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
     categories: [],
   });
 
-  // Fetch project data
+  useEffect(() => {
+    setData({
+      name: '',
+      plans: plans,
+      items: items,
+      categories: categories,
+    });
+  }, []);
 
   // Filter items based on selected plan
   const filteredItems1 = useMemo(() => {
