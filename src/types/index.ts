@@ -33,6 +33,10 @@ export interface User {
   photoUrl: string;
 }
 
+export interface ComparisonProps {
+  [id: string]: string | undefined;
+}
+
 export interface Chat {
   id: string;
   authorName: string;

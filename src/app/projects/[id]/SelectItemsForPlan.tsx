@@ -58,13 +58,10 @@ const staticColumns = [
 ] as ColumnDef<Item>[];
 
 const SelectItemsForPlan: FC<{
-  formControl: Control<
-    {
-      name: string;
-      items: string[];
-    },
-    any
-  >;
+  formControl: Control<{
+    name: string;
+    items: string[];
+  }>;
   setValue: UseFormSetValue<{
     name: string;
     items: string[];
