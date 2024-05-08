@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <div className="grid grid-cols-2 gap-x-14 gap-y-28">
-        <div className="flex flex-row">
+        <div className="flex flex-row items-center">
           <div className="max-w-[700px]">
             <div className="flex flex-row gap-x-4 mt-10 ">
               <Button className="border-rose-500  text-black bg-white border-2 flex flex-row gap-2 pointer-events-none">
@@ -73,7 +73,7 @@ export default function Home() {
               </Button>
             </div>
             <h1 className="mt-20 text-6xl font-bold">BUDGET PLANNER</h1>
-            <div className="mt-20 text-lg ">
+            <div className="mt-12 text-lg ">
               Streamline your finances with Budget Planner: automated updates,
               intelligent categorization, and precision in every budget
               scenario.
@@ -128,7 +128,7 @@ export default function Home() {
 
             <div className="flex flex-row mt-10 gap-8">
               {user && (
-                <Button className="text-xl font-semibold py-6 px-3">
+                <Button className="text-lg font-semibold py-6 px-3">
                   <Link href={path}>Start Now</Link>
                 </Button>
               )}
