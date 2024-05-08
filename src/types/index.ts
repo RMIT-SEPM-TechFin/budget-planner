@@ -37,9 +37,6 @@ export interface ComparisonProps {
   [id: string]: string | undefined;
 }
 
-export interface Identifiable {
-  id: string;
-}
 export interface Chat {
   id: string;
   authorName: string;
