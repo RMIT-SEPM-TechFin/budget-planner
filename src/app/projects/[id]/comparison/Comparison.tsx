@@ -15,9 +15,8 @@ import {
 } from '@/components/ui/select';
 import { Category, ComparisonProps, Item, Plan } from '@/types';
 
-import compareItems from './compareItems';
 import ScrollAreaHorizontal from './ScrollArea';
-import { usePlanIdLocal } from './useLocalId';
+import compareItems from './utils';
 
 interface ProjectData {
   name: string;
@@ -26,12 +25,11 @@ interface ProjectData {
   categories: Category[];
 }
 
-// Comment: This component is used to compare two plans
 const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
   const { id } = params;
 
-  const { planId, setPlanId } = usePlanIdLocal();
-  const { planId: planId2, setPlanId: setPlanId2 } = usePlanIdLocal();
+  const [planId, setPlanId] = useState<string | undefined>(undefined);
+  const [planId2, setPlanId2] = useState<string | undefined>(undefined);
   const { plans, items, categories } = useProject();
 
   const [data, setData] = useState<ProjectData>({
