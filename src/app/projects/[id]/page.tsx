@@ -26,7 +26,6 @@ export default async function Project({ params }: { params: { id: string } }) {
   return (
     <div className="relative">
       <div className="flex flex-col justify-between items-center flex gap-2 mb-5">
-        {/* TODO: add breadcrumb */}
         <div className="w-full flex items-center justify-between mb-2">
           <BreadcrumbProject />
           <div className="justify-between items-center flex gap-2">
