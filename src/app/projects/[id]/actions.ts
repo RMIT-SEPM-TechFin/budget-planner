@@ -7,6 +7,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  Timestamp,
   updateDoc,
 } from 'firebase/firestore';
 import { revalidatePath } from 'next/cache';
@@ -146,5 +147,25 @@ export async function updatePlan(
     name: name,
     items: items,
   });
+  revalidatePath('/projects');
+}
+
+export async function addChat(
+  projectId: string,
+  authorName: string,
+  authorEmail: string,
+  text: string,
+) {
+  await addDoc(collection(db, 'projects', projectId, 'chats'), {
+    authorName,
+    authorEmail,
+    text,
+    createdAt: Timestamp.now(),
+  });
+  revalidatePath('/projects');
+}
+
+export async function deleteChat(projectId: string, chatId: string) {
+  await deleteDoc(doc(db, 'projects', projectId, 'chats', chatId));
   revalidatePath('/projects');
 }
