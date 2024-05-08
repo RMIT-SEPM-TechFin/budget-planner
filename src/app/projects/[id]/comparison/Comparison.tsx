@@ -26,10 +26,6 @@ interface ProjectData {
   categories: Category[];
 }
 
-interface Identifiable {
-  id: string;
-}
-
 // Comment: This component is used to compare two plans
 const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
   const { id } = params;
