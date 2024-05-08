@@ -1,7 +1,6 @@
 'use client';
 
 import { FC, useEffect, useMemo, useState } from 'react';
-import { set } from 'react-hook-form';
 
 import { useProject } from '@/app/projects/[id]/context';
 import {
@@ -27,6 +26,10 @@ interface ProjectData {
   categories: Category[];
 }
 
+interface Identifiable {
+  id: string;
+}
+
 // Comment: This component is used to compare two plans
 const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
   const { id } = params;
@@ -49,7 +52,7 @@ const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
       items: items,
       categories: categories,
     });
-  }, []);
+  }, [plans, items, categories]);
 
   // Filter items based on selected plan
   const filteredItems1 = useMemo(() => {
