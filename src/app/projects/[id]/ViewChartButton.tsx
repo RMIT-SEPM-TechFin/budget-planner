@@ -22,7 +22,7 @@ import { useProject } from './context';
 import { usePlanIdQueryParam } from './hooks';
 
 const ViewChartButton: FC<{}> = () => {
-  const {name, categories, items, plans } = useProject();
+  const { name, categories, items, plans } = useProject();
   const { planId } = usePlanIdQueryParam();
 
   const [open, setOpen] = useState(false);
@@ -91,7 +91,10 @@ const ViewChartButton: FC<{}> = () => {
           </DialogTitle>
           <DialogClose />
 
-          <Tabs defaultValue="item" className="!max-w-fit flex flex-col items-center justify-center">
+          <Tabs
+            defaultValue="item"
+            className="!max-w-fit flex flex-col items-center justify-center"
+          >
             <TabsList>
               <TabsTrigger value="item">Items</TabsTrigger>
               <TabsTrigger value="category">Categories</TabsTrigger>

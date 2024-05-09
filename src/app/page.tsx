@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import useAuth from '@/hooks/useAuth';
 
 export default function Home() {
-  const { user, signIn} = useAuth();
+  const { user, signIn } = useAuth();
 
   const path = user ? '/dashboard' : '/';
   return (

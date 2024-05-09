@@ -1,7 +1,6 @@
 'use server';
 
 import { OpenAIStream, StreamingTextResponse } from 'ai';
-
 import { ChatCompletionMessage } from 'openai/resources/index.mjs';
 
 import {
@@ -9,10 +8,8 @@ import {
   fetchProjectInfo,
   fetchProjectPlans,
 } from '@/app/projects/[id]/fetch';
-
 import openai from '@/lib/openai';
 import { Item, Plan } from '@/types';
-
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -35,18 +32,23 @@ export async function POST(req: Request) {
 
   //read content plan
   function mapPlansWithItemDetails(plans: Plan[], items: Item[]): Plan[] {
-    const itemMap = items.reduce((acc, item) => {
-      acc[item.id] = item.name; // or item if you want the whole object
-      return acc;
-    }, {} as { [key: string]: string });
+    const itemMap = items.reduce(
+      (acc, item) => {
+        acc[item.id] = item.name; // or item if you want the whole object
+        return acc;
+      },
+      {} as { [key: string]: string },
+    );
 
-    return plans.map(plan => ({
+    return plans.map((plan) => ({
       ...plan,
-      items: plan.items.map(itemId => itemMap[itemId] ?? 'Item not found')
+      items: plan.items.map((itemId) => itemMap[itemId] ?? 'Item not found'),
     }));
   }
-  const mappedPlans = mapPlansWithItemDetails(relevantPlans, relevantItems.items);
-
+  const mappedPlans = mapPlansWithItemDetails(
+    relevantPlans,
+    relevantItems.items,
+  );
 
   // edit content for AI here
   const systemMessage: ChatCompletionMessage = {
@@ -56,7 +58,9 @@ export async function POST(req: Request) {
       'The relevant items for this query are:\n' +
       `Name:${relevantProjects.name}` +
       relevantPlans.map((plan) => `Name:${plan.name}`).join('\n\n') +
-      mappedPlans.map((plan) => `Name:${plan.name}\n\nitems:${plan.items}`).join('\n\n') +
+      mappedPlans
+        .map((plan) => `Name:${plan.name}\n\nitems:${plan.items}`)
+        .join('\n\n') +
       relevantItems.items
         .map(
           (item) =>
@@ -64,7 +68,6 @@ export async function POST(req: Request) {
         )
         .join('\n\n'),
   };
-      
 
   const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',

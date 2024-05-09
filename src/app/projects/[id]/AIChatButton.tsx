@@ -3,22 +3,22 @@
 import { Bot } from 'lucide-react';
 import { FC, useState } from 'react';
 
+import ActionIconButton from '@/components/ActionIconButton';
 import AIChatBox from '@/components/ui/AIChatBox';
 import { Button } from '@/components/ui/button';
-import ActionIconButton from '@/components/ActionIconButton';
+
 import { useProject } from './context';
 
-const AIChatButton: FC<{
-}> = () => {
-  const {projectId} = useProject();
+const AIChatButton: FC<{}> = () => {
+  const { projectId } = useProject();
   const [chatBoxOpen, setChatBoxOpen] = useState(false);
   return (
     <>
       <ActionIconButton
-      Icon={Bot}
-      onClick={() => setChatBoxOpen(true)}
-      tooltip="AI Chatbox"
-    />
+        Icon={Bot}
+        onClick={() => setChatBoxOpen(true)}
+        tooltip="AI Chatbox"
+      />
       <AIChatBox
         projectId={projectId}
         open={chatBoxOpen}

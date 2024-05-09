@@ -132,7 +132,6 @@ function ChatMessage({
   const isAiMessage = role === 'assistant';
 
   return (
-   
     <div
       className={cn(
         'mb-3 flex items-center',
@@ -158,6 +157,5 @@ function ChatMessage({
         />
       )} */}
     </div>
-   
   );
 }
