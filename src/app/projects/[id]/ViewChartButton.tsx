@@ -45,7 +45,6 @@ const ViewChartButton: FC<{
     [items, selectedPlan],
   );
 
-
   const itemsToDisplayWithCategoryNames = useMemo(() => {
     // Create a mapping of category IDs to category names
     const categoryMap: { [categoryId: string]: string } = {};

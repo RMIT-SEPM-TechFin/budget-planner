@@ -72,7 +72,7 @@ export default function Home() {
                 Error-free
               </Button>
             </div>
-            <div className='space-y-4'>
+            <div className="space-y-4">
               <h1 className="text-6xl">BUDGET PLANNER</h1>
               <div className="text-lg ">
                 Streamline your finances with Budget Planner: automated updates,

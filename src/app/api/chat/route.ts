@@ -27,15 +27,21 @@ export async function POST(req: Request) {
 
   const plans = await fetchProjectPlans(projectId);
 
-  const {items, categories} = await fetchProjectItemsAndCategories(projectId);
+  const { items, categories } = await fetchProjectItemsAndCategories(projectId);
 
-  const itemsContent = items.map((item) => 
-    `Item ${item.name} with description ${item.description} in category ${categories.find(category => category.id == item.category)?.name} with price of ${item.price} and quantity of ${item.quantity}, total price of ${item.price * item.quantity}.`
-  ).join('\n');
+  const itemsContent = items
+    .map(
+      (item) =>
+        `Item ${item.name} with description ${item.description} in category ${categories.find((category) => category.id == item.category)?.name} with price of ${item.price} and quantity of ${item.quantity}, total price of ${item.price * item.quantity}.`,
+    )
+    .join('\n');
 
-  const plansContent = plans.map((plan) =>
-    `Plan ${plan.name} have these following items: ${plan.items.map(item => `${items.find(itemInfo => itemInfo.id == item)?.name}`).join(', ')}.`
-  ).join('\n');
+  const plansContent = plans
+    .map(
+      (plan) =>
+        `Plan ${plan.name} have these following items: ${plan.items.map((item) => `${items.find((itemInfo) => itemInfo.id == item)?.name}`).join(', ')}.`,
+    )
+    .join('\n');
 
   // edit in here
   const systemMessage: ChatCompletionMessage = {
@@ -48,7 +54,7 @@ export async function POST(req: Request) {
       `All of the items in the project are: \n` +
       `${itemsContent} \n` +
       `The plans in the project are: \n` +
-      `${plansContent} \n`
+      `${plansContent} \n`,
   };
 
   const response = await openai.chat.completions.create({

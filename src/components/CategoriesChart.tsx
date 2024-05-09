@@ -120,7 +120,6 @@ const CategoriesChart: FC<{ items: Item[] }> = ({ items: items_ }) => {
     }));
   }, [items]);
 
-
   const onPieEnter = useCallback(
     (_: MouseEvent, index: number) => {
       setActiveIndex(index);
