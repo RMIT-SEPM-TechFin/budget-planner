@@ -26,31 +26,33 @@ export async function POST(req: Request) {
 
   const relevantProjects = await fetchProjectInfo(projectId);
 
-  const relevantPlans = await fetchProjectPlans(projectId);
+  const plans = await fetchProjectPlans(projectId);
 
-  const relevantItems = await fetchProjectItemsAndCategories(projectId);
+  const {items, categories} = await fetchProjectItemsAndCategories(projectId);
+
+  const itemsContent = items.map((item) => 
+    `Item ${item.name} with description ${item.description} in category ${categories.find(category => category.id == item.category)?.name} with price of ${item.price} and quantity of ${item.quantity}, total price of ${item.price * item.quantity}.`
+  ).join('\n');
+
+  const plansContent = plans.map((plan) =>
+    `Plan ${plan.name} have these following items: ${plan.items.map(item => `${items.find(itemInfo => itemInfo.id == item)?.name}`).join(', ')}.`
+  ).join('\n');
+
+  console.log(plansContent)
 
   // edit in here
   const systemMessage: ChatCompletionMessage = {
     role: 'assistant',
     content:
-      "You are an intelligent budget-planner app. You answer the user's question based on their existing items. " +
-      'The relevant items for this query are:\n' +
-      `Name:${relevantProjects.name}` +
-      relevantPlans.map((plan) => `Name:${plan.name}`).join('\n\n') +
-      relevantItems.items
-        .map(
-          (item) =>
-            `Name: ${item.name}\n\ndescription:\n${item.description}\n\ncateogry:\n${item.category}\n\nprice:\n${item.price}\n\nquantity:\n${item.quantity}`,
-        )
-        .join('\n\n'),
+      "You are an intelligent budget-planner app. You answer the user's question based on the information of the project user is working on. " +
+      'These are the information about the project: \n' +
+      `Project name: ${relevantProjects.name} \n` +
+      `In the project, it have categories for the items: ${categories.map((category: Category) => category.name).join(', ')} \n` +
+      `All of the items in the project are: \n` +
+      `${itemsContent} \n` +
+      `The plans in the project are: \n` +
+      `${plansContent} \n`
   };
-  relevantPlans.map((plan) => `Name:${plan.name}`);
-  relevantItems.items.map(
-    (item) =>
-      `Name: ${item.name}\n\ndescription:\n${item.description}\n\ncateogry:\n${item.category}\n\nprice:\n${item.price}\n\nquantity:\n${item.quantity}`,
-  );
-  console.log('plan', relevantPlans);
 
   const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
