@@ -101,7 +101,6 @@ const CategoriesChart: FC<{ items: Item[] }> = ({ items: items_ }) => {
       totalValue: item.price * item.quantity,
     }));
   }, [items_]);
-  console.log('items', items);
 
   const categories = useMemo(() => {
     const totals: { [category: string]: number } = {};
@@ -121,7 +120,6 @@ const CategoriesChart: FC<{ items: Item[] }> = ({ items: items_ }) => {
     }));
   }, [items]);
 
-  console.log('Category totals:', categories);
 
   const onPieEnter = useCallback(
     (_: MouseEvent, index: number) => {
