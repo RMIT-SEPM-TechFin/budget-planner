@@ -16,7 +16,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Category, Item, Plan } from '@/types';
 
 import { useProject } from './context';
 import { usePlanIdQueryParam } from './hooks';
