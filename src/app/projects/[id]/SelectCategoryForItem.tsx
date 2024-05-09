@@ -89,7 +89,6 @@ const SelectItemEdit: FC<{
   const handleEdit = useCallback(() => {
     startTransition(() => {
       try {
-        console.log(newName);
         editCategory(projectId, value, newName);
         setOpen(false);
         showNotification({
