@@ -51,6 +51,11 @@
     --ring: 346.8 77.2% 49.8%;
   }
 }
+@layer utilities {
+  .rounded-calc {
+    --tw-rounded: calc(var(--radius) - 2px);
+  }
+}
 
 @layer base {
   * {

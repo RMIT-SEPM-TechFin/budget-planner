@@ -5,6 +5,7 @@ import { createContext, FC, PropsWithChildren, useContext } from 'react';
 import type { Category, Item, Plan } from '@/types';
 
 interface ProjectContextType {
+  
   projectId: string;
   categories: Category[];
   items: Item[];
