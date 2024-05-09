@@ -14,9 +14,9 @@ export default function Home() {
     <>
       <div className="grid grid-cols-2 gap-x-14 gap-y-28">
         <div className="flex flex-row items-center">
-          <div className="max-w-[700px]">
+          <div className="max-w-[700px] space-y-10">
             <div className="flex flex-row gap-x-4 mt-10 ">
-              <Button className="border-rose-500  text-black bg-white border-2 flex flex-row gap-2 pointer-events-none">
+              <Button className="border-rose-500  text-black bg-white border-2 flex flex-row gap-2 pointer-events-none items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -72,14 +72,16 @@ export default function Home() {
                 Error-free
               </Button>
             </div>
-            <h1 className="mt-20 text-6xl font-bold">BUDGET PLANNER</h1>
-            <div className="mt-12 text-lg ">
-              Streamline your finances with Budget Planner: automated updates,
-              intelligent categorization, and precision in every budget
-              scenario.
+            <div className='space-y-4'>
+              <h1 className="text-6xl">BUDGET PLANNER</h1>
+              <div className="text-lg ">
+                Streamline your finances with Budget Planner: automated updates,
+                intelligent categorization, and precision in every budget
+                scenario.
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-14 ">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               <div className="relative  px-3 lg:mb-0 ">
                 <div className="absolute right-5 top-0 hidden h-full min-h-[1em] w-px self-stretch border-t-0 bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-25 dark:via-neutral-400 lg:block"></div>
 
