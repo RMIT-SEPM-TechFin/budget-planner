@@ -31,7 +31,7 @@ export async function fetchProjectPlans(projectId: string) {
       } as Plan;
     });
   });
-console.log('plans',plans)
+  console.log('plans', plans);
   return plans;
 }
 
@@ -54,7 +54,6 @@ export async function fetchProjectItemsAndCategories(projectId: string) {
     });
   });
 
-
   const items = await getDocs(itemsRef).then((snapshot) => {
     return snapshot.docs.map((doc) => {
       const data = doc.data();
@@ -67,7 +66,7 @@ export async function fetchProjectItemsAndCategories(projectId: string) {
       } as Item;
     });
   });
-  
+
   return { items, categories };
 }
 
@@ -95,18 +94,16 @@ export async function fetchItemForAI(projectId: string) {
     categories.forEach((category) => {
       categoryMap[category.id] = category.name;
     });
-  
+
     return snapshot.docs.map((doc) => {
       const data = doc.data();
       return {
         ...data,
         id: doc.id,
-        category:
-        categoryMap[data.category] ?? 'Unknown',
+        category: categoryMap[data.category] ?? 'Unknown',
       } as Item;
     });
   });
-  console.log('items',items)
+  console.log('items', items);
   return { items, categories };
 }
-

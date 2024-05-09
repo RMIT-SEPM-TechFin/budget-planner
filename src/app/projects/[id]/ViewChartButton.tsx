@@ -15,16 +15,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { useProject } from './context';
 import { usePlanIdQueryParam } from './hooks';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-
-
 
 const ViewChartButton: FC<{}> = () => {
-  const {categories, name, plans, items } = useProject();
+  const { categories, name, plans, items } = useProject();
   const { planId } = usePlanIdQueryParam();
 
   const [open, setOpen] = useState(false);
@@ -93,9 +90,10 @@ const ViewChartButton: FC<{}> = () => {
           </DialogTitle>
           <DialogClose />
 
-
-
-          <Tabs defaultValue="item" className="!max-w-fit flex flex-col items-center justify-center">
+          <Tabs
+            defaultValue="item"
+            className="!max-w-fit flex flex-col items-center justify-center"
+          >
             <TabsList>
               <TabsTrigger value="item">Items</TabsTrigger>
               <TabsTrigger value="category">Categories</TabsTrigger>
