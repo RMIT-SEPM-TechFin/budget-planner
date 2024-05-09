@@ -6,13 +6,14 @@ import { NextRequest } from 'next/server';
 import { ChatCompletionMessage } from 'openai/resources/index.mjs';
 
 import {
+  fetchItemForAI,
   fetchProjectInfo,
   fetchProjectItemsAndCategories,
   fetchProjectPlans,
 } from '@/app/projects/[id]/fetch';
 import db from '@/firebase/db';
 import openai from '@/lib/openai';
-import { Category, Item } from '@/types';
+import { Category, Item, Plan } from '@/types';
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -28,7 +29,21 @@ export async function POST(req: Request) {
 
   const relevantPlans = await fetchProjectPlans(projectId);
 
-  const relevantItems = await fetchProjectItemsAndCategories(projectId);
+  const relevantItems = await fetchItemForAI(projectId);
+
+  function mapPlansWithItemDetails(plans: Plan[], items: Item[]): Plan[] {
+    const itemMap = items.reduce((acc, item) => {
+      acc[item.id] = item.name; // or item if you want the whole object
+      return acc;
+    }, {} as { [key: string]: string });
+  
+    return plans.map(plan => ({
+      ...plan,
+      items: plan.items.map(itemId => itemMap[itemId] ?? 'Item not found')
+    }));
+  }
+  const mappedPlans = mapPlansWithItemDetails(relevantPlans, relevantItems.items);
+  console.log('mappedPlans',mappedPlans);
 
   // edit in here
   const systemMessage: ChatCompletionMessage = {
@@ -45,7 +60,10 @@ export async function POST(req: Request) {
         )
         .join('\n\n'),
   };
-  relevantPlans.map((plan) => `Name:${plan.name}`);
+ 
+
+    mappedPlans.map((plan) => `Name:${plan.name}\n\nitems:${plan.items}`);
+
   relevantItems.items.map(
     (item) =>
       `Name: ${item.name}\n\ndescription:\n${item.description}\n\ncateogry:\n${item.category}\n\nprice:\n${item.price}\n\nquantity:\n${item.quantity}`,

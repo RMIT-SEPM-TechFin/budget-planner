@@ -94,7 +94,7 @@ const ViewChartButton: FC<{
           </DialogTitle>
           <DialogClose />
 
-          <Tabs defaultValue="item" className="!max-w-fit">
+          <Tabs defaultValue="item" className="!max-w-fit flex flex-col items-center justify-center">
             <TabsList>
               <TabsTrigger value="item">Items</TabsTrigger>
               <TabsTrigger value="category">Categories</TabsTrigger>

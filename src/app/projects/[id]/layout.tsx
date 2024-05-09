@@ -28,7 +28,7 @@ export default async function Layout({
     fetchProjectPlans(id),
     fetchProjectItemsAndCategories(id),
   ]);
-  console.log(id);
+
   return (
     <ProjectContextProvider
       projectId={id}

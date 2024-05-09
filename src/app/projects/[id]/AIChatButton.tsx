@@ -5,6 +5,7 @@ import { FC, useState } from 'react';
 
 import AIChatBox from '@/components/ui/AIChatBox';
 import { Button } from '@/components/ui/button';
+import ActionIconButton from '@/components/ActionIconButton';
 
 const AIChatButton: FC<{
   className?: string;
@@ -13,10 +14,11 @@ const AIChatButton: FC<{
   const [chatBoxOpen, setChatBoxOpen] = useState(false);
   return (
     <>
-      <Button onClick={() => setChatBoxOpen(true)}>
-        <Bot size={20} className="mr-2" />
-        AI Chat
-      </Button>
+      <ActionIconButton
+      Icon={Bot}
+      onClick={() => setChatBoxOpen(true)}
+      tooltip="AI Chatbox"
+    />
       <AIChatBox
         projectId={projectId}
         open={chatBoxOpen}
