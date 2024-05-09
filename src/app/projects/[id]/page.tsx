@@ -3,7 +3,6 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { Button } from '@/components/ui/button';
 import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 
 import AddItemButton from './AddItemButton';
@@ -13,6 +12,10 @@ import ItemTable from './ItemTable';
 import ManageMembersButton from './ManageMembersButton';
 import SelectPlanToDisplay from './SelectPlanToDisplay';
 import ViewChartButton from './ViewChartButton';
+import AIChatButton from './AIChatButton';
+import ActionIconButton from '@/components/ActionIconButton';
+import { Diff } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 // Force dynamic to be able to use cookies
 export const dynamic = 'force-dynamic';
@@ -32,12 +35,10 @@ export default async function Project({ params }: { params: { id: string } }) {
             <ExportDataButton />
             <ViewChartButton />
             <ManageMembersButton />
+            <AIChatButton />
             <Link href={`/projects/${id}/comparison`}>
-              <Button
-                className="bg-white border-[1px] border-[#e4e4e7]"
-                variant="secondary"
-              >
-                Compare
+              <Button variant={'outline'} size={'icon'}>
+                <Diff />
               </Button>
             </Link>
           </div>

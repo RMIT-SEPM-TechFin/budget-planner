@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import useAuth from '@/hooks/useAuth';
 
 export default function Home() {
-  const { user, signIn, isLoading } = useAuth();
+  const { user, signIn } = useAuth();
 
   const path = user ? '/dashboard' : '/';
   return (
@@ -130,14 +130,14 @@ export default function Home() {
 
             <div className="flex flex-row mt-10 gap-8">
               {user && (
-                <Button className="text-lg font-semibold py-6 px-3">
+                <Button className="text-base font-semibold py-6 px-3">
                   <Link href={path}>Start Now</Link>
                 </Button>
               )}
               {!user && (
                 <Button
                   onClick={signIn}
-                  className="bg-black text-xl font-semibold hover:bg-accent hover:text-accent-foreground py-6 px-3"
+                  className="bg-black text-base font-semibold hover:bg-accent hover:text-accent-foreground py-6 px-3"
                 >
                   Sign In
                 </Button>

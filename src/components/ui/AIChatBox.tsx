@@ -131,12 +131,6 @@ function ChatMessage({
   const isAiMessage = role === 'assistant';
 
   return (
-    // <ProjectContextProvider
-    // projectId={id}
-    // categories={categories}
-    // items={items}
-    // plans={plans}
-    //  >
     <div
       className={cn(
         'mb-3 flex items-center',
@@ -162,6 +156,5 @@ function ChatMessage({
         />
       )} */}
     </div>
-    // </ProjectContextProvider>
   );
 }

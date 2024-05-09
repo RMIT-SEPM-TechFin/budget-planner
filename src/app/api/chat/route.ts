@@ -1,18 +1,15 @@
 'use server';
 
 import { OpenAIStream, StreamingTextResponse } from 'ai';
-import { collection, doc, getDocs } from 'firebase/firestore';
-import { NextRequest } from 'next/server';
 import { ChatCompletionMessage } from 'openai/resources/index.mjs';
 
 import {
+  fetchItemForAI,
   fetchProjectInfo,
-  fetchProjectItemsAndCategories,
   fetchProjectPlans,
 } from '@/app/projects/[id]/fetch';
-import db from '@/firebase/db';
 import openai from '@/lib/openai';
-import { Category, Item } from '@/types';
+import { Item, Plan } from '@/types';
 
 export async function POST(req: Request) {
   const body = await req.json();
