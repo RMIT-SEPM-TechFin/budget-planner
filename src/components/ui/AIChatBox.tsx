@@ -128,7 +128,7 @@ function ChatMessage({
   projectId: string;
   message: Pick<Message, 'role' | 'content'>;
 }) {
-  console.log('projectId1:', projectId);
+
   const isAiMessage = role === 'assistant';
 
   return (
