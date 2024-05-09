@@ -6,8 +6,9 @@ import {
   arrayUnion,
   collection,
   deleteDoc,
-  doc, Timestamp,
-  updateDoc
+  doc,
+  Timestamp,
+  updateDoc,
 } from 'firebase/firestore';
 import { revalidatePath } from 'next/cache';
 
