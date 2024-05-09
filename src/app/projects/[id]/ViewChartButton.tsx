@@ -44,7 +44,7 @@ const ViewChartButton: FC<{
         : items,
     [items, selectedPlan],
   );
-  console.log('itemsToDisplay', itemsToDisplay);
+
 
   const itemsToDisplayWithCategoryNames = useMemo(() => {
     // Create a mapping of category IDs to category names
@@ -66,11 +66,6 @@ const ViewChartButton: FC<{
           category: categoryMap[item.category],
         }));
   }, [items, selectedPlan, categories]);
-
-  console.log(
-    'itemsToDisplayWithCategoryNames',
-    itemsToDisplayWithCategoryNames,
-  );
 
   const planDataItem = useMemo(
     () =>
