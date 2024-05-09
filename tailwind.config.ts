@@ -36,6 +36,12 @@ const config = {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
         },
+        comparison: {
+          DEFAULT: 'hsl(var(--background))',
+          yellow: 'hsl(var(--comparison-yellow))',
+          green: 'hsl(var(--comparison-green))',
+          red: 'hsl(var(--comparison-red))',
+        },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',

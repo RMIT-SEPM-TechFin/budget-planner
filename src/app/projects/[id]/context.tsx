@@ -9,6 +9,8 @@ interface ProjectContextType {
   categories: Category[];
   items: Item[];
   plans: Plan[];
+  name: string;
+  members: string[];
 }
 
 export const ProjectContext = createContext<ProjectContextType>({
@@ -16,13 +18,17 @@ export const ProjectContext = createContext<ProjectContextType>({
   categories: [],
   items: [],
   plans: [],
+  name: '',
+  members: [],
 } as ProjectContextType);
 
 export const ProjectContextProvider: FC<
   PropsWithChildren<ProjectContextType>
-> = ({ children, projectId, categories, items, plans }) => {
+> = ({ children, projectId, categories, items, plans, name, members }) => {
   return (
-    <ProjectContext.Provider value={{ projectId, categories, items, plans }}>
+    <ProjectContext.Provider
+      value={{ projectId, categories, items, plans, name, members }}
+    >
       {children}
     </ProjectContext.Provider>
   );

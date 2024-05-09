@@ -29,20 +29,14 @@ import { Input } from '@/components/ui/input';
 import useNotification from '@/hooks/useNotification';
 
 import { updateProjectMembers } from './actions';
-
-interface ManageMembersButtonProps {
-  projectId: string;
-  initialMembers: string[];
-}
+import { useProject } from './context';
 
 const schema = z.object({
   email: z.string().email(),
 });
 
-const ManageMembersButton: FC<ManageMembersButtonProps> = ({
-  projectId,
-  initialMembers,
-}) => {
+const ManageMembersButton: FC<{}> = ({}) => {
+  const { projectId, members: initialMembers } = useProject();
   const [_, startTransition] = useTransition();
   const { showNotification } = useNotification();
 

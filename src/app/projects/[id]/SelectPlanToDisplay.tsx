@@ -13,16 +13,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import type { Plan } from '@/types';
 
+import { useProject } from './context';
 import EditPlanButton from './EditPlanButton';
 import { usePlanIdQueryParam } from './hooks';
 
 interface SelectPlanProps {
-  plans: Plan[];
+  classname?: string;
 }
 
-const SelectPlanToDisplay: FC<SelectPlanProps> = ({ plans }) => {
+const SelectPlanToDisplay: FC<SelectPlanProps> = ({ classname }) => {
+  const { plans } = useProject();
   const { planId, setPlanId } = usePlanIdQueryParam();
 
   return (
@@ -32,7 +33,7 @@ const SelectPlanToDisplay: FC<SelectPlanProps> = ({ plans }) => {
       }}
       value={planId ?? 'all'}
     >
-      <SelectTrigger className="w-[280px]">
+      <SelectTrigger className={classname}>
         <SelectValue placeholder="Select a plan" />
       </SelectTrigger>
       <SelectContent>

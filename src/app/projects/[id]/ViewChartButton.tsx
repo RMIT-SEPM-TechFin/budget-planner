@@ -18,14 +18,11 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Category, Item, Plan } from '@/types';
 
+import { useProject } from './context';
 import { usePlanIdQueryParam } from './hooks';
 
-const ViewChartButton: FC<{
-  projectName: string;
-  items: Item[];
-  plans: Plan[];
-  categories: Category[];
-}> = ({ projectName, items, plans, categories }) => {
+const ViewChartButton: FC<{}> = () => {
+  const { name, plans, items, categories } = useProject();
   const { planId } = usePlanIdQueryParam();
 
   const [open, setOpen] = useState(false);
@@ -84,7 +81,7 @@ const ViewChartButton: FC<{
       <DialogContent className="!max-w-fit">
         <DialogHeader>
           <DialogTitle>
-            {selectedPlan ? selectedPlan.name : projectName} Cost Breakdown
+            {selectedPlan ? selectedPlan.name : name} Cost Breakdown
           </DialogTitle>
           <DialogClose />
 
