@@ -16,8 +16,7 @@ import { Category, Item } from '@/types';
 
 export async function POST(req: Request) {
   const body = await req.json();
-  // console.log(req)
-  console.log('body:', body);
+
   const projectId = body.projectId;
 
   const messages: ChatCompletionMessage[] = body.messages;
@@ -37,8 +36,6 @@ export async function POST(req: Request) {
   const plansContent = plans.map((plan) =>
     `Plan ${plan.name} have these following items: ${plan.items.map(item => `${items.find(itemInfo => itemInfo.id == item)?.name}`).join(', ')}.`
   ).join('\n');
-
-  console.log(plansContent)
 
   // edit in here
   const systemMessage: ChatCompletionMessage = {
