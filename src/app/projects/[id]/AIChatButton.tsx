@@ -6,11 +6,12 @@ import { FC, useState } from 'react';
 import AIChatBox from '@/components/ui/AIChatBox';
 import { Button } from '@/components/ui/button';
 import ActionIconButton from '@/components/ActionIconButton';
+import { useProject } from './context';
 
 const AIChatButton: FC<{
-  className?: string;
-  projectId: string;
-}> = ({ className, projectId }) => {
+
+}> = () => {
+  const { projectId} = useProject();
   const [chatBoxOpen, setChatBoxOpen] = useState(false);
   return (
     <>

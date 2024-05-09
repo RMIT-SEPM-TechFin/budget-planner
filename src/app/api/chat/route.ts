@@ -1,19 +1,18 @@
 'use server';
 
 import { OpenAIStream, StreamingTextResponse } from 'ai';
-import { collection, doc, getDocs } from 'firebase/firestore';
-import { NextRequest } from 'next/server';
+
 import { ChatCompletionMessage } from 'openai/resources/index.mjs';
 
 import {
   fetchItemForAI,
   fetchProjectInfo,
-  fetchProjectItemsAndCategories,
+
   fetchProjectPlans,
 } from '@/app/projects/[id]/fetch';
-import db from '@/firebase/db';
+
 import openai from '@/lib/openai';
-import { Category, Item, Plan } from '@/types';
+import { Item, Plan } from '@/types';
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -52,7 +51,8 @@ export async function POST(req: Request) {
       "You are an intelligent budget-planner app. You answer the user's question based on their existing items. " +
       'The relevant items for this query are:\n' +
       `Name:${relevantProjects.name}` +
-      relevantPlans.map((plan) => `Name:${plan.name}`).join('\n\n') +
+      mappedPlans.map((plan) => `Name:${plan.name}\n\nitems:${plan.items}`).join('\n\n') +
+
       relevantItems.items
         .map(
           (item) =>
@@ -61,15 +61,6 @@ export async function POST(req: Request) {
         .join('\n\n'),
   };
  
-
-    mappedPlans.map((plan) => `Name:${plan.name}\n\nitems:${plan.items}`);
-
-  relevantItems.items.map(
-    (item) =>
-      `Name: ${item.name}\n\ndescription:\n${item.description}\n\ncateogry:\n${item.category}\n\nprice:\n${item.price}\n\nquantity:\n${item.quantity}`,
-  );
-  console.log('plan', relevantPlans);
-
   const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
     stream: true,

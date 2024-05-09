@@ -5,17 +5,15 @@ import { FC, useCallback } from 'react';
 import * as XLSX from 'xlsx';
 
 import ActionIconButton from '@/components/ActionIconButton';
-import { Category, Item, Plan } from '@/types';
 
-const ExportDataButton: FC<{
-  categories: Category[];
-  data: Item[];
-  plans: Plan[];
-}> = ({ categories, data, plans }) => {
+import { useProject } from './context';
+
+const ExportDataButton: FC<{}> = () => {
+  const { categories, items, plans } = useProject();
   const handleExport = useCallback(() => {
     // handle all items
     const workbook = XLSX.utils.book_new();
-    const allItemData = data.map((item) => {
+    const allItemData = items.map((item) => {
       const { category, id, ...rest } = item;
       const cate = categories.find((cat) => cat.id === item.category);
       return {
@@ -28,7 +26,7 @@ const ExportDataButton: FC<{
     XLSX.utils.book_append_sheet(workbook, worksheet, 'All Item');
     // handle each of items in plans
     plans.forEach((plan) => {
-      const planItems = data.filter((item) => plan.items.includes(item.id));
+      const planItems = items.filter((item) => plan.items.includes(item.id));
       const planData = planItems.map((item) => {
         const { category, id, ...rest } = item;
         const cate = categories.find((cat) => cat.id === item.category);
@@ -50,7 +48,7 @@ const ExportDataButton: FC<{
       worksheet['!cols'] = [{ wch: max_width }];
     });
     XLSX.writeFile(workbook, 'all_plans_data.xlsx', { compression: true });
-  }, [data, categories, plans]);
+  }, [items, categories, plans]);
 
   return (
     <ActionIconButton
