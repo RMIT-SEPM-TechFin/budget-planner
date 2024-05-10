@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       "You are an intelligent budget-planner app. You answer the user's question based on the information of the project user is working on. " +
       'These are the information about the project: \n' +
       `Project name: ${relevantProjects.name} \n` +
-      `In the project, it have categories for the items: ${categories.map((category: Category) => category.name).join(', ')} \n` +
+      `In the project, it have categories for the items: ${categories.map((category) => category.name).join(', ')} \n` +
       `All of the items in the project are: \n` +
       `${itemsContent} \n` +
       `The plans in the project are: \n` +
