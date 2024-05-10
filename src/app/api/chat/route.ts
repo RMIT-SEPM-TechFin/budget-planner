@@ -6,7 +6,7 @@ import { ChatCompletionMessage } from 'openai/resources/index.mjs';
 import {
   fetchProjectInfo,
   fetchProjectItemsAndCategories,
-  fetchProjectPlans
+  fetchProjectPlans,
 } from '@/app/projects/[id]/fetch';
 import openai from '@/lib/openai';
 
