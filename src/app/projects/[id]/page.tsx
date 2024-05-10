@@ -6,6 +6,7 @@ import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 
 import AddItemButton from './AddItemButton';
 import AIChatButton from './AIChatButton';
+import ConversationButton from './ConversationButton';
 import ExportDataButton from './ExportDataButton';
 import ItemTable from './ItemTable';
 import ManageMembersButton from './ManageMembersButton';
@@ -31,13 +32,14 @@ export default async function Project({ params }: { params: { id: string } }) {
           <div className="justify-between items-center flex gap-2">
             <ExportDataButton />
             <ViewChartButton />
-            <ManageMembersButton />
-            <AIChatButton />
             <NavigateComparisonButton projectId={id} />
+            <ManageMembersButton />
+            <ConversationButton projectId={id} />
+            <AIChatButton />
           </div>
         </div>
         <div className="w-full flex justify-between gap-2">
-          <SelectPlanToDisplay classname="w-max" />
+          <SelectPlanToDisplay className="w-max" />
           <AddItemButton />
         </div>
       </div>
