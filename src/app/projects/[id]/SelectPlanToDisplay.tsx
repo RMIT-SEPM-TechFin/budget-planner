@@ -54,7 +54,6 @@ const SelectPlanToDisplay: FC<SelectPlanProps> = ({ classname }) => {
               );
             })}
           </div>
-          {plans.length === 0 && 'No plans available'}
         </SelectGroup>
       </SelectContent>
     </Select>

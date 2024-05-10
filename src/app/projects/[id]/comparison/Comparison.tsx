@@ -25,8 +25,7 @@ interface ProjectData {
   categories: Category[];
 }
 
-const Comparison: FC<{ params: { id: string } }> = ({ params }) => {
-  const { id } = params;
+const Comparison: FC = () => {
 
   const [planId, setPlanId] = useState<string | undefined>(undefined);
   const [planId2, setPlanId2] = useState<string | undefined>(undefined);
