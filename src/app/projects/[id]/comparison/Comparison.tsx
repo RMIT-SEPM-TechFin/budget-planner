@@ -26,7 +26,6 @@ interface ProjectData {
 }
 
 const Comparison: FC = () => {
-
   const [planId, setPlanId] = useState<string | undefined>(undefined);
   const [planId2, setPlanId2] = useState<string | undefined>(undefined);
   const { plans, items, categories } = useProject();
