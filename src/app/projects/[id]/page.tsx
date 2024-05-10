@@ -1,10 +1,7 @@
 import { getCookie } from 'cookies-next';
-import { Diff } from 'lucide-react';
 import { cookies } from 'next/headers';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { Button } from '@/components/ui/button';
 import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 
 import AddItemButton from './AddItemButton';
@@ -13,6 +10,7 @@ import BreadcrumbProject from './BreadcrumbsProject';
 import ExportDataButton from './ExportDataButton';
 import ItemTable from './ItemTable';
 import ManageMembersButton from './ManageMembersButton';
+import NavigateComparisonButton from './NavigateComparisonButton';
 import SelectPlanToDisplay from './SelectPlanToDisplay';
 import ViewChartButton from './ViewChartButton';
 
@@ -35,11 +33,7 @@ export default async function Project({ params }: { params: { id: string } }) {
             <ViewChartButton />
             <ManageMembersButton />
             <AIChatButton />
-            <Link href={`/projects/${id}/comparison`}>
-              <Button variant={'outline'} size={'icon'}>
-                <Diff />
-              </Button>
-            </Link>
+            <NavigateComparisonButton projectId={id} />
           </div>
         </div>
         <div className="w-full flex justify-between gap-2">
