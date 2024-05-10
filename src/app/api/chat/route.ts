@@ -4,12 +4,11 @@ import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { ChatCompletionMessage } from 'openai/resources/index.mjs';
 
 import {
-  fetchItemForAI,
   fetchProjectInfo,
-  fetchProjectPlans,
+  fetchProjectItemsAndCategories,
+  fetchProjectPlans
 } from '@/app/projects/[id]/fetch';
 import openai from '@/lib/openai';
-import { Item, Plan } from '@/types';
 
 export async function POST(req: Request) {
   const body = await req.json();
