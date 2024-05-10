@@ -1,4 +1,5 @@
 import { getCookie } from 'cookies-next';
+import { Diff } from 'lucide-react';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -7,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 
 import AddItemButton from './AddItemButton';
+import AIChatButton from './AIChatButton';
 import BreadcrumbProject from './BreadcrumbsProject';
 import ExportDataButton from './ExportDataButton';
 import ItemTable from './ItemTable';
@@ -25,19 +27,17 @@ export default async function Project({ params }: { params: { id: string } }) {
 
   return (
     <div className="relative">
-      <div className="flex flex-col justify-between items-center flex gap-2 mb-5">
+      <div className="flex flex-col justify-between items-center gap-2 mb-5">
         <div className="w-full flex items-center justify-between mb-2">
           <BreadcrumbProject />
           <div className="justify-between items-center flex gap-2">
             <ExportDataButton />
             <ViewChartButton />
             <ManageMembersButton />
+            <AIChatButton />
             <Link href={`/projects/${id}/comparison`}>
-              <Button
-                className="bg-white border-[1px] border-[#e4e4e7]"
-                variant="secondary"
-              >
-                Compare
+              <Button variant={'outline'} size={'icon'}>
+                <Diff />
               </Button>
             </Link>
           </div>
