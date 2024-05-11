@@ -3,27 +3,22 @@
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { ChatCompletionMessage } from 'openai/resources/index.mjs';
 
-import {
-  fetchProjectInfo,
-  fetchProjectItemsAndCategories,
-  fetchProjectPlans,
-} from '@/app/projects/[id]/fetch';
 import openai from '@/lib/openai';
+import type { Category, Item, Plan } from '@/types';
 
 export async function POST(req: Request) {
   const body = await req.json();
 
-  const projectId = body.projectId;
+  const { categories, items, plans, name } = body as {
+    categories: Category[];
+    items: Item[];
+    plans: Plan[];
+    name: string;
+  };
 
   const messages: ChatCompletionMessage[] = body.messages;
 
   const messagesTruncated = messages.slice(-6);
-
-  const relevantProjects = await fetchProjectInfo(projectId);
-
-  const plans = await fetchProjectPlans(projectId);
-
-  const { items, categories } = await fetchProjectItemsAndCategories(projectId);
 
   const itemsContent = items
     .map(
@@ -45,7 +40,7 @@ export async function POST(req: Request) {
     content:
       "You are an intelligent budget-planner app. You answer the user's question based on the information of the project user is working on. " +
       'These are the information about the project: \n' +
-      `Project name: ${relevantProjects.name} \n` +
+      `Project name: ${name} \n` +
       `In the project, it have categories for the items: ${categories.map((category) => category.name).join(', ')} \n` +
       `All of the items in the project are: \n` +
       `${itemsContent} \n` +

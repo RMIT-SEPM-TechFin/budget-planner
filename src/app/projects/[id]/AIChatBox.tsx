@@ -5,22 +5,19 @@ import { useChat } from 'ai/react';
 import { Bot, SendHorizontal, Trash, X } from 'lucide-react';
 import { useEffect, useMemo, useRef } from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
-import { Button } from './button';
-import { Input } from './input';
+import { useProject } from './context';
 
 interface AIChatBoxProps {
   open: boolean;
   onClose: () => void;
-  projectId: string;
 }
 
-export default function AIChatBox({
-  projectId,
-  open,
-  onClose,
-}: AIChatBoxProps) {
+export default function AIChatBox({ open, onClose }: AIChatBoxProps) {
+  const { projectId, categories, items, plans, name } = useProject();
   const {
     messages,
     input,
@@ -32,6 +29,10 @@ export default function AIChatBox({
   } = useChat({
     body: {
       projectId,
+      categories,
+      items,
+      plans,
+      name,
     },
   });
 
@@ -70,6 +71,7 @@ export default function AIChatBox({
       >
         <X size={20} className="stroke-muted-foreground" />
       </Button>
+
       <div className="flex h-[600px] flex-col border bg-background shadow-xl rounded-xl pt-11">
         <div className="mt-3 h-full overflow-y-auto px-3" ref={scrollRef}>
           {messages.map((message) => (
