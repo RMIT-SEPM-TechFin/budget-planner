@@ -31,7 +31,6 @@ export async function fetchProjectPlans(projectId: string) {
       } as Plan;
     });
   });
-  console.log('plans', plans);
   return plans;
 }
 
@@ -104,6 +103,5 @@ export async function fetchItemForAI(projectId: string) {
       } as Item;
     });
   });
-  console.log('items', items);
   return { items, categories };
 }

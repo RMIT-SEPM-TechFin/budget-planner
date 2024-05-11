@@ -73,8 +73,8 @@ export default function Home() {
               </Button>
             </div>
             <div className="space-y-4">
-              <h1 className="text-6xl">BUDGET PLANNER</h1>
-              <div className="text-lg ">
+              <h1 className="text-6xl font-bold">BUDGET PLANNER</h1>
+              <div className="text-lg">
                 Streamline your finances with Budget Planner: automated updates,
                 intelligent categorization, and precision in every budget
                 scenario.
@@ -82,29 +82,21 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              <div className="relative  px-3 lg:mb-0 ">
-                <div className="absolute right-5 top-0 hidden h-full min-h-[1em] w-px self-stretch border-t-0 bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-25 dark:via-neutral-400 lg:block"></div>
-
-                <h5 className="mb-2 text-2xl font-bold text-primary">
-                  1 Database
-                </h5>
-                <h6 className="mb-0 font-normal dark:text-neutral-50">
+              <div className="flex flex-col gap-1 justify-between">
+                <h5 className="text-2xl font-bold text-primary">1 Database</h5>
+                <h6 className="font-normal dark:text-neutral-50">
                   To store all data
                 </h6>
-                <div className="absolute right-0 top-0 hidden  w-px self-stretch border-t-0 bg-gradient-to-tr from-transparent via-neutral-900 to-transparent opacity-25 dark:via-neutral-900 lg:block"></div>
               </div>
-              <div className="relative  px-3 lg:mb-0">
-                <h5 className="mb-2 pl-3 text-2xl font-bold text-primary">
-                  2 Steps
-                </h5>
-                <h6 className="mb-0 font-normal dark:text-neutral-50">
+              <div className="flex flex-col gap-1 justify-between">
+                <h5 className="text-2xl font-bold text-primary">2 Steps</h5>
+                <h6 className="font-normal dark:text-neutral-50">
                   To create a plan
                 </h6>
-                <div className="absolute right-5 top-0 hidden h-full min-h-[1em] w-px self-stretch border-t-0 bg-gradient-to-tr from-transparent via-neutral-900 to-transparent opacity-25 dark:via-neutral-900 lg:block"></div>
               </div>
-              <div className="relative mt-[-5px] lg:mb-0">
-                <div className="flex flex-row items-center">
-                  <h5 className="mb-2 text-2xl font-bold text-primary pt-1 flex flex-row gap-1 items-center">
+              <div className="flex flex-col gap-1">
+                <div className="flex flex-row items-center justify-between">
+                  <h5 className="text-2xl font-bold text-primary flex flex-row gap-1 items-center text-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -122,7 +114,7 @@ export default function Home() {
                     Ways
                   </h5>
                 </div>
-                <h6 className="mb-0 font-normal dark:text-neutral-50">
+                <h6 className="font-normal dark:text-neutral-50">
                   To customize
                 </h6>
               </div>
@@ -145,19 +137,23 @@ export default function Home() {
             </div>
           </div>
         </div>
+
         <Image
           src="/images/Group23.png"
           alt="picture"
           width={600}
           height={600}
           quality={100}
+          className="drop-shadow-lg"
         />
+
         <Image
           src="/images/Group20.png"
           alt="picture2"
           width={700}
           height={700}
           quality={100}
+          className="drop-shadow-lg"
         />
 
         <div className="flex justify-center flex-col">
