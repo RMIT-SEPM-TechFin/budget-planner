@@ -34,7 +34,7 @@ export default async function Layout({
     >
       <div className="space-y-4">
         <BreadcrumbProject projectId={id} />
-        <div className="relative">{children}</div>
+        {children}
       </div>
     </ProjectContextProvider>
   );

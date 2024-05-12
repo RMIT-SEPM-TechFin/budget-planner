@@ -84,8 +84,8 @@ const Comparison: FC = () => {
   }, [filteredItems1, filteredItems2]); // Dependencies
 
   return (
-    <div className="relative flex gap-2">
-      <div className="flex w-[50%] flex-col gap-2">
+    <div className="flex gap-6">
+      <div className="flex w-[calc(50%-12px)] flex-col gap-2">
         <Select
           onValueChange={(value) => {
             setPlanId(value === 'all' ? undefined : value);
@@ -118,13 +118,12 @@ const Comparison: FC = () => {
           </SelectContent>
         </Select>
         <ScrollAreaHorizontal
-          planId={planId}
           filteredItems={filteredItems1}
           categories={categories}
           itemMap={itemMap1}
         />
       </div>
-      <div className="flex w-[50%] flex-col gap-2">
+      <div className="flex w-[calc(50%-12px)] flex-col gap-2">
         <Select
           onValueChange={(value) => {
             setPlanId2(value === 'all' ? undefined : value);
@@ -157,7 +156,6 @@ const Comparison: FC = () => {
           </SelectContent>
         </Select>
         <ScrollAreaHorizontal
-          planId={planId2}
           filteredItems={filteredItems2}
           categories={categories}
           itemMap={itemMap2}

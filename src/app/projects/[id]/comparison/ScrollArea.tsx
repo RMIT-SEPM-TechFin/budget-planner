@@ -9,21 +9,17 @@ import ItemTable from './ComparisonItemTable';
 
 // Component to display a horizontal scroll area
 const ScrollAreaHorizontal: FC<{
-  planId: string | undefined;
   filteredItems: Item[];
   categories: Category[];
   itemMap: ComparisonProps;
-}> = ({ filteredItems, categories, planId, itemMap }) => {
+}> = ({ filteredItems, categories, itemMap }) => {
   return (
     <ScrollArea className="w-full whitespace-nowrap rounded-md border">
-      <div className="flex flex-col w-max gap-3 p-4">
-        <ItemTable
-          filteredItems={filteredItems}
-          categories={categories}
-          planId={planId}
-          itemMap={itemMap}
-        />
-      </div>
+      <ItemTable
+        filteredItems={filteredItems}
+        categories={categories}
+        itemMap={itemMap}
+      />
       <ScrollBar orientation="horizontal" />
     </ScrollArea>
   );
