@@ -26,25 +26,18 @@ interface ProjectData {
 }
 
 const Comparison: FC = () => {
-  const [planId, setPlanId] = useState<string | undefined>(undefined);
-  const [planId2, setPlanId2] = useState<string | undefined>(undefined);
   const { plans, items, categories } = useProject();
 
+  const [planId, setPlanId] = useState<string | undefined>(undefined);
+  const [planId2, setPlanId2] = useState<string | undefined>(undefined);
+  const [itemMap1, setItemMap1] = useState<ComparisonProps>({});
+  const [itemMap2, setItemMap2] = useState<ComparisonProps>({});
   const [data, setData] = useState<ProjectData>({
     name: '',
     plans: [],
     items: [],
     categories: [],
   });
-
-  useEffect(() => {
-    setData({
-      name: '',
-      plans: plans,
-      items: items,
-      categories: categories,
-    });
-  }, [plans, items, categories]);
 
   // Filter items based on selected plan
   const filteredItems1 = useMemo(() => {
@@ -70,8 +63,32 @@ const Comparison: FC = () => {
     return items.filter((item) => filteredItemIds2.includes(item.id));
   }, [planId2, plans, items]);
 
-  const [itemMap1, setItemMap1] = useState<ComparisonProps>({});
-  const [itemMap2, setItemMap2] = useState<ComparisonProps>({});
+  const totalCost1 = useMemo(
+    () =>
+      filteredItems1.reduce(
+        (total, curr) => total + curr.price * curr.quantity,
+        0,
+      ),
+    [filteredItems1],
+  );
+
+  const totalCost2 = useMemo(
+    () =>
+      filteredItems2.reduce(
+        (total, curr) => total + curr.price * curr.quantity,
+        0,
+      ),
+    [filteredItems2],
+  );
+
+  useEffect(() => {
+    setData({
+      name: '',
+      plans: plans,
+      items: items,
+      categories: categories,
+    });
+  }, [plans, items, categories]);
 
   // Compare items when filteredItems1 or filteredItems2 change
   useEffect(() => {
@@ -85,7 +102,10 @@ const Comparison: FC = () => {
 
   return (
     <div className="flex gap-6">
-      <div className="flex w-[calc(50%-12px)] flex-col gap-2">
+      <div className="relative flex w-[calc(50%-12px)] flex-col gap-2">
+        <h4 className="absolute text-base right-0 top-2 font-medium">
+          Total: <span className="font-black">${totalCost1}</span>
+        </h4>
         <Select
           onValueChange={(value) => {
             setPlanId(value === 'all' ? undefined : value);
@@ -123,7 +143,10 @@ const Comparison: FC = () => {
           itemMap={itemMap1}
         />
       </div>
-      <div className="flex w-[calc(50%-12px)] flex-col gap-2">
+      <div className="relative flex w-[calc(50%-12px)] flex-col gap-2">
+        <h4 className="absolute text-base right-0 top-2 font-medium">
+          Total: <span className="font-black">${totalCost2}</span>
+        </h4>
         <Select
           onValueChange={(value) => {
             setPlanId2(value === 'all' ? undefined : value);

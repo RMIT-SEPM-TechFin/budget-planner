@@ -23,12 +23,7 @@ export default async function Project({ params }: { params: { id: string } }) {
       <div className="flex justify-between">
         <ProjectName />
         <Link href={`/projects/${id}`} passHref>
-          <Button
-            className="bg-white border-[1px] border-[#e4e4e7]"
-            variant="secondary"
-          >
-            Back
-          </Button>
+          <Button variant="outline">Back</Button>
         </Link>
       </div>
       <Comparison />
