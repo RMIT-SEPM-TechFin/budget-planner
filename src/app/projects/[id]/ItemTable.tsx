@@ -92,6 +92,15 @@ const ItemTable: FC = () => {
     [projectId, showNotification, plans],
   );
 
+  const totalCost = useMemo(
+    () =>
+      filteredItems.reduce(
+        (total, curr) => total + curr.price * curr.quantity,
+        0,
+      ),
+    [filteredItems],
+  );
+
   const columns = useMemo(
     () =>
       [
@@ -141,7 +150,16 @@ const ItemTable: FC = () => {
   );
 
   return (
-    <Table columns={columns} data={filteredItems} searchableColumnKey="name" />
+    <div className="relative">
+      <h4 className="absolute text-base left-0 bottom-1 font-medium">
+        Total: <span className="font-black">${totalCost}</span>
+      </h4>
+      <Table
+        columns={columns}
+        data={filteredItems}
+        searchableColumnKey="name"
+      />
+    </div>
   );
 };
 

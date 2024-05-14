@@ -37,12 +37,11 @@ const staticColumns = [
   }),
 ] as ColumnDef<Item>[];
 
-const ItemTable: FC<{
-  planId: string | undefined;
+const ComparisonItemTable: FC<{
   filteredItems: Item[];
   categories: Category[];
   itemMap: ComparisonProps;
-}> = ({ planId, filteredItems, categories, itemMap }) => {
+}> = ({ filteredItems, categories, itemMap }) => {
   const columns = useMemo(
     () =>
       [
@@ -59,14 +58,7 @@ const ItemTable: FC<{
     [categories],
   );
 
-  return (
-    <Table
-      columns={columns}
-      data={filteredItems}
-      showPagination={false}
-      itemMap={itemMap}
-    />
-  );
+  return <Table columns={columns} data={filteredItems} itemMap={itemMap} />;
 };
 
-export default ItemTable;
+export default ComparisonItemTable;
