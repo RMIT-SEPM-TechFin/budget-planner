@@ -5,7 +5,6 @@ import { FC, useState } from 'react';
 
 import ActionIconButton from '@/components/ActionIconButton';
 import AIChatBox from '@/components/ui/AIChatBox';
-import { Button } from '@/components/ui/button';
 
 import { useProject } from './context';
 
@@ -15,9 +14,9 @@ const AIChatButton: FC<{}> = () => {
   return (
     <>
       <ActionIconButton
-        Icon={Bot}
         onClick={() => setChatBoxOpen(true)}
         tooltip="AI Chatbox"
+        Icon={Bot}
       />
       <AIChatBox
         projectId={projectId}

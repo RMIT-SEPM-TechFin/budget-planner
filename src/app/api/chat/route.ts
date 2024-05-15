@@ -4,17 +4,15 @@ import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { ChatCompletionMessage } from 'openai/resources/index.mjs';
 
 import {
-  fetchItemForAI,
   fetchProjectInfo,
+  fetchProjectItemsAndCategories,
   fetchProjectPlans,
 } from '@/app/projects/[id]/fetch';
 import openai from '@/lib/openai';
-import { Item, Plan } from '@/types';
 
 export async function POST(req: Request) {
   const body = await req.json();
-  // console.log(req)
-  console.log('body:', body);
+
   const projectId = body.projectId;
 
   const messages: ChatCompletionMessage[] = body.messages;
@@ -23,50 +21,36 @@ export async function POST(req: Request) {
 
   const relevantProjects = await fetchProjectInfo(projectId);
 
-  const relevantPlans = await fetchProjectPlans(projectId);
+  const plans = await fetchProjectPlans(projectId);
 
-  const relevantItems = await fetchItemForAI(projectId);
+  const { items, categories } = await fetchProjectItemsAndCategories(projectId);
 
-  //fix later
-  // const relevantCompareItems = await compareItems()
+  const itemsContent = items
+    .map(
+      (item) =>
+        `Item ${item.name} with description ${item.description} in category ${categories.find((category) => category.id == item.category)?.name} with price of ${item.price} and quantity of ${item.quantity}, total price of ${item.price * item.quantity}.`,
+    )
+    .join('\n');
 
-  //read content plan
-  function mapPlansWithItemDetails(plans: Plan[], items: Item[]): Plan[] {
-    const itemMap = items.reduce(
-      (acc, item) => {
-        acc[item.id] = item.name; // or item if you want the whole object
-        return acc;
-      },
-      {} as { [key: string]: string },
-    );
-
-    return plans.map((plan) => ({
-      ...plan,
-      items: plan.items.map((itemId) => itemMap[itemId] ?? 'Item not found'),
-    }));
-  }
-  const mappedPlans = mapPlansWithItemDetails(
-    relevantPlans,
-    relevantItems.items,
-  );
+  const plansContent = plans
+    .map(
+      (plan) =>
+        `Plan ${plan.name} have these following items: ${plan.items.map((item) => `${items.find((itemInfo) => itemInfo.id == item)?.name}`).join(', ')}.`,
+    )
+    .join('\n');
 
   // edit content for AI here
   const systemMessage: ChatCompletionMessage = {
     role: 'assistant',
     content:
-      "You are an intelligent budget-planner app. You answer the user's question based on their existing items. " +
-      'The relevant items for this query are:\n' +
-      `Name:${relevantProjects.name}` +
-      relevantPlans.map((plan) => `Name:${plan.name}`).join('\n\n') +
-      mappedPlans
-        .map((plan) => `Name:${plan.name}\n\nitems:${plan.items}`)
-        .join('\n\n') +
-      relevantItems.items
-        .map(
-          (item) =>
-            `Name: ${item.name}\n\ndescription:\n${item.description}\n\ncateogry:\n${item.category}\n\nprice:\n${item.price}\n\nquantity:\n${item.quantity}`,
-        )
-        .join('\n\n'),
+      "You are an intelligent budget-planner app. You answer the user's question based on the information of the project user is working on. " +
+      'These are the information about the project: \n' +
+      `Project name: ${relevantProjects.name} \n` +
+      `In the project, it have categories for the items: ${categories.map((category) => category.name).join(', ')} \n` +
+      `All of the items in the project are: \n` +
+      `${itemsContent} \n` +
+      `The plans in the project are: \n` +
+      `${plansContent} \n`,
   };
 
   const response = await openai.chat.completions.create({
