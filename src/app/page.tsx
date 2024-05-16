@@ -1,15 +1,9 @@
-'use client';
-
 import Image from 'next/image';
-import Link from 'next/link';
 
+import HomePageActionButton from '@/components/HomePageActionButton';
 import { Button } from '@/components/ui/button';
-import useAuth from '@/hooks/useAuth';
 
 export default function Home() {
-  const { user, signIn } = useAuth();
-
-  const path = user ? '/dashboard' : '/';
   return (
     <>
       <div className="grid grid-cols-2 gap-x-14 gap-y-28">
@@ -35,7 +29,7 @@ export default function Home() {
                 </svg>
                 Automated
               </Button>
-              <Button className="  border-rose-500 text-black active:hover:bg-white  bg-white border-2 flex flex-row gap-2 pointer-events-none">
+              <Button className="border-rose-500 text-black active:hover:bg-white  bg-white border-2 flex flex-row gap-2 pointer-events-none">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -121,19 +115,7 @@ export default function Home() {
             </div>
 
             <div className="flex flex-row mt-10 gap-8">
-              {user && (
-                <Button className="text-base font-semibold py-6 px-3">
-                  <Link href={path}>Start Now</Link>
-                </Button>
-              )}
-              {!user && (
-                <Button
-                  onClick={signIn}
-                  className="bg-black text-base font-semibold hover:bg-accent hover:text-accent-foreground py-6 px-3"
-                >
-                  Sign In
-                </Button>
-              )}
+              <HomePageActionButton />
             </div>
           </div>
         </div>
