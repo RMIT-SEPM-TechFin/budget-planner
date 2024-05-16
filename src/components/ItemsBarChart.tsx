@@ -14,7 +14,7 @@ import {
 
 import type { Item } from '@/types';
 
-const ItemsChart: FC<{ items: Item[] }> = ({ items: items_ }) => {
+const ItemsBarChart: FC<{ items: Item[] }> = ({ items: items_ }) => {
   const randomColor = require('randomcolor');
 
   // Preprocess the data to include the totalValue
@@ -45,7 +45,6 @@ const ItemsChart: FC<{ items: Item[] }> = ({ items: items_ }) => {
       <Bar
         barSize={90}
         dataKey="Total"
-        // border-radius: calc(var(--radius) - 2px);
         fill="hsl(346.8 77.2% 49.8%)"
         opacity={1}
         activeBar={<Rectangle fill="hsla(346.8, 77.2%, 49.8%, 0.9)" />}
@@ -54,4 +53,4 @@ const ItemsChart: FC<{ items: Item[] }> = ({ items: items_ }) => {
   );
 };
 
-export default ItemsChart;
+export default ItemsBarChart;

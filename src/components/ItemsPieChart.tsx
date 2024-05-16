@@ -11,8 +11,6 @@ import {
 } from 'react';
 import { Cell, Legend, Pie, PieChart, Sector } from 'recharts';
 
-import type { Item } from '@/types';
-
 const renderActiveShape: ComponentProps<typeof Pie>['activeShape'] = (
   props: Record<string, any>,
 ) => {
@@ -88,60 +86,44 @@ const renderActiveShape: ComponentProps<typeof Pie>['activeShape'] = (
   );
 };
 
-const CategoriesChart: FC<{ items: Item[] }> = ({ items: items_ }) => {
-  const randomColor = require('randomcolor');
+import type { Item } from '@/types';
 
-  const [colors, setColors] = useState<string[]>([]);
-  const [activeIndex, setActiveIndex] = useState(0);
+const ItemsPieChart: FC<{ items: Item[] }> = ({ items: items_ }) => {
+  var randomColor = require('randomcolor');
 
   // Preprocess the data to include the totalValue
-  const items = useMemo(() => {
+  const item = useMemo(() => {
     return items_.map((item) => ({
       ...item,
-      totalValue: item.price * item.quantity,
+      Total: item.price * item.quantity,
     }));
   }, [items_]);
 
-  const categories = useMemo(() => {
-    const totals: { [category: string]: number } = {};
+  const modifiedData = item.map((entry: any) => ({
+    ...entry,
+    totalValue: entry.price * entry.quantity,
+  }));
 
-    items.forEach((item) => {
-      if (totals[item.category]) {
-        totals[item.category] += item.totalValue;
-      } else {
-        totals[item.category] = item.totalValue;
-      }
-    });
+  const [COLORS, setCOLORS] = useState<string[]>([]);
 
-    // Transform the totals object into an array of objects with category name and total value
-    return Object.keys(totals).map((category) => ({
-      category,
-      totalValue: totals[category],
-    }));
-  }, [items]);
+  useEffect(() => {
+    setCOLORS(randomColor({ luminosity: 'dark', count: modifiedData.length }));
+  }, [modifiedData.length, randomColor]);
 
+  const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
-    (_: MouseEvent, index: number) => {
+    (_: React.MouseEvent, index: number) => {
       setActiveIndex(index);
     },
     [setActiveIndex],
   );
-
-  useEffect(() => {
-    setColors(
-      randomColor({
-        hue: '#e11d48',
-        count: items.length,
-      }),
-    );
-  }, [items.length, randomColor]);
 
   return (
     <PieChart width={900} height={500}>
       <Pie
         activeIndex={activeIndex}
         activeShape={renderActiveShape}
-        data={categories}
+        data={modifiedData}
         cx={350}
         cy={250}
         innerRadius={100}
@@ -149,8 +131,8 @@ const CategoriesChart: FC<{ items: Item[] }> = ({ items: items_ }) => {
         dataKey="totalValue"
         onMouseEnter={onPieEnter}
       >
-        {items.map((items, index) => (
-          <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+        {modifiedData.map((entry: any, index: any) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
         ))}
       </Pie>
       <Legend
@@ -158,15 +140,15 @@ const CategoriesChart: FC<{ items: Item[] }> = ({ items: items_ }) => {
         verticalAlign="middle"
         align="right"
         iconType="square"
-        payload={categories.map((cate, index) => ({
-          value: cate.category + ': ' + cate.totalValue + '$',
+        payload={modifiedData.map((entry: any, index: any) => ({
+          value: entry.name + ': ' + entry.totalValue + '$',
           type: 'square',
-          color: colors[index % colors.length],
+          color: COLORS[index % COLORS.length],
         }))}
-        height={200}
+        height={50}
       />
     </PieChart>
   );
 };
 
-export default CategoriesChart;
+export default ItemsPieChart;

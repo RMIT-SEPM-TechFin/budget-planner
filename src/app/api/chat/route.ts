@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     )
     .join('\n');
 
-  // edit in here
+  // edit content for AI here
   const systemMessage: ChatCompletionMessage = {
     role: 'assistant',
     content:
