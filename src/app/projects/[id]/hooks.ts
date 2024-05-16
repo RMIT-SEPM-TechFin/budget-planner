@@ -36,7 +36,7 @@ export const useRealtimeChat = (projectId: string) => {
     return () => {
       unsubscribe();
     };
-  });
+  }, [projectId]);
 
   return { chats };
 };

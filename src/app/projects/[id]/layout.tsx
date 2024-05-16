@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 
+import BreadcrumbProject from './BreadcrumbsProject';
 import { ProjectContextProvider } from './context';
 import {
   fetchProjectInfo,
@@ -32,10 +33,8 @@ export default async function Layout({
       members={members}
     >
       <div className="space-y-4">
-        <div className="flex justify-between">
-          <h1>{name}</h1>
-        </div>
-        <div className="relative">{children}</div>
+        <BreadcrumbProject projectId={id} />
+        {children}
       </div>
     </ProjectContextProvider>
   );

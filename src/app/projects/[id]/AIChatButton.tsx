@@ -4,12 +4,10 @@ import { Bot } from 'lucide-react';
 import { FC, useState } from 'react';
 
 import ActionIconButton from '@/components/ActionIconButton';
-import AIChatBox from '@/components/ui/AIChatBox';
 
-import { useProject } from './context';
+import AIChatBox from './AIChatBox';
 
 const AIChatButton: FC<{}> = () => {
-  const { projectId } = useProject();
   const [chatBoxOpen, setChatBoxOpen] = useState(false);
   return (
     <>
@@ -18,11 +16,7 @@ const AIChatButton: FC<{}> = () => {
         tooltip="AI Chatbox"
         Icon={Bot}
       />
-      <AIChatBox
-        projectId={projectId}
-        open={chatBoxOpen}
-        onClose={() => setChatBoxOpen(false)}
-      />
+      <AIChatBox open={chatBoxOpen} onClose={() => setChatBoxOpen(false)} />
     </>
   );
 };

@@ -92,6 +92,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       }
       setIsLoading(false);
     });
+
     return () => unsubscribe();
   }, [showNotification, router]);
 

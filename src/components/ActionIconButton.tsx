@@ -14,7 +14,7 @@ import {
 interface ActionIconButtonProps {
   Icon: LucideIcon;
   tooltip: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const ActionIconButton: FC<ActionIconButtonProps> = ({

@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { USER_EMAIL_COOKIE_NAME } from '@/constants';
 
-import BreadcrumbComparison from './BreadcumbsComparison';
+import ProjectName from '../ProjectName';
 import Comparison from './Comparison';
 
 // Force dynamic to be able to use cookies
@@ -19,19 +19,14 @@ export default async function Project({ params }: { params: { id: string } }) {
   if (!userEmail) redirect('/');
 
   return (
-    <div className="relative">
+    <div className="space-y-4">
       <div className="flex justify-between">
-        <BreadcrumbComparison />
+        <ProjectName />
         <Link href={`/projects/${id}`} passHref>
-          <Button
-            className="bg-white border-[1px] border-[#e4e4e7]"
-            variant="secondary"
-          >
-            Back to Project Page
-          </Button>
+          <Button variant="outline">Back</Button>
         </Link>
       </div>
-      <Comparison params={{ id }} />
+      <Comparison />
     </div>
   );
 }

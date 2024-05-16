@@ -2,26 +2,22 @@
 
 import { Message } from 'ai';
 import { useChat } from 'ai/react';
-import { Bot, Trash, XCircle } from 'lucide-react';
-import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { Bot, SendHorizontal, Trash, X } from 'lucide-react';
+import { useEffect, useMemo, useRef } from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
-import { Button } from './button';
-import { Input } from './input';
+import { useProject } from './context';
 
 interface AIChatBoxProps {
   open: boolean;
   onClose: () => void;
-  projectId: string;
 }
 
-export default function AIChatBox({
-  projectId,
-  open,
-  onClose,
-}: AIChatBoxProps) {
+export default function AIChatBox({ open, onClose }: AIChatBoxProps) {
+  const { projectId, categories, items, plans, name } = useProject();
   const {
     messages,
     input,
@@ -33,6 +29,10 @@ export default function AIChatBox({
   } = useChat({
     body: {
       projectId,
+      categories,
+      items,
+      plans,
+      name,
     },
   });
 
@@ -51,39 +51,42 @@ export default function AIChatBox({
     }
   }, [open]);
 
-  const lastMessageIsUser = messages[messages.length - 1]?.role === 'user';
+  const lastMessageIsUser = useMemo(
+    () => messages[messages.length - 1]?.role === 'user',
+    [messages],
+  );
 
   return (
     <div
       className={cn(
-        'bottom-0 right-0 z-10 w-full max-w-[500px] p-1 xl:right-36',
+        'relative bottom-0 right-0 z-10 w-full max-w-[500px] p-1 xl:right-36',
         open ? 'fixed' : 'hidden',
       )}
     >
-      <button onClick={onClose} className="mb-1 ms-auto block">
-        <XCircle size={30} />
-      </button>
-      <div className="flex h-[600px] flex-col rounded border bg-background shadow-xl">
+      <Button
+        onClick={onClose}
+        variant="ghost"
+        size="icon"
+        className="absolute right-3 top-3"
+      >
+        <X size={20} className="stroke-muted-foreground" />
+      </Button>
+
+      <div className="flex h-[600px] flex-col border bg-background shadow-xl rounded-xl pt-11">
         <div className="mt-3 h-full overflow-y-auto px-3" ref={scrollRef}>
           {messages.map((message) => (
-            <ChatMessage
-              projectId={projectId}
-              message={message}
-              key={message.id}
-            />
+            <ChatMessage message={message} key={message.id} />
           ))}
           {isLoading && lastMessageIsUser && (
             <ChatMessage
-              projectId={projectId}
               message={{
                 role: 'assistant',
-                content: 'Thinking...',
+                content: '...',
               }}
             />
           )}
           {error && (
             <ChatMessage
-              projectId={projectId}
               message={{
                 role: 'assistant',
                 content: 'Something went wrong. Please try again.',
@@ -91,13 +94,13 @@ export default function AIChatBox({
             />
           )}
           {!error && messages.length === 0 && (
-            <div className="flex h-full items-center justify-center gap-3">
-              <Bot />
-              Ask the AI a question about your items
+            <div className="flex h-full items-center justify-center gap-2">
+              <Bot className="stroke-muted-foreground" />
+              <p className="text-muted-foreground">Ask AI</p>
             </div>
           )}
         </div>
-        <form onSubmit={handleSubmit} className="m-3 flex gap-1">
+        <form onSubmit={handleSubmit} className="m-3 flex gap-1.5">
           <Button
             title="Clear chat"
             variant="outline"
@@ -106,15 +109,18 @@ export default function AIChatBox({
             type="button"
             onClick={() => setMessages([])}
           >
-            <Trash />
+            <Trash size={16} />
           </Button>
           <Input
             value={input}
             onChange={handleInputChange}
-            placeholder="Say something..."
+            placeholder="Type something..."
             ref={inputRef}
+            className="flex-1"
           />
-          <Button type="submit">Send</Button>
+          <Button type="submit" size="icon">
+            <SendHorizontal size={16} />
+          </Button>
         </form>
       </div>
     </div>
@@ -122,10 +128,8 @@ export default function AIChatBox({
 }
 
 function ChatMessage({
-  projectId,
   message: { role, content },
 }: {
-  projectId: string;
   message: Pick<Message, 'role' | 'content'>;
 }) {
   const isAiMessage = role === 'assistant';
@@ -146,15 +150,6 @@ function ChatMessage({
       >
         {content}
       </p>
-      {/* {!isAiMessage && user?.imageUrl && (
-        <Image
-          src={user.imageUrl}
-          alt="User image"
-          width={100}
-          height={100}
-          className="ml-2 h-10 w-10 rounded-full object-cover"
-        />
-      )} */}
     </div>
   );
 }
